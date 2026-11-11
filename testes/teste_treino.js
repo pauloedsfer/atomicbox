@@ -37,7 +37,7 @@ teste("treino: todo exercício de todo degrau tem uma certa, erradas com diagnó
 teste("treino: as respostas certas conferem com os motores", () => {
   const s = semente(7);
   for (let i = 0; i < 400; i++) {
-    const ex = gerarExercicio(2 + (i % 2), s);
+    const ex = gerarExercicio(3 + (i % 2), s);
     const m = ex.enunciado.match(/Z = (\d+)/);
     if (ex.tipo === "neutrons") {
       const [, z, a] = ex.enunciado.match(/Z = (\d+) e A = (\d+)/);

@@ -9,6 +9,13 @@ import { elementoPorZ, textoCarga } from "./atomo.js";
 import { analisarDistribuicao, distribuir, textoDistribuicao, CAPACIDADE, sobre } from "./distribuicao.js";
 import { MODELOS } from "../dados/modelos.js";
 import { DEGRAUS } from "../dados/degraus.js";
+import { CLASSES, MATERIAIS, METODOS, SITUACOES } from "../dados/substancias.js";
+import { corrigirClasse, corrigirMetodo } from "./substancias.js";
+import { VIDRARIAS } from "../dados/vidrarias.js";
+import { perguntaDeVidraria } from "./vidrarias.js";
+import { ELEMENTOS } from "../comum/elementos.js";
+import { fichaDoElemento, CLASSIFICACOES } from "./tabela.js";
+import { ligar, METAIS, valencia as valenciaDe, faltam } from "./ligacoes.js";
 
 const IDS = ["a", "b", "c", "d"];
 
@@ -30,13 +37,28 @@ const NOMES_TIPO = {
   valencia: "Camada de valência",
   mais_energetico: "Subnível mais energético",
   numero_camadas: "Número de camadas",
+  classificar_material: "Classificar materiais",
+  metodo_separacao: "Separação de misturas",
+  curva_aquecimento: "Curva de aquecimento",
+  vidraria: "Vidrarias de laboratório",
+  periodo: "Período na tabela",
+  familia: "Família pela valência",
+  classificacao_elemento: "Metal, não metal ou gás nobre",
+  tendencia: "Tendências periódicas",
+  tipo_ligacao: "Tipo de ligação",
+  formula_ionica: "Fórmula iônica",
+  formula_covalente: "Fórmula molecular",
+  octeto: "Regra do octeto",
 };
 
 const TIPOS_POR_DEGRAU = [
   ["estado_temperatura", "nome_mudanca", "exemplo_mudanca", "particulas_estado"],
+  ["classificar_material", "metodo_separacao", "curva_aquecimento", "vidraria"],
   ["apelido_modelo", "ideia_modelo", "folha_ouro", "ordem_modelos"],
   ["neutrons", "massa", "eletrons_ion", "elemento_por_z", "conceito_atomo"],
   ["distribuicao", "valencia", "mais_energetico", "numero_camadas"],
+  ["periodo", "familia", "classificacao_elemento", "tendencia"],
+  ["tipo_ligacao", "formula_ionica", "formula_covalente", "octeto"],
 ];
 
 /* ---------------- sorteio ---------------- */
@@ -442,6 +464,275 @@ function numeroCamadas(sorteio) {
   }, sorteio);
 }
 
+
+/* ---------------- degrau 1: substâncias, misturas e vidrarias ---------------- */
+
+function classificarMaterial(sorteio) {
+  const m = sortear(MATERIAIS, sorteio);
+  const certa = CLASSES.find((c) => c.id === m.classe);
+  return exercicio({
+    tipo: "classificar_material", degrau: 1,
+    enunciado: `Como se classifica: ${m.nome.charAt(0).toLowerCase()}${m.nome.slice(1)}?`,
+    certa: certa.nome,
+    erradas: embaralhar(CLASSES.filter((c) => c.id !== m.classe), sorteio).map((c) => errada(c.nome, corrigirClasse(m.id, c.id).texto, "classe_errada")),
+    dica: "Primeiro: é uma substância só ou mistura? Se for substância, conte os elementos; se for mistura, conte as fases.",
+    explicacao: m.porque,
+  }, sorteio);
+}
+
+function metodoSeparacao(sorteio) {
+  const s = sortear(SITUACOES, sorteio);
+  const certo = METODOS.find((x) => x.id === s.metodo);
+  return exercicio({
+    tipo: "metodo_separacao", degrau: 1,
+    enunciado: `${s.texto} Que método você usa?`,
+    certa: certo.nome,
+    erradas: embaralhar(METODOS.filter((x) => x.id !== s.metodo && x.id !== "peneiracao"), sorteio).map((x) => errada(x.nome, corrigirMetodo(s.id, x.id).texto, "metodo_errado")),
+    dica: "A mistura é homogênea ou heterogênea? Você quer guardar o líquido ou só o sólido?",
+    explicacao: `${certo.nome}: ${certo.como.charAt(0).toLowerCase()}${certo.como.slice(1)}`,
+  }, sorteio);
+}
+
+const PERGUNTAS_CURVA = [
+  {
+    enunciado: "Na curva de aquecimento de uma substância pura, o que acontece com a temperatura enquanto ela funde?",
+    certa: "Fica constante até todo o sólido derreter.",
+    erradas: [
+      errada("Continua subindo, mais devagar.", "Isso acontece com as misturas. Na substância pura, todo o calor vai para mudar de estado e a temperatura fica parada.", "mistura"),
+      errada("Cai um pouco.", "A temperatura não cai enquanto se aquece: na substância pura ela fica parada durante a mudança de estado.", "cai"),
+      errada("Sobe mais rápido.", "Durante a mudança de estado o calor vai para separar as partículas, não para esquentar: a temperatura fica parada.", "rapido"),
+    ],
+  },
+  {
+    enunciado: "Um material ferve entre 78 °C e 95 °C, com a temperatura subindo durante a fervura. Ele é:",
+    certa: "Uma mistura.",
+    erradas: [
+      errada("Uma substância pura.", "Substância pura ferve numa temperatura só, que fica parada durante a fervura (o patamar).", "pura"),
+      errada("Uma substância simples.", "Substância simples também é pura e ferve numa temperatura fixa. Faixa de ebulição indica mistura.", "simples"),
+      errada("Um gás nobre.", "Gases nobres são substâncias puras, com temperatura de ebulição fixa (e muito baixa).", "nobre"),
+    ],
+  },
+];
+
+function curvaAquecimento(sorteio) {
+  const q = sortear(PERGUNTAS_CURVA, sorteio);
+  return exercicio({
+    tipo: "curva_aquecimento", degrau: 1, enunciado: q.enunciado, certa: q.certa, erradas: embaralhar(q.erradas, sorteio),
+    dica: "Substância pura tem patamares (temperatura parada) nas mudanças de estado; mistura, não.",
+    explicacao: "Na substância pura, as mudanças de estado acontecem em temperatura constante (os patamares do gráfico). Nas misturas, a temperatura varia durante a mudança.",
+  }, sorteio);
+}
+
+function vidraria(sorteio) {
+  const p = perguntaDeVidraria("uso", sorteio);
+  const alvo = VIDRARIAS.find((v) => v.id === p.alvo);
+  return exercicio({
+    tipo: "vidraria", degrau: 1, enunciado: p.enunciado,
+    certa: alvo.nome,
+    erradas: p.opcoes.filter((o) => o.id !== alvo.id).map((o) => {
+      const v = VIDRARIAS.find((x) => x.id === o.id);
+      return errada(v.nome, `${v.nome}: ${v.uso.charAt(0).toLowerCase()}${v.uso.slice(1)}`, "outra_vidraria");
+    }),
+    dica: "Pense na função: medir com precisão, medir e misturar, aquecer, separar ou apoiar.",
+    explicacao: `${alvo.nome}. Cuidado: ${alvo.cuidado.charAt(0).toLowerCase()}${alvo.cuidado.slice(1)}`,
+  }, sorteio);
+}
+
+/* ---------------- degrau 5: tabela periódica ---------------- */
+
+const REPRESENTATIVOS = ELEMENTOS.filter((e) => e[0] <= 56 && e[5] <= 6 && (e[4] <= 2 || e[4] >= 13) && e[0] > 2).map((e) => e[0]);
+const nomeFamilia = (g) => ({ 1: "Metais alcalinos (1A)", 2: "Metais alcalinoterrosos (2A)", 13: "Família do boro (3A)", 14: "Família do carbono (4A)", 15: "Família do nitrogênio (5A)", 16: "Calcogênios (6A)", 17: "Halogênios (7A)", 18: "Gases nobres (8A)" })[g];
+
+function periodo(sorteio) {
+  const f = fichaDoElemento(sortear(REPRESENTATIVOS, sorteio));
+  return exercicio({
+    tipo: "periodo", degrau: 5,
+    enunciado: `O ${f.nome.toLowerCase()} tem a distribuição ${f.distribuicao}. Em que período da tabela ele está?`,
+    certa: `${f.periodo}º período`,
+    erradas: [
+      errada(`${f.valencia.eletrons}º período`, `${f.valencia.eletrons} é o número de elétrons na valência, que dá a família. O período é o número de camadas.`, "valencia"),
+      errada(`${f.periodo + 1}º período`, `Conte as camadas: o maior número na distribuição é ${f.periodo}.`, "conta"),
+      errada(`${f.periodo - 1}º período`, `Conte as camadas: o maior número na distribuição é ${f.periodo}.`, "conta"),
+      errada(`${f.periodo + 2}º período`, `Conte as camadas: o maior número na distribuição é ${f.periodo}.`, "conta"),
+    ].filter((e) => !e.texto.startsWith("0") && Number(e.texto[0]) <= 7),
+    dica: "O período é o número de camadas: o maior número que aparece na distribuição.",
+    explicacao: `${f.distribuicao}: ${f.camadas.length} camadas, então período ${f.periodo}.`,
+  }, sorteio);
+}
+
+function familia(sorteio) {
+  const f = fichaDoElemento(sortear(REPRESENTATIVOS, sorteio));
+  const outros = [1, 2, 13, 14, 15, 16, 17, 18].filter((g) => g !== f.grupo);
+  const vizinhos = embaralhar(outros, sorteio).sort((a, b) => Math.abs(a - f.grupo) - Math.abs(b - f.grupo)).slice(0, 3);
+  return exercicio({
+    tipo: "familia", degrau: 5,
+    enunciado: `Um elemento representativo tem a distribuição ${f.distribuicao}. A que família ele pertence?`,
+    certa: nomeFamilia(f.grupo),
+    erradas: vizinhos.map((g) => errada(nomeFamilia(g), `Nessa família, a camada de valência tem ${g <= 2 ? g : g - 10} ${g === 1 ? "elétron" : "elétrons"}. Aqui a última camada (${f.valencia.camada}) tem ${f.valencia.eletrons}.`, "familia")),
+    dica: "Some os elétrons da última camada (a de maior número). Nas famílias A, esse número é o da família.",
+    explicacao: `Camada de valência ${f.valencia.camada} com ${f.valencia.eletrons} ${f.valencia.eletrons === 1 ? "elétron" : "elétrons"}: família ${f.grupo <= 2 ? f.grupo : f.grupo - 10}A. É o ${f.nome.toLowerCase()}.`,
+  }, sorteio);
+}
+
+const POR_QUE_CLASSE = {
+  metal: "Os metais ficam à esquerda e no centro da tabela: brilham, conduzem eletricidade e tendem a perder elétrons.",
+  ametal: "Os não metais ficam à direita (com o hidrogênio): tendem a ganhar ou compartilhar elétrons.",
+  semimetal: "Os semimetais ficam na escada entre metais e não metais, como o silício e o boro.",
+  nobre: "Os gases nobres ficam na última coluna: a camada de valência está completa.",
+};
+
+function classificacaoElemento(sorteio) {
+  const z = sortear([3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 26, 29, 32, 33, 35, 36, 47, 53, 54, 79, 80], sorteio);
+  const f = fichaDoElemento(z);
+  const nome = (id) => CLASSIFICACOES.find((c) => c.id === id).nome;
+  return exercicio({
+    tipo: "classificacao_elemento", degrau: 5,
+    enunciado: `O ${f.nome.toLowerCase()} (${f.simbolo}, Z = ${z}) é:`,
+    certa: nome(f.classificacao),
+    erradas: ["metal", "ametal", "semimetal", "nobre"].filter((c) => c !== f.classificacao).map((c) => errada(nome(c), POR_QUE_CLASSE[c] + ` O ${f.nome.toLowerCase()} fica no grupo ${f.grupo}, período ${f.periodo}.`, "classe")),
+    dica: "Metais à esquerda e no centro; não metais à direita; semimetais na escada entre eles; gases nobres na última coluna.",
+    explicacao: `${f.nome}: ${nome(f.classificacao).toLowerCase()}. ${POR_QUE_CLASSE[f.classificacao]}`,
+  }, sorteio);
+}
+
+const GRUPOS_TENDENCIA = [[3, 11, 19, 37], [9, 17, 35, 53], [4, 12, 20, 38], [8, 16, 34, 52], [7, 15, 33, 51]];
+const PERIODOS_TENDENCIA = [[11, 12, 13, 14, 15, 16, 17], [3, 4, 5, 6, 7, 8, 9], [19, 20, 31, 32, 33, 34, 35]];
+
+function tendencia(sorteio) {
+  const pergunta = sortear(["raio", "eletro"], sorteio);
+  const mesmoGrupo = sortear([true, false], sorteio);
+  const lista = mesmoGrupo ? sortear(GRUPOS_TENDENCIA, sorteio) : embaralhar(sortear(PERIODOS_TENDENCIA, sorteio), sorteio).slice(0, 4);
+  const fichas = lista.map(fichaDoElemento);
+  // Mesmo grupo: raio cresce com o período; mesmo período: raio cresce para a esquerda. Eletronegatividade, ao contrário.
+  const chave = (f) => (mesmoGrupo ? f.periodo : -f.grupo);
+  const ordenadas = [...fichas].sort((a, b) => chave(b) - chave(a));
+  const alvo = pergunta === "raio" ? ordenadas[0] : ordenadas[ordenadas.length - 1];
+  const regra = pergunta === "raio"
+    ? (mesmoGrupo ? "Numa família, o raio cresce para baixo: mais camadas." : "Num período, o raio cresce para a esquerda: menos prótons puxando os elétrons.")
+    : (mesmoGrupo ? "Numa família, a eletronegatividade cresce para cima: o núcleo fica mais perto dos elétrons." : "Num período, a eletronegatividade cresce para a direita.");
+  return exercicio({
+    tipo: "tendencia", degrau: 5,
+    enunciado: `Qual destes elementos tem ${pergunta === "raio" ? "o maior raio atômico" : "a maior eletronegatividade"}: ${fichas.map((f) => f.simbolo).join(", ").replace(/, ([^,]*)$/, " ou $1")}?`,
+    certa: `${alvo.nome} (${alvo.simbolo})`,
+    erradas: fichas.filter((f) => f !== alvo).map((f) => errada(`${f.nome} (${f.simbolo})`, `${regra} O ${f.nome.toLowerCase()} fica no período ${f.periodo}, grupo ${f.grupo}.`, "tendencia")),
+    dica: pergunta === "raio" ? "O raio cresce para baixo e para a esquerda." : "A eletronegatividade cresce para cima e para a direita (sem os gases nobres).",
+    explicacao: `${regra} Por isso, ${alvo.nome.toLowerCase()}.`,
+  }, sorteio);
+}
+
+/* ---------------- degrau 6: ligações químicas ---------------- */
+
+const PARES_IONICOS = [[11, 17], [12, 17], [13, 8], [20, 8], [11, 8], [12, 7], [19, 16], [20, 9], [13, 17], [19, 17], [12, 8], [13, 9]];
+const PARES_COVALENTES = [[1, 8], [6, 8], [1, 17], [7, 7], [8, 8], [6, 1], [7, 1], [6, 17], [7, 9], [1, 16], [6, 16]];
+const NOME_LIGACAO = { ionica: "Iônica", covalente: "Covalente", metalica: "Metálica" };
+const POR_QUE_LIGACAO = {
+  ionica: "Metal com não metal: o metal perde elétrons e o não metal ganha (ligação iônica).",
+  covalente: "Não metal com não metal (ou hidrogênio): os dois compartilham elétrons (ligação covalente).",
+  metalica: "Metal com metal: os elétrons ficam livres num mar de elétrons (ligação metálica).",
+};
+
+function tipoLigacao(sorteio) {
+  const par = sortear([...PARES_IONICOS, ...PARES_COVALENTES, [11, 11], [29, 29], [12, 13]].filter((p) => p.every((z) => z <= 20) || p[0] === 29), sorteio);
+  const [a, b] = par;
+  const r = par[0] === 29 ? { tipo: "metalica" } : ligar(a, b);
+  const A = elementoPorZ(a);
+  const B = elementoPorZ(b);
+  const descricao = a === b ? `átomos de ${A.nome.toLowerCase()} entre si` : `${A.nome.toLowerCase()} e ${B.nome.toLowerCase()}`;
+  return exercicio({
+    tipo: "tipo_ligacao", degrau: 6,
+    enunciado: `Que tipo de ligação se forma entre ${descricao}?`,
+    certa: NOME_LIGACAO[r.tipo],
+    erradas: ["ionica", "covalente", "metalica"].filter((t) => t !== r.tipo).map((t) => errada(NOME_LIGACAO[t], `${POR_QUE_LIGACAO[t]} Aqui: ${POR_QUE_LIGACAO[r.tipo].split(":")[0].toLowerCase()}.`, "tipo")),
+    dica: "Metal + não metal: iônica. Não metal + não metal: covalente. Metal + metal: metálica.",
+    explicacao: POR_QUE_LIGACAO[r.tipo],
+  }, sorteio);
+}
+
+const SUBSCRITO_T = "₀₁₂₃₄₅₆₇₈₉";
+const subT = (n) => (n === 1 ? "" : String(n).split("").map((c) => SUBSCRITO_T[Number(c)]).join(""));
+
+function formulaIonica(sorteio) {
+  const [metal, ametal] = sortear(PARES_IONICOS, sorteio);
+  const r = ligar(metal, ametal);
+  const m = elementoPorZ(metal);
+  const a = elementoPorZ(ametal);
+  const cM = valenciaDe(metal);
+  const cA = faltam(ametal);
+  return exercicio({
+    tipo: "formula_ionica", degrau: 6,
+    enunciado: `Qual é a fórmula do composto iônico formado por ${m.nome.toLowerCase()} (${r.ions[0]}) e ${a.nome.toLowerCase()} (${r.ions[1]})?`,
+    certa: r.formula,
+    erradas: [
+      errada(`${m.simbolo}${a.simbolo}`, `Assim as cargas não se anulam: ${cM === 1 ? "+1" : `+${cM}`} com ${cA === 1 ? "−1" : `−${cA}`}. Cruze as cargas: a do ânion vira o índice do metal e vice-versa.`, "um_para_um"),
+      errada(`${m.simbolo}${subT(cM)}${a.simbolo}${subT(cA)}`, "Você cruzou ao contrário: a carga do ânion vira o índice do metal, e a carga do metal vira o índice do ânion.", "invertido"),
+      errada(`${m.simbolo}${subT(cA)}${a.simbolo}${subT(cM)}`, "Os índices estão certos, mas precisam ser simplificados aos menores números inteiros.", "sem_simplificar"),
+      errada(`${a.simbolo}${subT(cM)}${m.simbolo}${subT(cA)}`, "Na fórmula iônica, o cátion (o metal) vem primeiro.", "ordem"),
+    ],
+    dica: "Cruze as cargas: a carga do ânion vira o índice do metal, a do metal vira o índice do ânion. Depois simplifique.",
+    explicacao: `${r.explicacao} Fórmula: ${r.formula} (${r.nome}).`,
+  }, sorteio);
+}
+
+function formulaCovalente(sorteio) {
+  const [x, y] = sortear(PARES_COVALENTES.filter(([a, b]) => a !== b), sorteio);
+  const r = ligar(x, y);
+  const A = elementoPorZ(x);
+  const B = elementoPorZ(y);
+  const trocas = [
+    r.formula.replace(/[₂₃₄]/g, ""),
+    r.formula.replace(/₂/, "₃").replace(/₄/, "₂").replace(/₃(?!.*₃)/, "₂"),
+    r.formula.includes("₂") ? r.formula.replace("₂", "₄") : r.formula.replace(/([A-Z][a-z]?)$/, "$1₂"),
+    r.formula.replace(/₄/, "₃").replace(/₃/, "₄"),
+  ];
+  return exercicio({
+    tipo: "formula_covalente", degrau: 6,
+    enunciado: `Pela regra do octeto, que molécula se forma entre ${A.nome.toLowerCase()} (faz ${faltam(x)} ${faltam(x) === 1 ? "ligação" : "ligações"}) e ${B.nome.toLowerCase()} (faz ${faltam(y)})?`,
+    certa: r.formula,
+    erradas: trocas.map((t) => errada(t, `Nessa fórmula alguém fica sem completar o octeto. Cada ${A.nome.toLowerCase()} faz ${faltam(x)} ${faltam(x) === 1 ? "ligação" : "ligações"} e cada ${B.nome.toLowerCase()} faz ${faltam(y)}: os números de ligações dos dois lados precisam bater.`, "octeto")),
+    dica: "Cada átomo faz tantas ligações quantos elétrons faltam para o octeto: H faz 1, O faz 2, N faz 3, C faz 4. Os totais dos dois lados precisam ser iguais.",
+    explicacao: `${r.formula}: ${r.estrutura}. ${r.explicacao}`,
+  }, sorteio);
+}
+
+const PERGUNTAS_OCTETO = [
+  {
+    enunciado: "Por que os gases nobres quase não fazem ligações químicas?",
+    certa: "Porque a camada de valência deles já está completa.",
+    erradas: [
+      errada("Porque não têm elétrons.", "Eles têm elétrons, como todo átomo: o argônio tem 18. A diferença é que a valência está completa.", "sem_eletrons"),
+      errada("Porque são gases.", "Ser gás não impede ligações: o oxigênio e o cloro são gases e reagem muito. O que importa é a valência completa.", "gases"),
+      errada("Porque são muito pesados.", "O hélio é levíssimo e também não reage. O que importa é a valência completa.", "pesados"),
+    ],
+  },
+  {
+    enunciado: "Na formação do NaCl, o que acontece com o elétron de valência do sódio?",
+    certa: "Passa para o cloro, formando Na⁺ e Cl⁻.",
+    erradas: [
+      errada("É compartilhado com o cloro.", "Compartilhar é ligação covalente, entre não metais. O sódio é metal: ele perde o elétron.", "compartilha"),
+      errada("Passa do cloro para o sódio.", "É o contrário: o metal (sódio) perde e o não metal (cloro) ganha.", "contrario"),
+      errada("Fica livre num mar de elétrons.", "O mar de elétrons é da ligação metálica, entre metais. Com o cloro, o elétron é transferido.", "metalica"),
+    ],
+  },
+  {
+    enunciado: "Quantas ligações covalentes o oxigênio costuma fazer para completar o octeto?",
+    certa: "2",
+    erradas: [
+      errada("6", "6 é o número de elétrons de valência do oxigênio. Faltam 2 para o octeto: ele faz 2 ligações.", "valencia"),
+      errada("8", "8 é o octeto completo. O oxigênio já tem 6 na valência: faltam 2.", "octeto"),
+      errada("1", "Quem faz 1 ligação é o hidrogênio (ou os halogênios). O oxigênio precisa de 2 elétrons.", "um"),
+    ],
+  },
+];
+
+function octeto(sorteio) {
+  const q = sortear(PERGUNTAS_OCTETO, sorteio);
+  return exercicio({
+    tipo: "octeto", degrau: 6, enunciado: q.enunciado, certa: q.certa, erradas: embaralhar(q.erradas, sorteio),
+    dica: "Os átomos se ligam para ficar com 8 elétrons na valência, como os gases nobres (o hidrogênio, com 2).",
+    explicacao: "Regra do octeto: os átomos ganham, perdem ou compartilham elétrons para ficar com a valência completa, como um gás nobre.",
+  }, sorteio);
+}
+
 /* ---------------- geral ---------------- */
 
 const GERADORES = {
@@ -460,13 +751,24 @@ const GERADORES = {
   distribuicao, valencia,
   mais_energetico: maisEnergetico,
   numero_camadas: numeroCamadas,
+  classificar_material: classificarMaterial,
+  metodo_separacao: metodoSeparacao,
+  curva_aquecimento: curvaAquecimento,
+  vidraria,
+  periodo, familia,
+  classificacao_elemento: classificacaoElemento,
+  tendencia,
+  tipo_ligacao: tipoLigacao,
+  formula_ionica: formulaIonica,
+  formula_covalente: formulaCovalente,
+  octeto,
 };
 
 function gerarExercicio(degrau, sorteio = Math.random) {
   if (!Number.isInteger(degrau) || degrau < 0 || degrau >= DEGRAUS.length) return { ok: false, explicacao: "não há este degrau no treino" };
   for (let tentativa = 0; tentativa < 12; tentativa++) {
     const ex = GERADORES[sortear(TIPOS_POR_DEGRAU[degrau], sorteio)](sorteio);
-    if (ex) return ex;
+    if (ex) return { ...ex, degrau };   // o degrau vem da escada, não do gerador
   }
   return { ok: false, explicacao: "não consegui montar um exercício agora" };
 }

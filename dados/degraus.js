@@ -4,9 +4,12 @@
 
 const DEGRAUS = [
   { id: "estados", nome: "Estados da matéria", tela: "tela-materia", descricao: "Estado físico pela temperatura, mudanças de estado e o que as partículas fazem.", acertosParaAbrir: 5 },
+  { id: "substancias", nome: "Substâncias, misturas e vidrarias", tela: "tela-substancias", descricao: "Classificar materiais, curva de aquecimento, separação de misturas e vidrarias de laboratório.", acertosParaAbrir: 5 },
   { id: "modelos", nome: "Modelos atômicos", tela: "tela-modelos", descricao: "De Dalton a Bohr: quem propôs, o que explicava e a folha de ouro.", acertosParaAbrir: 5 },
   { id: "particulas", nome: "Partículas do átomo", tela: "tela-atomo", descricao: "Prótons, nêutrons e elétrons; Z, A, íons e isótopos.", acertosParaAbrir: 5 },
   { id: "distribuicao", nome: "Distribuição eletrônica", tela: "tela-distribuicao", descricao: "Diagrama de Pauling, camadas, valência e subnível mais energético.", acertosParaAbrir: 5 },
+  { id: "tabela", nome: "Tabela periódica", tela: "tela-tabela", descricao: "Período, família, classificação e tendências.", acertosParaAbrir: 5 },
+  { id: "ligacoes", nome: "Ligações químicas", tela: "tela-ligacoes", descricao: "Octeto, tipo de ligação e fórmulas.", acertosParaAbrir: 5 },
 ];
 
 const MEDALHAS = [
@@ -15,9 +18,12 @@ const MEDALHAS = [
   { id: "cinquenta", nome: "Meio cento atômico", condicao: (p) => p.totalAcertos >= 50, descricao: "Acertar cinquenta exercícios" },
   { id: "sequencia5", nome: "Reação em cadeia", condicao: (p) => p.melhorSequencia >= 5, descricao: "Cinco acertos seguidos" },
   { id: "sequencia15", nome: "Fissão em série", condicao: (p) => p.melhorSequencia >= 15, descricao: "Quinze acertos seguidos" },
-  { id: "degrau1", nome: "Abriu a caixa", condicao: (p) => p.desbloqueado >= 1, descricao: "Abrir o degrau dos modelos atômicos" },
-  { id: "degrau2", nome: "Dentro do núcleo", condicao: (p) => p.desbloqueado >= 2, descricao: "Abrir o degrau das partículas do átomo" },
-  { id: "degrau3", nome: "Salto quântico", condicao: (p) => p.desbloqueado >= 3, descricao: "Abrir o degrau da distribuição eletrônica" },
+  { id: "degrau1", nome: "Mão na massa", condicao: (p) => p.desbloqueado >= 1, descricao: "Abrir o degrau das substâncias, misturas e vidrarias" },
+  { id: "degrau2", nome: "Abriu a caixa", condicao: (p) => p.desbloqueado >= 2, descricao: "Abrir o degrau dos modelos atômicos" },
+  { id: "degrau3", nome: "Dentro do núcleo", condicao: (p) => p.desbloqueado >= 3, descricao: "Abrir o degrau das partículas do átomo" },
+  { id: "degrau4", nome: "Salto quântico", condicao: (p) => p.desbloqueado >= 4, descricao: "Abrir o degrau da distribuição eletrônica" },
+  { id: "degrau5", nome: "Mapa dos elementos", condicao: (p) => p.desbloqueado >= 5, descricao: "Abrir o degrau da tabela periódica" },
+  { id: "degrau6", nome: "Octeto completo", condicao: (p) => p.desbloqueado >= 6, descricao: "Abrir o degrau das ligações químicas" },
   { id: "ofensiva3", nome: "Três dias seguidos", condicao: (p) => p.melhorOfensiva >= 3, descricao: "Treinar em três dias consecutivos" },
   { id: "ofensiva7", nome: "Semana inteira", condicao: (p) => p.melhorOfensiva >= 7, descricao: "Treinar em sete dias consecutivos" },
   { id: "semDica", nome: "Sem colinha", condicao: (p) => p.acertosSemDica >= 20, descricao: "Vinte acertos sem abrir a dica" },
