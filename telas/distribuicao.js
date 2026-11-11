@@ -59,7 +59,7 @@ function diagrama(cheios, atual) {
   return criarSvg("svg", { viewBox: `0 0 ${largura} ${altura}`, class: "diagrama-pauling", "aria-hidden": "true" }, filhos);
 }
 
-function montar(raiz) {
+function montar(raiz, app) {
   let z = 26;
   let passos = null;   // null: tudo; número: quantos subníveis já entraram no passo a passo
 
@@ -98,7 +98,8 @@ function montar(raiz) {
     ]),
     criar("div", { className: "cartao ponte" }, [
       criar("h2", { textContent: "A pergunta que fica", style: "margin-top:0" }),
-      criar("p", { className: "sem-margem", textContent: "Repare: o sódio tem 1 elétron na camada de valência, e o potássio também. O cloro tem 7, e o bromo também. Será coincidência que eles se pareçam tanto nas reações? A resposta está na tabela periódica, o próximo degrau." }),
+      criar("p", { textContent: "Repare: o sódio tem 1 elétron na camada de valência, e o potássio também. O cloro tem 7, e o bromo também. Será coincidência que eles se pareçam tanto nas reações? A resposta está na tabela periódica, o próximo degrau." }),
+      criar("button", { type: "button", className: "botao", textContent: "Próximo degrau: Tabela periódica →", onclick: () => app.mostrarTela("tela-tabela") }),
     ]),
   );
 

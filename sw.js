@@ -5,15 +5,15 @@
    - Recursos pesados e estáveis (fontes, ícones, marca): cache primeiro.
 */
 
-const VERSAO = "atomicbox-v0.4.0";
+const VERSAO = "atomicbox-v0.5.0";
 
 const ARQUIVOS = [
   "./", "./index.html", "./manifest.webmanifest",
   "./app.js", "./rotas.js",
   "./estilo/tokens.css", "./estilo/fontes.css", "./estilo/app.css",
-  "./motor/particulas.js", "./motor/rutherford.js", "./motor/atomo.js", "./motor/distribuicao.js", "./comum/elementos.js", "./comum/progresso.js", "./motor/treino.js", "./dados/degraus.js", "./dados/modelos.js", "./dados/vidrarias.js", "./motor/vidrarias.js", "./dados/presentes.js",
-  "./telas/comum.js", "./telas/aluno.js", "./telas/inicio.js", "./telas/materia.js", "./telas/sobre.js", "./telas/modelos.js", "./telas/atomo.js", "./telas/distribuicao.js", "./telas/treino.js", "./telas/progresso.js", "./telas/vidrarias.js", "./telas/desenhos_vidrarias.js",
-  "./marca/atomicbox-simbolo.svg", "./marca/gato-bohr.svg",
+  "./motor/particulas.js", "./motor/rutherford.js", "./motor/atomo.js", "./motor/distribuicao.js", "./comum/elementos.js", "./comum/progresso.js", "./motor/treino.js", "./dados/degraus.js", "./dados/modelos.js", "./dados/vidrarias.js", "./motor/vidrarias.js", "./dados/substancias.js", "./motor/substancias.js", "./motor/tabela.js", "./motor/ligacoes.js", "./dados/presentes.js",
+  "./telas/comum.js", "./telas/aluno.js", "./telas/inicio.js", "./telas/materia.js", "./telas/sobre.js", "./telas/modelos.js", "./telas/atomo.js", "./telas/distribuicao.js", "./telas/treino.js", "./telas/progresso.js", "./telas/vidrarias.js", "./telas/desenhos_vidrarias.js", "./telas/substancias.js", "./telas/tabela.js", "./telas/ligacoes.js",
+  "./marca/atomicbox-simbolo.svg", "./marca/gato-bohr.svg", "./marca/gato-avogato.svg",
   "./icones/favicon.svg", "./icones/icone-192.png", "./icones/icone-512.png", "./icones/icone-maskable-512.png",
   "./fontes/exo-2-latin-500-italic.woff2", "./fontes/exo-2-latin-600-italic.woff2",
   "./fontes/inter-latin-400-normal.woff2", "./fontes/inter-latin-500-normal.woff2",

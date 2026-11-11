@@ -122,9 +122,9 @@ function montar(raiz, app) {
     listaMudancas,
     criar("div", { className: "cartao ponte" }, [
       criar("h2", { textContent: "A pergunta que fica", style: "margin-top:0" }),
-      criar("p", { textContent: "Você viu que a água é feita de partículas que se agitam mais ou menos. Mas do que são feitas essas partículas? Durante mais de dois mil anos, ninguém conseguiu ver. Os cientistas tiveram que imaginar modelos, e cada modelo explicava um pouco mais." }),
-      criar("p", { textContent: "Esse é o próximo degrau: os modelos atômicos, de Dalton a Bohr (o cientista que deu nome ao nosso gato)." }),
-      criar("button", { type: "button", className: "botao", textContent: "Próximo degrau: Modelos atômicos →", onclick: () => app.mostrarTela("tela-modelos") }),
+      criar("p", { textContent: "Você viu que a água é feita de partículas que se agitam mais ou menos, e que no gelo, a 0 °C, a temperatura fica parada enquanto ele derrete. Mas e se a água tiver sal? Ela ainda é uma substância só, ou virou outra coisa?" }),
+      criar("p", { textContent: "Esse é o próximo degrau: substâncias e misturas. Depois vêm os modelos atômicos, de Dalton a Bohr (o cientista que deu nome ao nosso gato)." }),
+      criar("button", { type: "button", className: "botao", textContent: "Próximo degrau: Substâncias e misturas →", onclick: () => app.mostrarTela("tela-substancias") }),
     ]),
   );
 

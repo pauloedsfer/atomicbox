@@ -53,4 +53,4 @@ com crachá; presentes; envio ao professor (planilha); certificado; funcionament
 2. Tela 1: Estados da matéria, com o simulador de partículas. ✅
 3. Telas 3, 4 e 5 (o coração: modelos, partículas do átomo, distribuição). ✅
 4. Treino (degraus: estados, modelos, partículas, distribuição) e progresso. ✅ Avatar a seguir.
-5. Telas 2, 6 e 7, e a ponte para o Molbox.
+5. Telas 2, 6 e 7, e a ponte para o Molbox. ✅

@@ -333,3 +333,103 @@ main > section { max-width: 920px; }
 .sem-desenho { display: grid; place-items: center; width: 140px; height: 140px; border-radius: 16px; border: 2px dashed var(--ab-borda); font-family: "Exo 2", sans-serif; font-style: italic; font-size: 3rem; color: var(--ab-vermelho); }
 .enunciado-desafio { font-weight: 600; font-size: 1.05rem; margin: 0; }
 @media (max-width: 560px) { .desafio-grade { grid-template-columns: 1fr; } .desafio-grade > .desenho-vidraria { width: 110px; height: 132px; } .sem-desenho { width: 90px; height: 90px; font-size: 2rem; } }
+
+/* ---------------- substâncias e misturas ---------------- */
+.classificar { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--ab-e2); }
+.material { padding: 12px var(--ab-e3); border-radius: 12px; background: var(--ab-superficie); border: 1px solid var(--ab-borda); }
+.opcoes-classe { display: flex; flex-wrap: wrap; gap: 6px; margin-top: var(--ab-e2); }
+.chip-classe {
+  min-height: 40px; padding: 6px 12px; border-radius: 999px; font: inherit; font-size: 0.88rem; cursor: pointer;
+  background: transparent; color: var(--ab-texto); border: 1px solid var(--ab-borda);
+}
+.chip-classe:hover { border-color: var(--ab-vermelho); }
+.chip-classe[aria-disabled="true"] { cursor: default; opacity: 0.6; }
+.chip-classe.certa { opacity: 1; border-color: #3FB37A; box-shadow: inset 0 0 0 1px #3FB37A; }
+.chip-classe.errada { opacity: 1; border-color: var(--ab-vermelho); text-decoration: line-through; }
+:root[data-paleta="antimateria"] .chip-classe.certa { border-color: #1D7A4C; box-shadow: inset 0 0 0 1px #1D7A4C; }
+.retorno-material { margin: var(--ab-e2) 0 0; font-size: 0.95rem; font-weight: 500; }
+.curva-grade { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: var(--ab-e4); margin-top: var(--ab-e3); align-items: center; }
+@media (max-width: 760px) { .curva-grade { grid-template-columns: 1fr; } }
+.grafico-curva { width: 100%; height: auto; background: var(--ab-caixa-sim); border: 1px solid var(--ab-borda); border-radius: 12px; }
+.grafico-curva .eixo { stroke: var(--ab-texto-suave); stroke-width: 1.2; }
+.grafico-curva .guia { stroke: var(--ab-borda); stroke-dasharray: 4 4; }
+.grafico-curva .rotulo-eixo { fill: var(--ab-texto-suave); font-size: 10px; }
+.grafico-curva .rotulo-patamar { fill: var(--ab-vermelho); font-size: 10px; font-weight: 600; }
+.grafico-curva .curva { fill: none; stroke: var(--ab-particula); stroke-width: 3; stroke-linejoin: round; }
+.grafico-curva .curva-mistura { stroke: #F4B23E; }
+.pecas-metodo { list-style: none; padding: 0; margin: 0 0 var(--ab-e3); display: flex; flex-wrap: wrap; gap: var(--ab-e3); }
+.pecas-metodo li { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.85rem; width: 96px; text-align: center; }
+
+/* ---------------- tabela periódica ---------------- */
+.legenda-tabela { list-style: none; padding: 0; margin: var(--ab-e3) 0; display: flex; flex-wrap: wrap; gap: 6px var(--ab-e3); font-size: 0.88rem; }
+.legenda-tabela li { display: flex; align-items: center; gap: 6px; }
+.amostra-cat { width: 14px; height: 14px; border-radius: 4px; display: inline-block; }
+.rolagem-tabela { overflow-x: auto; padding-bottom: var(--ab-e2); }
+.grade-tabela { display: grid; grid-template-columns: repeat(18, minmax(38px, 1fr)); grid-template-rows: repeat(7, auto) 12px repeat(2, auto); gap: 3px; min-width: 720px; }
+.celula-elemento {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; padding: 4px 2px; min-height: 44px;
+  border: 1px solid rgba(0, 0, 0, 0.18); border-radius: 6px; color: #111214; font: inherit; cursor: pointer; line-height: 1.05;
+}
+.celula-elemento:hover { filter: brightness(1.08); }
+.celula-elemento.mesma-familia { outline: 2px solid var(--ab-texto); outline-offset: 1px; }
+.celula-elemento.escolhido { outline: 3px solid var(--ab-vermelho); outline-offset: 1px; position: relative; z-index: 1; }
+.z-celula { font-size: 0.62rem; opacity: 0.8; }
+.simbolo-celula { font-weight: 700; font-size: 0.95rem; }
+.marcador-serie { display: grid; place-items: center; font-size: 0.6rem; color: var(--ab-texto-suave); border: 1px dashed var(--ab-borda); border-radius: 6px; }
+.cat-hidrogenio, .cat-alcalino, .cat-s { background: #F2A7A0; }
+.cat-metal, .cat-transicao, .cat-d { background: #9DB7E6; }
+.cat-semimetal { background: #E8CF7A; }
+.cat-ametal, .cat-naometal, .cat-p { background: #9FD8A6; }
+.cat-nobre { background: #D3A8E8; }
+.cat-alcalinoterroso { background: #F6C99A; }
+.cat-postransicao { background: #A9C9D9; }
+.cat-actinideo { background: #E3B3D6; }
+.cat-halogenio { background: #7FD1C1; }
+.cat-lantanideo { background: #C9B3E6; }
+.cat-f { background: #E8CF7A; }
+.ficha-elemento-grade { display: grid; grid-template-columns: 110px 1fr; gap: var(--ab-e4); align-items: start; }
+@media (max-width: 560px) { .ficha-elemento-grade { grid-template-columns: 1fr; } }
+.quadro-elemento { width: 110px; height: 120px; border-radius: 12px; color: #111214; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid rgba(0, 0, 0, 0.2); }
+.simbolo-grande { font-family: "Exo 2", sans-serif; font-style: italic; font-weight: 600; font-size: 2.6rem; line-height: 1.1; }
+.massa-celula { font-size: 0.85rem; }
+.por-que-ali { margin-top: var(--ab-e3); padding: 12px var(--ab-e3); border-radius: 12px; border-left: 4px solid var(--ab-vermelho); background: var(--ab-superficie-2); }
+.tendencias-grade { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: var(--ab-e4); align-items: center; }
+@media (max-width: 760px) { .tendencias-grade { grid-template-columns: 1fr; } }
+.quadro-tendencias { width: 100%; max-width: 320px; height: auto; }
+.quadro-tendencias .moldura-tendencia { fill: var(--ab-superficie); stroke: var(--ab-borda); }
+.quadro-tendencias .raio { stroke: #F4B23E; stroke-width: 3; }
+.quadro-tendencias .ponta-raio { fill: #F4B23E; }
+.quadro-tendencias .eletro { stroke: var(--ab-vermelho); stroke-width: 3; }
+.quadro-tendencias .ponta-eletro { fill: var(--ab-vermelho); }
+.quadro-tendencias text { font-size: 11px; fill: var(--ab-texto); }
+
+/* ---------------- ligações ---------------- */
+.rotulo-escolha { font-weight: 500; margin: var(--ab-e3) 0 var(--ab-e1); }
+.escolha-atomos { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip-atomo {
+  min-width: 48px; min-height: 44px; border-radius: 10px; font: inherit; font-weight: 700; cursor: pointer;
+  background: var(--ab-superficie); color: var(--ab-texto); border: 2px solid var(--ab-borda);
+}
+.chip-atomo.metal { border-style: dashed; }
+.chip-atomo[aria-pressed="true"] { border-color: var(--ab-vermelho); border-style: solid; box-shadow: inset 0 0 0 1px var(--ab-vermelho); }
+.lewis-par { display: flex; align-items: center; gap: var(--ab-e3); margin-bottom: var(--ab-e3); }
+.lewis { width: 90px; height: 90px; }
+.lewis .simbolo-lewis { fill: var(--ab-texto); font-size: 26px; font-weight: 700; font-family: Inter, sans-serif; }
+.lewis-par .mais { font-size: 1.6rem; color: var(--ab-texto-suave); }
+.formula-grande { font-family: "Exo 2", sans-serif; font-style: italic; font-weight: 600; font-size: 2.4rem; margin: var(--ab-e2) 0 0; line-height: 1.1; }
+.nome-composto { font-size: 1.1rem; font-weight: 600; margin: 0 0 var(--ab-e2); }
+.estrutura { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 1.1rem; padding: 8px 12px; border-radius: 10px; background: var(--ab-superficie-2); display: inline-block; }
+.tabela-propriedades { display: grid; gap: 2px; font-size: 0.92rem; }
+.linha-prop { display: grid; grid-template-columns: 1fr 1.2fr 1.2fr 1.2fr; gap: 2px; }
+.linha-prop span { padding: 8px 10px; background: var(--ab-superficie); }
+.cabecalho-prop span { font-weight: 700; background: var(--ab-superficie-2); }
+.linha-prop span:first-child { font-weight: 600; }
+@media (max-width: 640px) { .linha-prop { grid-template-columns: 1fr 1fr; } .cabecalho-prop span:first-child { display: none; } .linha-prop span:first-child { grid-column: 1 / -1; background: var(--ab-superficie-2); } }
+.proxima-caixa { display: grid; grid-template-columns: 96px 1fr; gap: var(--ab-e4); align-items: start; }
+.proxima-caixa img { width: 96px; height: 96px; }
+@media (max-width: 560px) { .proxima-caixa { grid-template-columns: 1fr; } }
+.cartoes-propriedades { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--ab-e2); grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
+.cartoes-propriedades li { padding: var(--ab-e3); border-radius: 12px; background: var(--ab-superficie); border: 1px solid var(--ab-borda); }
+.cartoes-propriedades dl { margin: var(--ab-e2) 0 0; }
+.cartoes-propriedades dt { font-size: 0.82rem; color: var(--ab-texto-suave); margin-top: 6px; }
+.cartoes-propriedades dd { margin: 0; }

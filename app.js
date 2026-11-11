@@ -9,11 +9,14 @@ import * as atomo from "./telas/atomo.js";
 import * as distribuicao from "./telas/distribuicao.js";
 import * as treino from "./telas/treino.js";
 import * as vidrarias from "./telas/vidrarias.js";
+import * as substancias from "./telas/substancias.js";
+import * as tabela from "./telas/tabela.js";
+import * as ligacoes from "./telas/ligacoes.js";
 import * as progresso from "./telas/progresso.js";
 import { aplicarPaletaGuardada, CHAVE_PREFERENCIAS } from "./telas/aluno.js";
 
-const TITULOS = { "tela-inicio": "Início", "tela-materia": "Estados da matéria", "tela-modelos": "Modelos atômicos", "tela-atomo": "Partículas do átomo", "tela-distribuicao": "Distribuição eletrônica", "tela-vidrarias": "Vidrarias e equipamentos", "tela-treino": "Treino", "tela-progresso": "Progresso", "tela-sobre": "Sobre" };
-const MODULOS = { "tela-inicio": inicio, "tela-materia": materia, "tela-modelos": modelos, "tela-atomo": atomo, "tela-distribuicao": distribuicao, "tela-vidrarias": vidrarias, "tela-treino": treino, "tela-progresso": progresso, "tela-sobre": sobre };
+const TITULOS = { "tela-inicio": "Início", "tela-materia": "Estados da matéria", "tela-substancias": "Substâncias e misturas", "tela-tabela": "Tabela periódica", "tela-ligacoes": "Ligações químicas", "tela-modelos": "Modelos atômicos", "tela-atomo": "Partículas do átomo", "tela-distribuicao": "Distribuição eletrônica", "tela-vidrarias": "Vidrarias e equipamentos", "tela-treino": "Treino", "tela-progresso": "Progresso", "tela-sobre": "Sobre" };
+const MODULOS = { "tela-inicio": inicio, "tela-materia": materia, "tela-substancias": substancias, "tela-tabela": tabela, "tela-ligacoes": ligacoes, "tela-modelos": modelos, "tela-atomo": atomo, "tela-distribuicao": distribuicao, "tela-vidrarias": vidrarias, "tela-treino": treino, "tela-progresso": progresso, "tela-sobre": sobre };
 const CHAVE_TELA = "atomicbox.tela.v1";
 
 aplicarPaletaGuardada();   // antes de desenhar a primeira tela, para não piscar a paleta padrão
