@@ -731,3 +731,25 @@ label { font-weight: 500; }
 .cena-ligacao { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ab-e3) var(--ab-e5); margin-bottom: var(--ab-e3); }
 .cena-ligacao .lewis-par { margin-bottom: 0; }
 .cena-ligacao .gatos-ligacao { max-width: 300px; margin: 0; }
+
+/* ---------------- tela Sobre ---------------- */
+#tela-sobre .cartao { margin-bottom: var(--ab-e4); }
+#tela-sobre .cartao h2 { margin-top: 0; }
+#tela-sobre p { max-width: 62ch; }
+.capa-sobre { border-left: 4px solid var(--ab-vermelho); display: grid; grid-template-columns: 150px 1fr; gap: var(--ab-e4); align-items: center; }
+.capa-sobre h1 { margin: 0 0 var(--ab-e2); }
+.capa-sobre-gato { width: 150px; }
+@media (max-width: 600px) { .capa-sobre { grid-template-columns: 1fr; } .capa-sobre-gato { width: 120px; } }
+.sobretitulo { font-size: 0.8rem; letter-spacing: 0.14em; color: var(--ab-texto-suave); margin: 0 0 4px; font-weight: 500; }
+.lede-sobre { font-family: "Exo 2", sans-serif; font-style: italic; font-size: 1.3rem; line-height: 1.4; color: var(--ab-vermelho); font-weight: 500; margin: 0 0 var(--ab-e3); }
+.motivo-sobre { padding: var(--ab-e3) 0; border-top: 1px solid var(--ab-borda); }
+.motivo-sobre:first-of-type { border-top: 0; padding-top: 0; }
+.motivo-sobre p { margin: 0; }
+.titulo-motivo { font-weight: 600; color: var(--ab-vermelho); margin-bottom: 4px !important; }
+.cartao-autor { border-left: 4px solid var(--ab-vermelho); }
+.nome-autor { margin: 0; font-family: "Exo 2", sans-serif; font-style: italic; font-weight: 600; font-size: 1.4rem; }
+.titulo-autor { margin: 0 0 var(--ab-e3); color: var(--ab-texto-suave); }
+.botao-canal { margin-top: var(--ab-e2); }
+.colaborador { padding: var(--ab-e3) var(--ab-e4); margin-top: var(--ab-e3); border-left: 3px solid var(--ab-vermelho); background: var(--ab-superficie-2); border-radius: 0 12px 12px 0; }
+.colaborador p { margin: 0; }
+.colaborador .quem { font-weight: 600; margin-bottom: 4px !important; }
