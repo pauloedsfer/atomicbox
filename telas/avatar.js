@@ -27,8 +27,10 @@ function svgBase(viewBox, largura, altura, rotulo, classe) {
   return svg;
 }
 
-function svgDoAvatar(av, tamanho = 120) {
-  const svg = svgBase(VIEWBOX_AVATAR, tamanho, Math.round(tamanho * 160 / 140), descricaoDoAvatar(av), "avatar");
+/* `recorte`: um viewBox menor (por exemplo, só a cabeça), para as miniaturas do editor. */
+function svgDoAvatar(av, tamanho = 120, recorte = "") {
+  const [, , l, h] = (recorte || VIEWBOX_AVATAR).split(" ").map(Number);
+  const svg = svgBase(recorte || VIEWBOX_AVATAR, tamanho, Math.round(tamanho * h / l), descricaoDoAvatar(av), "avatar");
   desenharFormas(svg, formasDoAvatar(av));
   return svg;
 }

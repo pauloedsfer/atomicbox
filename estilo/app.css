@@ -499,21 +499,65 @@ label { font-weight: 500; }
 .titulo-grupo-avatar { font-weight: 600; margin: 0 0 var(--ab-e2); }
 .figura-avatar { display: flex; flex-direction: column; gap: var(--ab-e2); }
 .figura-avatar .botao { align-self: flex-start; }
-.moldura-cracha svg, .palco-cracha svg { display: block; max-width: 100%; height: auto; margin: 0 auto; filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35)); }
+.moldura-cracha svg { display: block; max-width: 100%; height: auto; margin: 0 auto; filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35)); }
 .compartilhar-avatar { display: flex; flex-direction: column; gap: var(--ab-e2); margin-top: var(--ab-e4); padding-top: var(--ab-e3); border-top: 1px solid var(--ab-borda); }
 .compartilhar-avatar .botao { align-self: stretch; }
-.palco { margin-bottom: var(--ab-e4); position: sticky; top: 56px; z-index: 6; }
-.palco-celular { display: flex; align-items: center; gap: var(--ab-e3); padding: var(--ab-e2) var(--ab-e3); background: var(--ab-barra); border: 1px solid var(--ab-borda); border-radius: 0 0 16px 16px; }
-.palco-avatar { background: var(--ab-superficie-2); border-radius: 50%; width: 104px; height: 104px; overflow: hidden; display: flex; justify-content: center; align-items: flex-start; flex: 0 0 auto; }
-.palco-avatar svg { display: block; margin-top: -4px; }
+/* ---------- tela Meu avatar: prévia sempre à vista, abas e miniaturas ---------- */
+
+/* A prévia fica presa abaixo do cabeçalho enquanto as opções rolam (a caixa de fora é a página). */
+.palco {
+  position: sticky; top: 56px; z-index: 6; margin-bottom: var(--ab-e3);
+  display: flex; align-items: center; justify-content: center; gap: var(--ab-e4);
+  background: var(--ab-fundo); padding: var(--ab-e2) 0; border-bottom: 1px solid var(--ab-borda);
+}
+.palco-avatar { background: var(--ab-superficie-2); border-radius: 24px; width: 150px; height: 150px; overflow: hidden; display: flex; justify-content: center; align-items: flex-start; flex: 0 0 auto; box-shadow: var(--ab-sombra); }
+.palco-avatar svg { display: block; margin-top: -6px; }
+.palco-lado { display: flex; flex-direction: column; gap: var(--ab-e2); align-items: flex-start; min-width: 0; }
 .nome-palco { font-family: "Exo 2", sans-serif; font-style: italic; font-weight: 600; font-size: 1.2rem; margin: 0; overflow-wrap: anywhere; }
-.palco-cracha { display: none; }
-@media (min-width: 1100px) {
-  .avatar-pagina { display: grid; grid-template-columns: 260px minmax(0, 1fr); column-gap: var(--ab-e5); align-items: start; }
-  .palco { grid-row: 1 / span 2; position: sticky; top: calc(56px + var(--ab-e3)); }
-  .palco-celular { display: none; }
-  .palco-cracha { display: block; }
-  .cartao-cracha .moldura-cracha { display: none; }
+.abas-avatar { display: flex; gap: 6px; overflow-x: auto; padding: 2px 2px var(--ab-e2); margin: 0 calc(-1 * var(--ab-e2)); scrollbar-width: thin; }
+.aba-avatar {
+  appearance: none; cursor: pointer; font: inherit; font-size: 0.85rem; flex: 0 0 auto; min-width: 66px; min-height: 58px; padding: 6px 8px;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  background: var(--ab-superficie-2); color: var(--ab-texto); border: 2px solid transparent; border-radius: 14px;
+}
+.aba-avatar .aba-icone { font-size: 1.35rem; line-height: 1.2; }
+.aba-avatar:hover { border-color: var(--ab-borda); }
+.aba-avatar[aria-pressed="true"] { border-color: var(--ab-vermelho); background: var(--ab-superficie); font-weight: 700; }
+.aviso-avatar { min-height: 1.4em; margin: var(--ab-e2) 0; }
+.painel-avatar { display: flex; flex-direction: column; gap: var(--ab-e4); }
+.grade-avatar { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: var(--ab-e2); }
+.mini-opcao {
+  appearance: none; cursor: pointer; font: inherit; position: relative; padding: 6px 4px 8px; min-width: 0;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  background: var(--ab-superficie-2); color: var(--ab-texto); border: 3px solid transparent; border-radius: 16px;
+}
+.mini-opcao svg { display: block; width: 100%; max-width: 84px; height: auto; border-radius: 12px; }
+.mini-nome { font-size: 0.85rem; line-height: 1.2; text-align: center; overflow-wrap: anywhere; }
+.mini-opcao:hover { border-color: var(--ab-borda); }
+.mini-opcao[aria-pressed="true"] { border-color: var(--ab-vermelho); background: var(--ab-superficie); }
+.mini-opcao[aria-pressed="true"] .mini-nome { font-weight: 700; }
+.mini-opcao.fechada { cursor: help; }
+.mini-opcao.fechada svg { filter: grayscale(1); opacity: 0.45; }
+.mini-opcao .cadeado { position: absolute; top: 4px; right: 6px; font-size: 1rem; }
+.cores-avatar { display: flex; flex-wrap: wrap; gap: 10px; }
+.bolinha-cor { appearance: none; cursor: pointer; width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--ab-borda); padding: 0; }
+.bolinha-cor[aria-pressed="true"] { outline: 3px solid var(--ab-vermelho); outline-offset: 3px; }
+.bolinha-cor.sem-cor { background: repeating-linear-gradient(45deg, var(--ab-superficie-2) 0 6px, var(--ab-superficie) 6px 12px); }
+.painel-avatar .figura-avatar { background: none; padding: 0; display: flex; flex-direction: column; gap: var(--ab-e2); max-width: 320px; }
+.painel-avatar .moldura-cracha svg { display: block; max-width: 100%; height: auto; filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.18)); }
+@media (max-width: 420px) {
+  .palco-avatar { width: 124px; height: 124px; }
+  .palco-avatar svg { width: 124px; height: auto; }
+  .grade-avatar { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 900px) {
+  .avatar-pagina { display: grid; grid-template-columns: 240px minmax(0, 1fr); column-gap: var(--ab-e5); align-items: start; }
+  .palco { top: calc(56px + var(--ab-e3)); flex-direction: column; border-bottom: 0; background: none; }
+  .palco-avatar { width: 220px; height: 220px; }
+  .palco-avatar svg { width: 220px; height: auto; }
+  .palco-lado { align-items: center; }
+  .abas-avatar { flex-wrap: wrap; overflow: visible; }
+}
 }
 .avatar-barra { margin-left: auto; width: 44px; height: 44px; border-radius: 50%; overflow: hidden; border: 2px solid var(--ab-borda); background: var(--ab-superficie-2); padding: 0; cursor: pointer; display: flex; justify-content: center; align-items: flex-start; }
 .avatar-barra svg { width: 46px; height: auto; margin-top: -2px; }

@@ -3,14 +3,18 @@
    paletas de pigmentos e de indicadores das outras caixas).
 
    Tela "Meu avatar": o editor do avatar, o crachá e os botões de compartilhar pelo WhatsApp.
-   A prévia fica sempre à vista enquanto o aluno muda as opções: no computador, o crachá fixo à
-   esquerda; no celular, o avatar preso logo abaixo do cabeçalho. Todo texto entra por textContent;
-   o desenho é criado pelo DOM (telas/avatar.js). Avisa a casca (evento "avatar-mudou") a cada
-   mudança, para o avatar pequeno do cabeçalho acompanhar. */
+
+   A prévia grande fica sempre à vista (presa abaixo do cabeçalho no celular, ao lado no
+   computador). As opções ficam em abas por categoria, uma por vez, e cada opção é uma miniatura do
+   próprio avatar já com aquela escolha: o aluno vê antes de tocar. O que ainda está fechado
+   aparece na grade com cadeado e, ao toque, diz o que falta. A aba Crachá guarda o crachá, o
+   apelido e o compartilhamento. Todo texto entra por textContent; o desenho é criado pelo DOM
+   (telas/avatar.js). Avisa a casca (evento "avatar-mudou") a cada mudança, para o avatar pequeno
+   do cabeçalho acompanhar. */
 import { criar } from "./comum.js";
 import { TITULOS, indiceDoTitulo, tituloDo } from "../dados/titulos.js";
 import { DEGRAUS } from "../dados/degraus.js";
-import { ROSTOS, CORES_OLHOS, CABELOS, CORES_CABELO, GOLAS, CORES_CRACHA, EMOCOES, ENFEITES, APELIDO_MAXIMO, lerAvatar, lerApelido, estadoDasPeles, estadoDosAcessorios } from "../dados/avatar.js";
+import { ROSTOS, CORES_OLHOS, SOBRANCELHAS, FUNDOS, CABELOS, CORES_CABELO, GOLAS, CORES_CRACHA, EMOCOES, ENFEITES, APELIDO_MAXIMO, lerAvatar, lerApelido, alternarEnfeite, avatarSurpresa, estadoDasPeles, estadoDosAcessorios } from "../dados/avatar.js";
 import { progressoDoAluno, preferencias, guardarPreferencias, paletasAbertas, NOMES_DE_PALETA, cronometro } from "./aluno.js";
 import { svgDoAvatar, svgDoCracha, pngDoCracha, pngDoAvatar } from "./avatar.js";
 import { compartilharImagem } from "./compartilhar.js";
@@ -20,22 +24,39 @@ import { salvar } from "./salvar.js";
 
 let atualizarTela = null;
 
+const CABECA = "14 2 112 112";   // o recorte das miniaturas: só a cabeça
+const ABAS = [
+  ["pele", "🎨", "Pele"], ["rosto", "🙂", "Rosto"], ["olhos", "👀", "Olhos"], ["cabelo", "💇", "Cabelo"],
+  ["barba", "🧔", "Barba"], ["oculos", "👓", "Óculos"], ["cabeca", "🧢", "Chapéus"], ["detalhe", "✨", "Detalhes"],
+  ["jaleco", "🥼", "Jaleco"], ["fundo", "🖼️", "Fundo"], ["cracha", "🪪", "Crachá"],
+];
+
 function montar(raiz) {
   const progresso = progressoDoAluno();
   const figuraAvatar = criar("div", { className: "figura-avatar" });
-  const escolhas = criar("div", { className: "escolhas-avatar" });
-  // Prévia sempre à vista: o crachá (computador) e o avatar compacto (celular).
-  const palcoCracha = criar("div", { className: "palco-cracha" });
   const palcoAvatar = criar("div", { className: "palco-avatar" });
   const nomePalco = criar("p", { className: "nome-palco" });
+  const botaoSurpresa = criar("button", { type: "button", className: "botao secundario", textContent: "🎲 Surpresa" });
+  const painel = criar("div", { className: "painel-avatar" });
+  const aviso = criar("p", { className: "ajuda aviso-avatar" });
+  aviso.setAttribute("role", "status");
+  let aba = "pele";
+  let contador = 0;
+  const botoesDeAba = ABAS.map(([id, icone, nome]) => {
+    const b = criar("button", { type: "button", className: "aba-avatar" }, [criar("span", { className: "aba-icone", textContent: icone, ariaHidden: "true" }), criar("span", { textContent: nome })]);
+    b.dataset.aba = id;
+    return b;
+  });
+  const abas = criar("div", { className: "abas-avatar" }, botoesDeAba);
+  abas.setAttribute("role", "group");
+  abas.setAttribute("aria-label", "Partes do avatar");
 
   raiz.append(
     criar("h1", { textContent: "Meu avatar" }),
-    criar("p", { className: "intro", textContent: "Monte o seu cientista: emoção, pele, rosto, olhos, cabelo e enfeites. Cada título do Treino abre um acessório de laboratório. Depois, baixe o crachá ou mande no WhatsApp." }),
+    criar("p", { className: "intro", textContent: "Monte o seu cientista. Cada título do Treino abre um acessório de laboratório." }),
     criar("div", { className: "avatar-pagina" }, [
-      criar("div", { className: "palco" }, [criar("div", { className: "palco-celular" }, [palcoAvatar, nomePalco]), palcoCracha]),
-      criar("div", { className: "cartao cartao-escolhas" }, [escolhas]),
-      criar("div", { className: "cartao cartao-cracha" }, [criar("h2", { textContent: "Seu crachá", style: "margin-top:0" }), figuraAvatar]),
+      criar("div", { className: "palco" }, [palcoAvatar, criar("div", { className: "palco-lado" }, [nomePalco, botaoSurpresa])]),
+      criar("div", { className: "cartao cartao-escolhas" }, [abas, aviso, painel]),
     ]),
   );
 
@@ -158,75 +179,130 @@ function montar(raiz) {
   function salvarAvatar(mudanca, focar) {
     const p = progresso.carregar();
     guardarPreferencias({ avatar: { ...avatarAtual(p), ...mudanca } });
+    aviso.textContent = "";
     desenharAvatar(p);
     if (focar) {
-      const b = escolhas.querySelector(focar);
-      if (b) b.focus();
+      const b = painel.querySelector(focar);
+      if (b) b.focus({ preventScroll: true });
     }
   }
 
-  // Um grupo de botões, um deles marcado (aria-pressed). A bolinha de cor só reforça o nome.
-  // Item fechado (`aberta === false`) vira um aviso com cadeado e o que falta.
-  function grupo(titulo, campo, lista, valor, comAmostra, id = `avatar-${campo}`) {
-    const linha = criar("div", { className: "opcoes-avatar" });
+  /* ---------- as peças do editor ---------- */
+
+  // Uma grade de miniaturas: cada opção é o próprio avatar já com aquela escolha.
+  // opcoes: [{ campo, valor, nome, avatar, marcado, mudanca, fechado }]. `fechado`: o que falta.
+  function grade(titulo, opcoes, recorte = CABECA) {
+    const id = `avatar-grupo-${++contador}`;
+    const lista = criar("div", { className: "grade-avatar" });
+    lista.setAttribute("role", "group");
+    lista.setAttribute("aria-labelledby", id);
+    for (const op of opcoes) {
+      const b = criar("button", { type: "button", className: "mini-opcao" }, [
+        svgDoAvatar(op.avatar, 84, recorte),
+        criar("span", { className: "mini-nome", textContent: op.nome }),
+      ]);
+      b.querySelector("svg").setAttribute("aria-hidden", "true");
+      b.dataset.campo = op.campo;
+      b.dataset.valor = op.valor;
+      if (op.fechado) {
+        b.classList.add("fechada");
+        b.setAttribute("aria-disabled", "true");
+        b.setAttribute("aria-label", `${op.nome}: fechado, ${op.fechado}`);
+        b.append(criar("span", { className: "cadeado", textContent: "🔒", ariaHidden: "true" }));
+        b.addEventListener("click", () => { aviso.textContent = `🔒 ${op.nome}: ${op.fechado}.`; });
+      } else {
+        b.setAttribute("aria-pressed", String(Boolean(op.marcado)));
+        b.addEventListener("click", () => salvarAvatar(op.mudanca, `[data-campo="${op.campo}"][data-valor="${op.valor}"]`));
+      }
+      lista.append(b);
+    }
+    return criar("div", { className: "grupo-avatar" }, [criar("p", { className: "titulo-grupo-avatar", id, textContent: titulo }), lista]);
+  }
+
+  // Uma fileira de bolinhas de cor (o nome vai no rótulo e na dica).
+  function cores(titulo, campo, lista, valor) {
+    const id = `avatar-grupo-${++contador}`;
+    const linha = criar("div", { className: "cores-avatar" });
     linha.setAttribute("role", "group");
     linha.setAttribute("aria-labelledby", id);
     for (const op of lista) {
-      const filhos = [];
-      if (comAmostra) {
-        const a = criar("span", { className: "amostra-cor", ariaHidden: "true" });
-        a.style.background = op.cor;
-        filhos.push(a);
-      }
-      if (op.aberta === false) {
-        filhos.push(criar("span", { textContent: `🔒 ${op.nome}: ${op.falta}` }));
-        linha.append(criar("span", { className: "chip chip-fechado" }, filhos));
-        continue;
-      }
-      filhos.push(criar("span", { textContent: op.fantasia ? `✨ ${op.nome}` : op.nome }));
-      const b = criar("button", { type: "button", className: "chip" }, filhos);
+      const b = criar("button", { type: "button", className: "bolinha-cor", title: op.nome });
+      b.setAttribute("aria-label", op.nome);
+      b.setAttribute("aria-pressed", String(op.id === valor));
       b.dataset.campo = campo;
       b.dataset.valor = op.id;
-      b.setAttribute("aria-pressed", String(op.id === valor));
+      if (op.cor) b.style.background = op.cor; else b.classList.add("sem-cor");
       b.addEventListener("click", () => salvarAvatar({ [campo]: op.id }, `[data-campo="${campo}"][data-valor="${op.id}"]`));
       linha.append(b);
     }
     return criar("div", { className: "grupo-avatar" }, [criar("p", { className: "titulo-grupo-avatar", id, textContent: titulo }), linha]);
   }
 
-  // Liga e desliga itens de uma lista (acessórios ou enfeites).
-  function alternaveis(titulo, idTitulo, ajuda, itens, usados, campo) {
-    const linha = criar("div", { className: "opcoes-avatar" });
-    linha.setAttribute("role", "group");
-    linha.setAttribute("aria-labelledby", idTitulo);
-    for (const a of itens) {
-      if (a.aberto === false) {
-        linha.append(criar("span", { className: "chip chip-fechado", textContent: `🔒 ${a.nome}: abre com o título ${a.tituloQueAbre}` }));
-        continue;
-      }
-      const usando = usados.includes(a.id);
-      const b = criar("button", { type: "button", className: "chip", textContent: a.nome });
-      b.dataset.campo = campo;
-      b.dataset.valor = a.id;
-      b.setAttribute("aria-pressed", String(usando));
-      b.addEventListener("click", () => {
-        const lista = usando ? usados.filter((x) => x !== a.id) : [...usados, a.id];
-        salvarAvatar({ [campo === "acessorio" ? "acessorios" : "enfeites"]: lista }, `[data-campo="${campo}"][data-valor="${a.id}"]`);
-      });
-      linha.append(b);
+  const umDe = (av, campo, lista, extra = {}) => lista.map((op) => ({
+    campo, valor: op.id, nome: op.fantasia ? `✨ ${op.nome}` : op.nome, avatar: { ...av, [campo]: op.id, ...extra },
+    marcado: av[campo] === op.id, mudanca: { [campo]: op.id }, fechado: op.aberta === false ? op.falta : "",
+  }));
+
+  // Os enfeites de um grupo, com "Nenhum" na frente.
+  function enfeitesDe(av, grupo, nomeNenhum) {
+    const doGrupo = ENFEITES.filter((e) => e.grupo === grupo);
+    const sem = av.enfeites.filter((id) => !doGrupo.some((e) => e.id === id));
+    return [
+      { campo: "enfeite", valor: `sem-${grupo}`, nome: nomeNenhum, avatar: { ...av, enfeites: sem }, marcado: sem.length === av.enfeites.length, mudanca: { enfeites: sem } },
+      ...doGrupo.map((e) => {
+        const lista = alternarEnfeite(av.enfeites, e.id);
+        return { campo: "enfeite", valor: e.id, nome: e.nome, avatar: { ...av, enfeites: av.enfeites.includes(e.id) ? av.enfeites : lista }, marcado: av.enfeites.includes(e.id), mudanca: { enfeites: lista } };
+      }),
+    ];
+  }
+
+  function conteudoDaAba(av, indice) {
+    const peles = estadoDasPeles(paletasAbertas(), NOMES_DE_PALETA);
+    switch (aba) {
+      case "pele": return [
+        grade("Tom da pele", umDe(av, "pele", peles.filter((x) => !x.fantasia))),
+      ];
+      case "rosto": return [
+        grade("Expressão", umDe(av, "emocao", EMOCOES)),
+        grade("Formato do rosto", umDe(av, "rosto", ROSTOS)),
+      ];
+      case "olhos": return [
+        cores("Cor dos olhos", "olhos", CORES_OLHOS, av.olhos),
+        grade("Sobrancelhas", umDe(av, "sobrancelha", SOBRANCELHAS)),
+      ];
+      case "cabelo": return [
+        ...(av.cabelo === "raspado" ? [] : [cores("Cor do cabelo", "corCabelo", CORES_CABELO, av.corCabelo)]),
+        grade("Corte", umDe(av, "cabelo", CABELOS), "8 0 124 124"),
+      ];
+      case "barba": return [
+        cores("Cor (a mesma do cabelo)", "corCabelo", CORES_CABELO, av.corCabelo),
+        grade("Barba e bigode: dá para combinar", enfeitesDe(av, "barba", "Sem barba")),
+      ];
+      case "oculos": return [grade("Óculos", enfeitesDe(av, "oculos", "Sem óculos"))];
+      case "cabeca": return [
+        grade("Chapéus: o boné e o gorro pegam a cor da gola", enfeitesDe(av, "cabeca", "Sem chapéu")),
+      ];
+      case "detalhe": return [grade("Detalhes: use quantos quiser", enfeitesDe(av, "detalhe", "Nenhum"))];
+      case "jaleco": return [
+        cores("Cor da gola", "gola", GOLAS, av.gola),
+        grade("Acessórios de laboratório: cada título do Treino abre um", estadoDosAcessorios(indice, TITULOS).map((a) => {
+          const usando = av.acessorios.includes(a.id);
+          const lista = usando ? av.acessorios.filter((x) => x !== a.id) : [...av.acessorios, a.id];
+          return { campo: "acessorio", valor: a.id, nome: a.nome, avatar: { ...av, acessorios: [...new Set([...av.acessorios, a.id])] }, marcado: usando, mudanca: { acessorios: lista }, fechado: a.aberto ? "" : `abre com o título ${a.tituloQueAbre}` };
+        }), ""),
+      ];
+      case "fundo": return [grade("Cor de fundo da figurinha", umDe(av, "fundo", FUNDOS), "")];
+      default: return [
+        cores("Cor do crachá e do cordão", "cracha", coresDoCracha(av), av.cracha),
+        figuraAvatar,
+      ];
     }
-    return criar("div", { className: "grupo-avatar" }, [
-      criar("p", { className: "titulo-grupo-avatar", id: idTitulo, textContent: titulo }),
-      criar("p", { className: "ajuda sem-margem", textContent: ajuda }),
-      linha,
-    ]);
   }
 
   function desenharPalco(p) {
     const av = avatarAtual(p);
-    palcoAvatar.replaceChildren(svgDoAvatar(av, 104));
+    palcoAvatar.replaceChildren(svgDoAvatar(av, 150));
     nomePalco.textContent = lerApelido(preferencias().apelido);
-    palcoCracha.replaceChildren(molduraCracha.firstChild ? molduraCracha.firstChild.cloneNode(true) : "");
     document.dispatchEvent(new CustomEvent("avatar-mudou"));
   }
 
@@ -257,21 +333,27 @@ function montar(raiz) {
     if (document.activeElement !== campoApelido) campoApelido.value = preferencias().apelido;
     if (document.activeElement !== campoCodigoEnvio) campoCodigoEnvio.value = preferencias().codigo;
     desenharCracha(p);
-    const peles = estadoDasPeles(paletasAbertas(), NOMES_DE_PALETA);
-    escolhas.replaceChildren(
-      grupo("Emoção", "emocao", EMOCOES, av.emocao, false),
-      grupo("Pele", "pele", peles.filter((x) => !x.fantasia && !x.inusitada), av.pele, true),
-      grupo("Inusitadas", "pele", peles.filter((x) => x.inusitada), av.pele, true, "avatar-pele-inusitada"),
-      grupo("Formato do rosto", "rosto", ROSTOS, av.rosto, false),
-      grupo("Cor dos olhos", "olhos", CORES_OLHOS, av.olhos, true),
-      grupo("Cabelo", "cabelo", CABELOS, av.cabelo, false),
-      ...(av.cabelo === "raspado" ? [] : [grupo("Cor do cabelo", "corCabelo", CORES_CABELO, av.corCabelo, true)]),
-      grupo("Cor da gola do jaleco", "gola", GOLAS, av.gola, true),
-      grupo("Cor do crachá e do cordão", "cracha", coresDoCracha(av), av.cracha, true),
-      alternaveis("Enfeites", "avatar-enfeites", "Para todo mundo, desde o começo. Toque para usar ou tirar.", ENFEITES, av.enfeites, "enfeite"),
-      alternaveis("Acessórios de laboratório", "avatar-acessorios", "Cada título novo no Treino abre um acessório. Toque para usar ou tirar.", estadoDosAcessorios(indice, TITULOS), av.acessorios, "acessorio"),
-    );
+    for (const b of botoesDeAba) b.setAttribute("aria-pressed", String(b.dataset.aba === aba));
+    contador = 0;
+    painel.replaceChildren(...conteudoDaAba(av, indice));
   }
+
+  for (const b of botoesDeAba) {
+    b.addEventListener("click", () => {
+      aba = b.dataset.aba;
+      aviso.textContent = "";
+      desenharAvatar(progresso.carregar());
+      b.scrollIntoView({ block: "nearest", inline: "center" });
+    });
+  }
+
+  botaoSurpresa.addEventListener("click", () => {
+    const p = progresso.carregar();
+    const cracha = avatarAtual(p).cracha;
+    guardarPreferencias({ avatar: { ...avatarSurpresa(Math.random, indiceDoTitulo(p), paletasAbertas()), cracha } });
+    aviso.textContent = "Avatar sorteado. Não gostou? Sorteie de novo ou ajuste nas abas.";
+    desenharAvatar(p);
+  });
 
   atualizarTela = () => desenharAvatar(progresso.carregar());
 }
