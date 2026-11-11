@@ -303,3 +303,33 @@ main > section { max-width: 920px; }
 .medalhas strong { display: block; }
 .medalhas small { color: var(--ab-texto-suave); }
 .icone-medalha { font-size: 1.3rem; text-align: center; }
+
+/* ---------------- vidrarias ---------------- */
+.seguranca { border-left: 4px solid var(--ab-vermelho); }
+.filtros-vidraria { margin-bottom: var(--ab-e2); }
+.grade-vidrarias { list-style: none; padding: 0; margin: var(--ab-e3) 0 0; display: grid; gap: var(--ab-e2); grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); }
+.peca {
+  width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px 8px; border-radius: 12px;
+  background: var(--ab-superficie); color: var(--ab-texto); border: 1px solid var(--ab-borda); font: inherit; font-size: 0.85rem; text-align: center; cursor: pointer;
+}
+.peca:hover { border-color: var(--ab-texto-suave); }
+.peca[aria-pressed="true"] { border-color: var(--ab-vermelho); box-shadow: inset 0 0 0 1px var(--ab-vermelho); }
+.desenho-vidraria { width: 64px; height: 77px; color: var(--ab-texto); }
+.desenho-vidraria .traco { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.desenho-vidraria .liquido { fill: var(--ab-particula); opacity: 0.55; stroke: none; }
+.desenho-vidraria .oleo { fill: #E9B824; opacity: 0.6; stroke: none; }
+.desenho-vidraria .papel { fill: #F4F4F5; opacity: 0.35; stroke: none; }
+.desenho-vidraria .chama { fill: #FF8A3D; opacity: 0.85; }
+.desenho-vidraria .chama-dentro { fill: #5BA4F0; }
+.desenho-vidraria .ceramica { fill: #B9BDC6; opacity: 0.6; }
+.desenho-vidraria .secante { fill: #5BA4F0; opacity: 0.4; }
+.desenho-vidraria .madeira { fill: #C68A4E; stroke: #6B4423; stroke-width: 1; }
+.desenho-vidraria .seta-agua { fill: none; stroke: var(--ab-particula); stroke-width: 3; stroke-linecap: round; }
+.ficha-grade { display: grid; grid-template-columns: 120px 1fr; gap: var(--ab-e4); align-items: start; }
+.ficha-grade .desenho-vidraria { width: 120px; height: 144px; }
+@media (max-width: 560px) { .ficha-grade { grid-template-columns: 1fr; } .ficha-grade .desenho-vidraria { width: 96px; height: 115px; } }
+.desafio-grade { display: grid; grid-template-columns: 140px 1fr; gap: var(--ab-e4); align-items: start; margin-top: var(--ab-e3); }
+.desafio-grade > .desenho-vidraria { width: 140px; height: 168px; }
+.sem-desenho { display: grid; place-items: center; width: 140px; height: 140px; border-radius: 16px; border: 2px dashed var(--ab-borda); font-family: "Exo 2", sans-serif; font-style: italic; font-size: 3rem; color: var(--ab-vermelho); }
+.enunciado-desafio { font-weight: 600; font-size: 1.05rem; margin: 0; }
+@media (max-width: 560px) { .desafio-grade { grid-template-columns: 1fr; } .desafio-grade > .desenho-vidraria { width: 110px; height: 132px; } .sem-desenho { width: 90px; height: 90px; font-size: 2rem; } }

@@ -24,6 +24,10 @@ interativa) e uma para conferir (pergunta rápida, depois o Treino).
 | 6 | Tabela periódica | Por que a tabela tem esse formato? | Tabela interativa: família e período pela distribuição, tendências pintadas (raio, eletronegatividade, energia de ionização) | "Por que os átomos se ligam?" |
 | 7 | Ligações químicas | Por que o sal derrete a 801 °C e o gelo a 0 °C? | Montador de ligações: iônica (transferência), covalente (compartilhamento), metálica; regra do octeto | **Ponte para o Molbox:** "o sal que você montou se chama cloreto de sódio, e quantos cabem numa colher? Isso é o mol." |
 
+Fora da escada, sempre aberta: **Vidrarias e equipamentos** (pedido para o curso técnico):
+catálogo de 25 peças com desenho, uso e cuidado, filtros por função, regras de segurança e o
+desafio "qual é a vidraria?". ✅
+
 Fechamento: um "Próxima caixa" que apresenta o Avogato e o Super Molbox.
 
 ## Visual
