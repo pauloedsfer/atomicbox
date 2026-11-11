@@ -7,51 +7,79 @@ import { CENA, NUCLEOS, dispararVarias } from "../motor/rutherford.js";
 import { MODELOS } from "../dados/modelos.js";
 
 /* ---------- desenhos dos modelos (SVG 100×100) ---------- */
+/* Os cinco modelos, cada um com o seu movimento (animado pelo CSS; parado para quem pediu menos
+   movimento): a pedra cortada até o átomo, a bola de bilhar, o pudim com os elétrons tremendo, os
+   elétrons em órbita e, em Bohr, as camadas com um elétron que salta e solta luz. */
 function desenho(id, rotulo) {
-  const svg = (filhos) => criarSvg("svg", { viewBox: "0 0 100 100", role: "img", "aria-label": rotulo, class: "desenho-modelo" }, filhos);
+  const c = criarSvg;
+  const svg = (filhos) => c("svg", { viewBox: "0 0 100 100", role: "img", "aria-label": rotulo, class: `desenho-modelo modelo-${id}` }, filhos);
+  const eletron = (cx, cy, r = 3.6, classe = "") => c("g", { class: classe }, [
+    c("circle", { cx, cy, r, fill: "#5BA4F0", stroke: "#0E0F12", "stroke-width": 0.8 }),
+    c("circle", { cx: cx - r * 0.3, cy: cy - r * 0.3, r: r * 0.3, fill: "#FFFFFF", opacity: 0.8 }),
+  ]);
+  const defs = c("defs", {}, [
+    c("radialGradient", { id: "g-bola", cx: "35%", cy: "30%" }, [c("stop", { offset: "0", "stop-color": "#F4F5F7" }), c("stop", { offset: "0.55", "stop-color": "#9AA0AA" }), c("stop", { offset: "1", "stop-color": "#3E4148" })]),
+    c("radialGradient", { id: "g-pudim", cx: "38%", cy: "32%" }, [c("stop", { offset: "0", "stop-color": "#FFC2C6" }), c("stop", { offset: "1", "stop-color": "#D9596A" })]),
+    c("radialGradient", { id: "g-nucleo", cx: "50%", cy: "50%" }, [c("stop", { offset: "0", "stop-color": "#FF8A8F" }), c("stop", { offset: "0.6", "stop-color": "#E3262E" }), c("stop", { offset: "1", "stop-color": "#E3262E", "stop-opacity": "0" })]),
+  ]);
+
   if (id === "democrito") {
+    // A pedra cortada ao meio, de novo e de novo, até o pedaço que não se corta mais.
+    const pedra = (x, y, t) => c("path", { d: `M${x} ${y + t * 0.5} l${t * 0.3} ${-t * 0.5} l${t * 0.5} ${-t * 0.1} l${t * 0.3} ${t * 0.5} l${-t * 0.2} ${t * 0.5} l${-t * 0.7} ${t * 0.1} z`, fill: "#8A8F98", stroke: "#0E0F12", "stroke-width": 1, "stroke-linejoin": "round" });
     return svg([
-      criarSvg("circle", { cx: 50, cy: 50, r: 36, fill: "none", stroke: "currentColor", "stroke-width": 2, "stroke-dasharray": "5 5", opacity: 0.6 }),
-      criarSvg("text", { x: 50, y: 57, "text-anchor": "middle", "font-size": 20, fill: "currentColor", "font-style": "italic" }, [document.createTextNode("átomos")]),
+      pedra(6, 30, 34), pedra(46, 40, 22), pedra(72, 47, 13), pedra(88, 52, 7),
+      c("path", { d: "M40 52 l5 0 M66 52 l5 0 M84 54 l4 0", stroke: "currentColor", "stroke-width": 1.4, "stroke-linecap": "round", opacity: 0.7 }),
+      c("path", { d: "M92 64 q-28 24 -70 20", fill: "none", stroke: "#FF5A61", "stroke-width": 1.3, "stroke-dasharray": "2 3" }),
+      c("circle", { cx: 16, cy: 84, r: 4, fill: "#FF5A61", class: "mod-pulsa" }),
+      c("text", { x: 25, y: 87.5, "font-size": 9, fill: "currentColor", "font-style": "italic" }, [document.createTextNode("átomo: sem divisão")]),
     ]);
   }
   if (id === "dalton") {
     return svg([
-      criarSvg("defs", {}, [criarSvg("radialGradient", { id: "bola", cx: "35%", cy: "35%" }, [
-        criarSvg("stop", { offset: "0", "stop-color": "#E7E9EC" }), criarSvg("stop", { offset: "1", "stop-color": "#5E636B" })])]),
-      criarSvg("circle", { cx: 50, cy: 50, r: 36, fill: "url(#bola)" }),
+      defs,
+      c("ellipse", { cx: 52, cy: 90, rx: 28, ry: 5, fill: "#000000", opacity: 0.35, class: "mod-sombra" }),
+      c("g", { class: "mod-flutua" }, [
+        c("circle", { cx: 50, cy: 48, r: 34, fill: "url(#g-bola)", stroke: "#0E0F12", "stroke-width": 1 }),
+        c("ellipse", { cx: 38, cy: 32, rx: 9, ry: 5, fill: "#FFFFFF", opacity: 0.55, transform: "rotate(-30 38 32)" }),
+      ]),
     ]);
   }
   if (id === "thomson") {
-    const passas = [[36, 36], [62, 32], [48, 52], [30, 60], [66, 58], [50, 72], [70, 44]];
+    const passas = [[36, 34], [62, 30], [48, 50], [30, 58], [67, 56], [50, 70], [72, 42]];
     return svg([
-      criarSvg("circle", { cx: 50, cy: 50, r: 38, fill: "#E77F86", opacity: 0.85 }),
-      ...passas.map(([x, y]) => criarSvg("circle", { cx: x, cy: y, r: 4.5, fill: "#2C5FA8" })),
-      criarSvg("text", { x: 50, y: 96, "text-anchor": "middle", "font-size": 9, fill: "currentColor" }, [document.createTextNode("+ com elétrons (−)")]),
+      defs,
+      c("circle", { cx: 50, cy: 48, r: 38, fill: "url(#g-pudim)", stroke: "#8A2A38", "stroke-width": 1 }),
+      ...[[24, 44], [58, 40], [40, 64], [60, 66], [42, 22]].map(([x, y]) => c("text", { x, y, "font-size": 11, "font-weight": 700, fill: "#8A2A38", opacity: 0.55 }, [document.createTextNode("+")])),
+      ...passas.map(([x, y], k) => eletron(x, y, 4.4, `mod-treme t${k % 3}`)),
+      c("text", { x: 50, y: 98, "text-anchor": "middle", "font-size": 8.5, fill: "currentColor" }, [document.createTextNode("massa + com elétrons −")]),
     ]);
   }
   if (id === "rutherford") {
     return svg([
-      ...[0, 60, -60].map((r) => criarSvg("ellipse", { cx: 50, cy: 50, rx: 40, ry: 14, fill: "none", stroke: "currentColor", "stroke-width": 1.3, opacity: 0.7, transform: `rotate(${r} 50 50)` })),
-      criarSvg("circle", { cx: 50, cy: 50, r: 3.5, fill: "#FF4D55" }),
-      criarSvg("circle", { cx: 90, cy: 50, r: 3.5, fill: "#5BA4F0" }),
-      criarSvg("circle", { cx: 30, cy: 85, r: 3.5, fill: "#5BA4F0" }),
-      criarSvg("circle", { cx: 30, cy: 15, r: 3.5, fill: "#5BA4F0" }),
+      defs,
+      ...[0, 60, -60].map((r, k) => c("g", { transform: `rotate(${r} 50 50)` }, [
+        c("ellipse", { cx: 50, cy: 50, rx: 42, ry: 14, fill: "none", stroke: "currentColor", "stroke-width": 1.1, opacity: 0.55 }),
+        c("g", { class: `mod-ex o${k}` }, [c("g", { class: `mod-ey o${k}` }, [eletron(50, 50)])]),
+      ])),
+      c("circle", { cx: 50, cy: 50, r: 9, fill: "url(#g-nucleo)" }),
+      c("circle", { cx: 50, cy: 50, r: 3.6, fill: "#E3262E", stroke: "#0E0F12", "stroke-width": 0.8 }),
     ]);
   }
-  // Bohr: núcleo e camadas circulares (níveis de energia).
+  // Bohr: camadas K, L e M; os elétrons giram e um deles salta soltando luz.
   return svg([
-    ...[16, 28, 40].map((r) => criarSvg("circle", { cx: 50, cy: 50, r, fill: "none", stroke: "currentColor", "stroke-width": 1.3, opacity: 0.7 })),
-    criarSvg("circle", { cx: 50, cy: 50, r: 6, fill: "#FF4D55" }),
-    criarSvg("circle", { cx: 66, cy: 50, r: 3.5, fill: "#5BA4F0" }),
-    criarSvg("circle", { cx: 34, cy: 50, r: 3.5, fill: "#5BA4F0" }),
-    criarSvg("circle", { cx: 50, cy: 22, r: 3.5, fill: "#5BA4F0" }),
-    criarSvg("circle", { cx: 78, cy: 50, r: 3.5, fill: "#5BA4F0" }),
-    criarSvg("circle", { cx: 50, cy: 90, r: 3.5, fill: "#5BA4F0" }),
+    defs,
+    ...[[16, "K"], [28, "L"], [40, "M"]].flatMap(([r, nome]) => [
+      c("circle", { cx: 50, cy: 50, r, fill: "none", stroke: "currentColor", "stroke-width": 1.1, opacity: 0.55 }),
+      c("text", { x: 50 + r * 0.72, y: 50 - r * 0.72, "font-size": 7, fill: "currentColor", opacity: 0.8 }, [document.createTextNode(nome)]),
+    ]),
+    c("circle", { cx: 50, cy: 50, r: 11, fill: "url(#g-nucleo)" }),
+    c("circle", { cx: 50, cy: 50, r: 5, fill: "#E3262E", stroke: "#0E0F12", "stroke-width": 0.8 }),
+    c("g", { class: "mod-gira g1" }, [eletron(66, 50), eletron(34, 50)]),
+    c("g", { class: "mod-gira g2" }, [eletron(50, 22), eletron(74.2, 64), eletron(25.8, 64)]),
+    c("g", { class: "mod-gira g3" }, [eletron(90, 50)]),
+    c("path", { class: "mod-foton", d: "M70 78 q3 -5 6 0 t6 0 t6 0", fill: "none", stroke: "#F6C945", "stroke-width": 2, "stroke-linecap": "round" }),
   ]);
 }
-
-
 
 function folhaDeOuro() {
   const { largura, altura, folhaX } = CENA;

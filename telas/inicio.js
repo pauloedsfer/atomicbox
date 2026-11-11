@@ -1,5 +1,6 @@
 /* Tela Início: o Bohr apresenta a caixa, a escada de conteúdos e as paletas. */
 import { criar } from "./comum.js";
+import { desenhoDoGato } from "./gatos.js";
 import { PALETAS, paletaAberta } from "../dados/presentes.js";
 import { preferencias, escolherPaleta } from "./aluno.js";
 
@@ -23,7 +24,7 @@ function montar(raiz, app) {
   raiz.append(
     criar("h1", { textContent: "A Super Caixa Atômica" }),
     criar("div", { className: "cartao boas-vindas" }, [
-      criar("img", { src: "marca/gato-bohr.svg", alt: "Bohr, o gato preto da Atomic Box", width: 120, height: 120 }),
+      criar("div", { className: "bohr-na-caixa" }, [desenhoDoGato("caixa", "Bohr, o gato preto, espiando de dentro da caixa da Atomic Box")]),
       criar("div", { className: "balao" }, [
         criar("p", { textContent: "Oi, eu sou o Bohr! Moro nesta caixa e vou com você do que dá para ver, como um copo de água com gelo, até o que ninguém consegue ver: o átomo." }),
         criar("p", { textContent: "Cada degrau começa com uma pergunta. Comece pelo primeiro: o que muda no gelo quando ele derrete?" }),

@@ -98,8 +98,7 @@ function montar(raiz, app) {
       return;
     }
     const filhos = [
-      atomos,
-      gatosDaLigacao(r.tipo),
+      criar("div", { className: "cena-ligacao" }, [atomos, gatosDaLigacao(r.tipo)]),
       criar("p", { className: "selo-estado sem-margem", textContent: NOME_TIPO[r.tipo] }),
       criar("p", { className: "formula-grande", textContent: r.formula }),
       ...(r.nome ? [criar("p", { className: "nome-composto", textContent: r.nome })] : []),
