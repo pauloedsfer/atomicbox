@@ -113,25 +113,43 @@ function gatosDaLigacao(tipo) {
    próxima curiosidade num balão. */
 function gatoEscondido({ pose = "sentado", falas = [], onde = "direita" }) {
   let i = -1;
-  const balao = criar("p", { className: "balao-gato", hidden: true });
-  balao.setAttribute("aria-live", "polite");
+  const frase = criar("span", {});
+  frase.setAttribute("aria-live", "polite");
+  const voltar = criar("button", { type: "button", className: "gato-voltar", textContent: "▼" });
+  voltar.setAttribute("aria-label", "Esconder o gato de novo");
+  const balao = criar("div", { className: "balao-gato", hidden: true }, [frase, voltar]);
   const botao = criar("button", { type: "button", className: `gato-escondido ${onde}` }, [desenhoDoGato(pose)]);
   botao.setAttribute("aria-label", "Gato escondido: toque para uma curiosidade");
   botao.setAttribute("aria-expanded", "false");
+  const caixa = criar("div", { className: `esconderijo ${onde}` }, [balao, botao]);
   let relogio = 0;
-  const esconder = () => { botao.classList.remove("aparecendo"); botao.setAttribute("aria-expanded", "false"); balao.hidden = true; };
+
+  function esconder() {
+    clearTimeout(relogio);
+    botao.classList.remove("aparecendo");
+    botao.setAttribute("aria-expanded", "false");
+    balao.hidden = true;
+    document.removeEventListener("pointerdown", foraDoGato, true);
+    document.removeEventListener("keydown", teclaEsc, true);
+  }
+  // Um toque fora do gato ou a tecla Esc mandam o gato de volta para baixo.
+  function foraDoGato(e) { if (!caixa.contains(e.target)) esconder(); }
+  function teclaEsc(e) { if (e.key === "Escape") { esconder(); botao.focus(); } }
+
   botao.addEventListener("click", () => {
     i = (i + 1) % falas.length;
     botao.classList.add("aparecendo");
     botao.setAttribute("aria-expanded", "true");
     balao.hidden = false;
-    balao.textContent = falas[i];
-    // O balão some sozinho para não cobrir a atividade (o tempo cresce com o tamanho da frase).
+    frase.textContent = falas[i];
+    document.addEventListener("pointerdown", foraDoGato, true);
+    document.addEventListener("keydown", teclaEsc, true);
+    // O balão também some sozinho (o tempo cresce com o tamanho da frase).
     clearTimeout(relogio);
-    relogio = setTimeout(esconder, Math.max(6000, falas[i].length * 70));
+    relogio = setTimeout(esconder, Math.max(7000, falas[i].length * 80));
   });
-  botao.addEventListener("keydown", (e) => { if (e.key === "Escape") esconder(); });
-  return criar("div", { className: `esconderijo ${onde}` }, [balao, botao]);
+  voltar.addEventListener("click", () => { esconder(); botao.focus(); });
+  return caixa;
 }
 
 /* A surpresa: o gato entra pelo canto por alguns segundos com uma fala curta. */

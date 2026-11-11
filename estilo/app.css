@@ -502,6 +502,14 @@ label { font-weight: 500; }
   background: var(--ab-superficie-2); color: var(--ab-texto); border: 1px solid var(--ab-vermelho); font-size: 0.9rem; box-shadow: var(--ab-sombra);
 }
 .esconderijo.esquerda .balao-gato { right: auto; left: 0; }
+.balao-gato { display: flex; align-items: flex-start; gap: 8px; }
+.balao-gato[hidden] { display: none; }
+.balao-gato span { flex: 1; }
+.gato-voltar {
+  flex: 0 0 auto; width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--ab-borda); cursor: pointer;
+  background: var(--ab-superficie); color: var(--ab-vermelho); font: inherit; font-size: 0.85rem; line-height: 1;
+}
+.gato-voltar:hover { border-color: var(--ab-vermelho); }
 .cartao.com-gato { padding-bottom: calc(var(--ab-e4) + 44px); }
 :root[data-paleta="antimateria"] .gato-escondido { filter: drop-shadow(0 0 4px rgba(179, 20, 28, 0.45)); }
 .surpresa-gato {
