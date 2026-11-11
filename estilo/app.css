@@ -433,3 +433,51 @@ main > section { max-width: 920px; }
 .cartoes-propriedades dl { margin: var(--ab-e2) 0 0; }
 .cartoes-propriedades dt { font-size: 0.82rem; color: var(--ab-texto-suave); margin-top: 6px; }
 .cartoes-propriedades dd { margin: 0; }
+
+/* ---------------- campos de texto ---------------- */
+input[type="text"], input[type="url"], textarea {
+  min-height: 44px; padding: 8px 12px; border-radius: 10px; font: inherit; width: 100%;
+  background: var(--ab-superficie); color: var(--ab-texto); border: 1px solid var(--ab-borda);
+}
+textarea { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 0.85rem; }
+label { font-weight: 500; }
+[aria-invalid="true"] { border-color: var(--ab-vermelho); }
+.campo { display: flex; flex-direction: column; gap: var(--ab-e1); margin: var(--ab-e3) 0; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------------- avatar e crachá (vindos do Organic) ---------------- */
+.chip {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 6px 12px; border-radius: 999px;
+  background: transparent; color: var(--ab-texto); border: 1px solid var(--ab-borda); font: inherit; font-size: 0.9rem; cursor: pointer;
+}
+.chip:hover { border-color: var(--ab-vermelho); }
+.opcoes-avatar { display: flex; flex-wrap: wrap; gap: var(--ab-e2); }
+.opcoes-avatar .chip[aria-pressed="true"] { border: 2px solid var(--ab-vermelho); font-weight: 700; }
+.chip-fechado { border-style: dashed !important; color: var(--ab-texto-suave); cursor: default; }
+.amostra-cor { width: 16px; height: 16px; border-radius: 50%; border: 1px solid var(--ab-borda); flex: 0 0 auto; }
+.grupo-avatar { margin-bottom: var(--ab-e4); }
+.titulo-grupo-avatar { font-weight: 600; margin: 0 0 var(--ab-e2); }
+.figura-avatar { display: flex; flex-direction: column; gap: var(--ab-e2); }
+.figura-avatar .botao { align-self: flex-start; }
+.moldura-cracha svg, .palco-cracha svg { display: block; max-width: 100%; height: auto; margin: 0 auto; filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35)); }
+.compartilhar-avatar { display: flex; flex-direction: column; gap: var(--ab-e2); margin-top: var(--ab-e4); padding-top: var(--ab-e3); border-top: 1px solid var(--ab-borda); }
+.compartilhar-avatar .botao { align-self: stretch; }
+.palco { margin-bottom: var(--ab-e4); position: sticky; top: 56px; z-index: 6; }
+.palco-celular { display: flex; align-items: center; gap: var(--ab-e3); padding: var(--ab-e2) var(--ab-e3); background: var(--ab-barra); border: 1px solid var(--ab-borda); border-radius: 0 0 16px 16px; }
+.palco-avatar { background: var(--ab-superficie-2); border-radius: 50%; width: 104px; height: 104px; overflow: hidden; display: flex; justify-content: center; align-items: flex-start; flex: 0 0 auto; }
+.palco-avatar svg { display: block; margin-top: -4px; }
+.nome-palco { font-family: "Exo 2", sans-serif; font-style: italic; font-weight: 600; font-size: 1.2rem; margin: 0; overflow-wrap: anywhere; }
+.palco-cracha { display: none; }
+@media (min-width: 1100px) {
+  .avatar-pagina { display: grid; grid-template-columns: 260px minmax(0, 1fr); column-gap: var(--ab-e5); align-items: start; }
+  .palco { grid-row: 1 / span 2; position: sticky; top: calc(56px + var(--ab-e3)); }
+  .palco-celular { display: none; }
+  .palco-cracha { display: block; }
+  .cartao-cracha .moldura-cracha { display: none; }
+}
+.avatar-barra { margin-left: auto; width: 44px; height: 44px; border-radius: 50%; overflow: hidden; border: 2px solid var(--ab-borda); background: var(--ab-superficie-2); padding: 0; cursor: pointer; display: flex; justify-content: center; align-items: flex-start; }
+.avatar-barra svg { width: 46px; height: auto; margin-top: -2px; }
+.cartao-perfil { display: grid; grid-template-columns: auto 1fr; gap: var(--ab-e4); align-items: center; }
+.mini-avatar { background: var(--ab-superficie-2); border-radius: 16px; padding: var(--ab-e2); }
+.mini-avatar svg { display: block; }
+.certificado-aberto, .falta-certificado { border-left: 4px solid var(--ab-vermelho); }

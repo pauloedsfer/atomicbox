@@ -2,6 +2,8 @@
 import { CHAVE_PREFERENCIAS, PALETA_PADRAO, lerPreferencias, paletaAberta, verEstado } from "../dados/presentes.js";
 import { criarProgresso } from "../comum/progresso.js";
 import { DEGRAUS, MEDALHAS } from "../dados/degraus.js";
+import { criarCronometro } from "../comum/tempo.js";
+import { PALETAS } from "../dados/presentes.js";
 
 const CHAVE_PROGRESSO = "atomicbox.progresso.v1";
 
@@ -17,6 +19,20 @@ function progressoDoAluno() {
   return instancia;
 }
 
+/* O cronômetro do tempo de uso (comum/tempo.js), um só para o app. */
+let relogio = null;
+function cronometro() {
+  if (!relogio) relogio = criarCronometro({ chave: "atomicbox.tempo.v1", armazenamento: armazenamentoLocal() });
+  return relogio;
+}
+
+/* As paletas de presente já abertas (o avatar usa para as peles de fantasia). */
+function paletasAbertas() {
+  const prefs = preferencias();
+  return PALETAS.filter((p) => p.id !== PALETA_PADRAO && paletaAberta(p.id, prefs)).map((p) => p.id);
+}
+const NOMES_DE_PALETA = Object.fromEntries(PALETAS.map((p) => [p.id, p.nome]));
+
 let memoria = null;   // vale quando o armazenamento falta (modo privativo)
 function preferencias() {
   let bruto = memoria;
@@ -28,7 +44,8 @@ function preferencias() {
   return lerPreferencias(bruto);
 }
 
-function guardarPreferencias(novas) {
+function guardarPreferencias(mudancas) {
+  const novas = { ...preferencias(), ...mudancas };
   memoria = JSON.stringify(novas);
   try { const a = armazenamentoLocal(); if (a) a.setItem(CHAVE_PREFERENCIAS, memoria); } catch (e) { /* segue em memória */ }
   return novas;
@@ -75,4 +92,4 @@ function avisar(texto) {
 
 function aplicarPaletaGuardada() { return aplicarPaleta(preferencias().paleta); }
 
-export { CHAVE_PROGRESSO, progressoDoAluno, preferencias, guardarPreferencias, aplicarPaleta, aplicarPaletaGuardada, escolherPaleta, registrarEstadoVisto, avisar, CHAVE_PREFERENCIAS };
+export { CHAVE_PROGRESSO, progressoDoAluno, cronometro, paletasAbertas, NOMES_DE_PALETA, preferencias, guardarPreferencias, aplicarPaleta, aplicarPaletaGuardada, escolherPaleta, registrarEstadoVisto, avisar, CHAVE_PREFERENCIAS };

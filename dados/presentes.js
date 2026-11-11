@@ -15,14 +15,22 @@ const PALETAS = [
 
 const ESTADOS = ["solido", "liquido", "gasoso"];
 
+/* `avatar` e `apelido`: o cientista e o nome do crachá; `codigo`: o código combinado com o
+   professor; `linkTurma`: o link da planilha da turma; `nome`: o nome do certificado. Tudo fica
+   só no aparelho (o nome nunca vai no texto para o professor). */
 function lerPreferencias(bruto) {
-  const padrao = { paleta: PALETA_PADRAO, estadosVistos: [] };
+  const padrao = { paleta: PALETA_PADRAO, estadosVistos: [], avatar: null, apelido: "", codigo: "", linkTurma: "", nome: "" };
   try {
     const d = JSON.parse(bruto);
     if (!d || typeof d !== "object" || Array.isArray(d)) return padrao;
     const vistos = Array.isArray(d.estadosVistos) ? ESTADOS.filter((e) => d.estadosVistos.includes(e)) : [];
     const paleta = PALETAS.some((p) => p.id === d.paleta) ? d.paleta : PALETA_PADRAO;
-    return { paleta, estadosVistos: vistos };
+    const texto = (v, max) => (typeof v === "string" ? v.slice(0, max) : "");
+    return {
+      paleta, estadosVistos: vistos,
+      avatar: d.avatar && typeof d.avatar === "object" && !Array.isArray(d.avatar) ? d.avatar : null,
+      apelido: texto(d.apelido, 18), codigo: texto(d.codigo, 20), linkTurma: texto(d.linkTurma, 300), nome: texto(d.nome, 60),
+    };
   } catch (e) {
     return padrao;
   }

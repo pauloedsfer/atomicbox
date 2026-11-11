@@ -29,7 +29,7 @@ teste("rotas: hash conhecido abre a tela, desconhecido cai no início só na car
 
 teste("Antimatéria: abre só depois dos três estados, e lixo guardado vira o padrão", () => {
   let p = lerPreferencias("{lixo");
-  igual(p, { paleta: "materia", estadosVistos: [] });
+  igual([p.paleta, p.estadosVistos, p.avatar], ["materia", [], null]);
   igual(paletaAberta("antimateria", p), false);
   let r = verEstado(p, "liquido"); p = r.prefs; igual(r.abriram.length, 0);
   r = verEstado(p, "solido"); p = r.prefs; igual(r.abriram.length, 0);
@@ -41,4 +41,15 @@ teste("Antimatéria: abre só depois dos três estados, e lixo guardado vira o p
 
 teste("nenhum texto do aluno ou dado entra por innerHTML", () => {
   for (const f of readdirSync(new URL("telas/", raiz))) verdadeiro(!ler(`telas/${f}`).includes("innerHTML"), `innerHTML em telas/${f}`);
+});
+
+/* A base de elementos é a mesma nas três caixas: a cópia daqui tem de bater com a do Molbox.
+   O Molbox fica ao lado desta pasta: "molbox-main" (ZIP do GitHub) ou "molbox" (clone). */
+function normalizarCopia(texto) {
+  return texto.replace(/\/\*\s*ORIGEM:[\s\S]*?\*\//, "").split(/\r?\n/).filter((l) => !/^(import|export) /.test(l)).join("\n").trim();
+}
+teste("a base de elementos é cópia fiel da do Molbox", () => {
+  const pasta = ["../molbox-main/", "../molbox/"].find((p) => existsSync(new URL(p + "js/elementos.js", raiz)));
+  verdadeiro(pasta, "não achei o Molbox ao lado do Atomic Box (pasta molbox-main ou molbox): clone-o ali para conferir a cópia");
+  igual(normalizarCopia(ler("comum/elementos.js")), normalizarCopia(readFileSync(new URL(pasta + "js/elementos.js", raiz), "utf8")));
 });

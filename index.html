@@ -46,6 +46,7 @@
     <p class="grupo">Prática</p>
     <button type="button" class="item" data-tela="tela-treino"><span class="glifo" aria-hidden="true">&#9998;</span><span class="rotulo">Treino</span></button>
     <button type="button" class="item" data-tela="tela-progresso"><span class="glifo" aria-hidden="true">&#9650;</span><span class="rotulo">Progresso</span></button>
+    <button type="button" class="item" data-tela="tela-avatar"><span class="glifo" aria-hidden="true">&#128578;</span><span class="rotulo">Meu avatar</span></button>
     <p class="grupo">Meus aplicativos</p>
     <span class="item item-app atual"><span class="glifo" aria-hidden="true">&#9883;</span><span class="rotulo">Super Atomic Box <small>Você está aqui</small></span></span>
     <a class="item item-app" href="https://supermolbox.vercel.app/"><span class="glifo" aria-hidden="true">M</span><span class="rotulo">Super Molbox <small>Do átomo ao mol</small></span></a>
@@ -53,7 +54,7 @@
   </nav>
   <div class="sidebar-rodape">
     <p class="autoria">Criado pelo <strong>Prof. Paulo Fernandes</strong></p>
-    <p class="versao">Super Atomic Box v0.6 &middot; funciona sem internet</p>
+    <p class="versao">Super Atomic Box v0.7 &middot; funciona sem internet</p>
   </div>
 </aside>
 
@@ -62,6 +63,7 @@
 <header class="barra">
   <button type="button" class="menu-btn" id="menuBtn" aria-label="Abrir menu" aria-expanded="false" aria-controls="sidebar"><span></span></button>
   <span class="titulo-pagina" id="tituloPagina">Início</span>
+  <button type="button" class="avatar-barra" id="avatarBarra" aria-label="Meu avatar: abrir o editor do avatar"></button>
 </header>
 
 <main id="conteudo" tabindex="-1">
@@ -76,6 +78,7 @@
   <section id="tela-vidrarias" hidden></section>
   <section id="tela-treino" hidden></section>
   <section id="tela-progresso" hidden></section>
+  <section id="tela-avatar" hidden></section>
   <section id="tela-sobre" hidden></section>
 </main>
 
