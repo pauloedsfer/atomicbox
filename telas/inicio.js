@@ -38,6 +38,11 @@ function montar(raiz, app) {
       if (d.tela) fim.setAttribute("aria-label", `Abrir ${d.nome}`);
       return criar("li", {}, [criar("div", {}, [criar("strong", { textContent: d.nome }), criar("span", { textContent: d.texto })]), fim]);
     })),
+    criar("div", { className: "cartao ponte" }, [
+      criar("h2", { textContent: "Treine o que aprendeu", style: "margin-top:0" }),
+      criar("p", { textContent: "Exercícios de alternativas para cada degrau, com XP, medalhas e a explicação de cada erro. Cada degrau do Treino abre com 5 acertos no anterior." }),
+      criar("button", { type: "button", className: "botao", textContent: "Ir para o Treino", onclick: () => app.mostrarTela("tela-treino") }),
+    ]),
     criar("h2", { id: "titulo-paletas", textContent: "Paletas" }),
     criar("p", { className: "ajuda", textContent: "Cores para a caixa inteira. As novas abrem com o seu estudo." }),
     paletas,

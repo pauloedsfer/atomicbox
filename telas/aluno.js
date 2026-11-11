@@ -1,8 +1,20 @@
 /* Preferências do aluno (paleta e estados vistos no simulador), guardadas só no aparelho. */
 import { CHAVE_PREFERENCIAS, PALETA_PADRAO, lerPreferencias, paletaAberta, verEstado } from "../dados/presentes.js";
+import { criarProgresso } from "../comum/progresso.js";
+import { DEGRAUS, MEDALHAS } from "../dados/degraus.js";
+
+const CHAVE_PROGRESSO = "atomicbox.progresso.v1";
 
 function armazenamentoLocal() {
   try { return window.localStorage; } catch (e) { return null; }
+}
+
+/* O progresso do Treino, um só para o app inteiro (sem armazenamento, ele vive na memória da
+   instância; duas telas com instâncias separadas veriam números diferentes). */
+let instancia = null;
+function progressoDoAluno() {
+  if (!instancia) instancia = criarProgresso({ chave: CHAVE_PROGRESSO, degraus: DEGRAUS, medalhas: MEDALHAS, armazenamento: armazenamentoLocal() });
+  return instancia;
 }
 
 let memoria = null;   // vale quando o armazenamento falta (modo privativo)
@@ -63,4 +75,4 @@ function avisar(texto) {
 
 function aplicarPaletaGuardada() { return aplicarPaleta(preferencias().paleta); }
 
-export { preferencias, guardarPreferencias, aplicarPaleta, aplicarPaletaGuardada, escolherPaleta, registrarEstadoVisto, avisar, CHAVE_PREFERENCIAS };
+export { CHAVE_PROGRESSO, progressoDoAluno, preferencias, guardarPreferencias, aplicarPaleta, aplicarPaletaGuardada, escolherPaleta, registrarEstadoVisto, avisar, CHAVE_PREFERENCIAS };
