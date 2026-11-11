@@ -2,6 +2,7 @@
    e elétrons e vê o elemento, a notação, a carga, o isótopo e o desenho de Bohr. As missões
    guiam: hidrogênio, carbono-12, carbono-14, Na⁺, Cl⁻ e O²⁻. */
 import { criar, criarSvg } from "./comum.js";
+import { gatoEscondido, surpresaDoGato, desenhoDoGato, gatosDaLigacao } from "./gatos.js";
 import { MAXIMO, MISSOES, analisarAtomo } from "../motor/atomo.js";
 
 const CHAVE_MISSOES = "atomicbox.missoes.v1";
@@ -75,7 +76,12 @@ function montar(raiz, app) {
   raiz.append(
     criar("h1", { textContent: "Partículas do átomo" }),
     criar("p", { className: "intro", textContent: "No núcleo ficam os prótons (positivos) e os nêutrons (sem carga). Na eletrosfera, os elétrons (negativos), quase 2000 vezes mais leves que um próton. Monte átomos e descubra quem decide o quê." }),
-    criar("div", { className: "cartao montador" }, [
+    criar("div", { className: "cartao montador com-gato" }, [
+      gatoEscondido({ pose: "sentado", falas: [
+        "Se o núcleo fosse uma bolinha de gude no meio de um campo de futebol, os elétrons estariam lá na arquibancada.",
+        "Um próton pesa cerca de 1836 elétrons. Por isso os elétrons quase não contam na massa.",
+        "O carbono-14 dos seres vivos se desfaz pela metade a cada 5730 anos. É assim que se data um fóssil.",
+      ] }),
       criar("div", { className: "montador-grade" }, [
         criar("div", {}, [figura, cartaoElemento]),
         criar("div", {}, [
@@ -144,7 +150,7 @@ function montar(raiz, app) {
   }
 
   function desenharMissoes(r) {
-    for (const m of MISSOES) if (!feitas.includes(m.id) && m.confere(r)) { feitas = [...feitas, m.id]; guardarMissoes(feitas); frase.textContent = `${r.frase} Missão cumprida!`; }
+    for (const m of MISSOES) if (!feitas.includes(m.id) && m.confere(r)) { feitas = [...feitas, m.id]; guardarMissoes(feitas); frase.textContent = `${r.frase} Missão cumprida!`; surpresaDoGato("feliz", "Missão cumprida! Mais uma no bolso."); }
     placarMissoes.textContent = `${feitas.length} de ${MISSOES.length} missões cumpridas.`;
     listaMissoes.replaceChildren(...MISSOES.map((m) => criar("li", { className: feitas.includes(m.id) ? "feita" : "" }, [
       criar("span", { className: "marca-missao", textContent: feitas.includes(m.id) ? "✓" : "○", ariaHidden: "true" }),

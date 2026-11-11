@@ -2,6 +2,7 @@
    não explicava. No meio, o experimento da folha de ouro (motor/rutherford.js): o aluno dispara
    partículas alfa e compara o que Thomson esperava com o que Rutherford viu. */
 import { criar, criarSvg } from "./comum.js";
+import { gatoEscondido, surpresaDoGato, desenhoDoGato, gatosDaLigacao } from "./gatos.js";
 import { CENA, NUCLEOS, dispararVarias } from "../motor/rutherford.js";
 import { MODELOS } from "../dados/modelos.js";
 
@@ -74,6 +75,7 @@ function folhaDeOuro() {
   });
   const disparar = (n) => {
     const r = dispararVarias(n, modelo);
+    if (modelo === "rutherford" && r.contagem.voltou > 0) surpresaDoGato("bolinhas", r.contagem.voltou === 1 ? "Uma alfa voltou! Bateu de frente num núcleo." : `${r.contagem.voltou} alfas voltaram! Bateram de frente nos núcleos.`);
     for (const t of r.trajetorias) {
       const linha = criarSvg("polyline", { points: t.pontos.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" "), class: `alfa alfa-${t.resultado}` });
       camadaTrajetorias.append(linha);
@@ -122,7 +124,15 @@ function montar(raiz, app) {
   const abas = criar("div", { className: "linha-tempo" });
   abas.setAttribute("role", "tablist");
   abas.setAttribute("aria-label", "Modelos atômicos em ordem histórica");
-  const painel = criar("div", { className: "cartao painel-modelo", id: "painel-modelo" });
+  const painel = criar("div", { className: "cartao painel-modelo com-gato", id: "painel-modelo" });
+  const conteudoPainel = criar("div", {});
+  painel.append(conteudoPainel, gatoEscondido({ pose: "bolinhas", falas: [
+    "Para Dalton, o átomo era uma bolinha maciça. Para mim, bolinha é brinquedo!",
+    "Dalton não enxergava algumas cores. É por isso que essa condição se chama daltonismo.",
+    "O filho de Thomson também ganhou um Nobel, em 1937, mostrando que o elétron se comporta como onda.",
+    "Rutherford disse que ver a alfa voltar foi como um tiro de canhão ricochetear num lenço de papel.",
+    "Niels Bohr ganhou o Nobel de Física em 1922. E eu ganhei o nome dele!",
+  ] }));
   painel.setAttribute("role", "tabpanel");
   const botoes = MODELOS.map((m, i) => {
     const b = criar("button", { type: "button", className: "marco", id: `marco-${m.id}` }, [
@@ -148,7 +158,7 @@ function montar(raiz, app) {
     botoes.forEach((b, k) => { b.setAttribute("aria-selected", String(k === i)); b.tabIndex = k === i ? 0 : -1; });
     painel.setAttribute("aria-labelledby", `marco-${m.id}`);
     const proximo = MODELOS[i + 1];
-    painel.replaceChildren(
+    conteudoPainel.replaceChildren(
       criar("div", { className: "modelo-grade" }, [
         desenho(m.id, `Desenho do modelo de ${m.quem}: ${m.apelido.toLowerCase()}`),
         criar("div", {}, [

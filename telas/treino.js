@@ -4,6 +4,7 @@
    XP, não pula). O retorno diz se está certo, o diagnóstico do erro, a explicação e o XP.
    A resposta certa fica só aqui dentro: a tela desenha a partir de paraTela(ex). */
 import { criar } from "./comum.js";
+import { surpresaDoGato } from "./gatos.js";
 import { gerarExercicio, corrigir, paraTela, nomeDoTipo } from "../motor/treino.js";
 import { DEGRAUS } from "../dados/degraus.js";
 import { progressoDoAluno } from "./aluno.js";
@@ -48,7 +49,7 @@ function montar(raiz, app) {
 
   raiz.append(
     criar("h1", { textContent: "Treino" }),
-    criar("p", { className: "intro", textContent: "Exercícios de alternativas sobre cada degrau da escada. Cada degrau abre com 5 acertos no anterior. Errar não tira pontos: o retorno diz onde foi o engano. Pular custa XP, e cada pulo seguido custa o dobro do anterior." }),
+    criar("p", { className: "intro", textContent: "Cada degrau abre com 5 acertos no anterior. Errar não tira pontos; pular custa XP." }),
     placar,
     criar("h2", { textContent: "Degraus" }),
     listaDegraus,
@@ -174,6 +175,8 @@ function montar(raiz, app) {
       const partes = [];
       if (Number.isInteger(registro.subiuDegrau)) partes.push(`Degrau aberto: ${DEGRAUS[registro.subiuDegrau].nome}!`);
       for (const m of registro.medalhasNovas) partes.push(`Medalha nova: ${m.nome}.`);
+      if (r.certo && [3, 5, 10, 15].includes(p.sequencia)) surpresaDoGato(p.sequencia >= 10 ? "eletrons" : "bolinhas", `${p.sequencia} acertos seguidos! ${p.sequencia >= 10 ? "Fissão em série!" : "Reação em cadeia!"}`);
+      else if (Number.isInteger(registro.subiuDegrau)) surpresaDoGato("feliz", `Degrau aberto: ${DEGRAUS[registro.subiuDegrau].nome}!`);
       anuncio.textContent = partes.join(" ");
       desenharPlacar();
       desenharDegraus();

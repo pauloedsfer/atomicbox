@@ -2,6 +2,7 @@
    função, a ficha de cada peça (desenho, para que serve, cuidado), as regras de segurança e o
    desafio "qual é a vidraria?" (motor/vidrarias.js), pelo desenho ou pelo uso. */
 import { criar } from "./comum.js";
+import { gatoEscondido } from "./gatos.js";
 import { CATEGORIAS, VIDRARIAS, SEGURANCA } from "../dados/vidrarias.js";
 import { perguntaDeVidraria, corrigirVidraria } from "../motor/vidrarias.js";
 import { desenhoDaVidraria } from "./desenhos_vidrarias.js";
@@ -28,7 +29,12 @@ function montar(raiz) {
   raiz.append(
     criar("h1", { textContent: "Vidrarias e equipamentos" }),
     criar("p", { className: "intro", textContent: "Antes de qualquer experimento, é preciso saber o nome de cada peça da bancada, para que ela serve e o cuidado que ela pede. Toque numa peça para ver a ficha." }),
-    criar("div", { className: "cartao seguranca" }, [
+    criar("div", { className: "cartao seguranca com-gato" }, [
+      gatoEscondido({ pose: "dormindo", falas: [
+        "Eu posso dormir no laboratório. O bico de Bunsen aceso, nunca: chama não fica sozinha!",
+        "Gato curioso e aluno curioso usam óculos de proteção. Eu uso os meus no Meu avatar.",
+        "Vidro quente parece igual ao frio. Eu aprendi do jeito difícil: espere esfriar.",
+      ] }),
       criar("h2", { textContent: "Regras de ouro da bancada", style: "margin-top:0" }),
       criar("ul", { className: "lista-guardar" }, SEGURANCA.map((s) => criar("li", { textContent: s }))),
     ]),

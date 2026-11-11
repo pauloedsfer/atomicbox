@@ -481,3 +481,71 @@ label { font-weight: 500; }
 .mini-avatar { background: var(--ab-superficie-2); border-radius: 16px; padding: var(--ab-e2); }
 .mini-avatar svg { display: block; }
 .certificado-aberto, .falta-certificado { border-left: 4px solid var(--ab-vermelho); }
+
+/* ---------------- os gatos ---------------- */
+.gato-desenho { width: 100%; height: auto; display: block; overflow: visible; }
+.gatos-ligacao { width: 100%; max-width: 260px; height: auto; display: block; }
+.com-gato { position: relative; overflow: hidden; }
+.esconderijo { position: absolute; bottom: 0; width: 84px; z-index: 2; }
+.esconderijo.direita { right: 14px; }
+.esconderijo.esquerda { left: 14px; }
+.gato-escondido {
+  display: block; width: 84px; padding: 0; border: 0; background: none; cursor: pointer;
+  transform: translateY(52%); transition: transform 0.35s cubic-bezier(.3, 1.6, .5, 1);
+  filter: drop-shadow(0 0 6px rgba(255, 90, 97, 0.55));
+}
+.gato-escondido:hover { transform: translateY(42%); }
+.gato-escondido.aparecendo { transform: translateY(6%); }
+.gato-escondido:focus-visible { outline: 3px solid var(--ab-foco); outline-offset: 2px; border-radius: 12px; }
+.balao-gato {
+  position: absolute; bottom: 92px; right: 0; width: min(260px, 70vw); margin: 0; padding: 10px 14px; border-radius: 14px;
+  background: var(--ab-superficie-2); color: var(--ab-texto); border: 1px solid var(--ab-vermelho); font-size: 0.9rem; box-shadow: var(--ab-sombra);
+}
+.esconderijo.esquerda .balao-gato { right: auto; left: 0; }
+.cartao.com-gato { padding-bottom: calc(var(--ab-e4) + 44px); }
+:root[data-paleta="antimateria"] .gato-escondido { filter: drop-shadow(0 0 4px rgba(179, 20, 28, 0.45)); }
+.surpresa-gato {
+  position: fixed; left: 16px; bottom: 16px; z-index: 45; display: flex; align-items: flex-end; gap: 8px; max-width: min(360px, calc(100vw - 32px));
+  pointer-events: none; transform: translateY(140%); transition: transform 0.4s cubic-bezier(.3, 1.4, .5, 1);
+}
+.surpresa-gato .gato-desenho { width: 104px; flex: 0 0 auto; padding: 8px; border-radius: 50%; background: radial-gradient(circle, var(--ab-superficie-2) 60%, transparent 72%); }
+.surpresa-gato p { margin: 0 0 40px; padding: 10px 14px; border-radius: 14px; background: var(--ab-superficie-2); border: 1px solid var(--ab-vermelho); color: var(--ab-texto); box-shadow: var(--ab-sombra); font-weight: 500; }
+.surpresa-gato.visivel { transform: none; }
+@media (min-width: 900px) { .surpresa-gato { left: calc(272px + 16px); } }
+@media (prefers-reduced-motion: reduce) { .gato-escondido, .surpresa-gato { transition: none; } }
+
+/* ---------------- substâncias: tipos e um material por vez ---------------- */
+.tipos-material { list-style: none; padding: 0; margin: var(--ab-e3) 0; display: grid; gap: var(--ab-e2); grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 760px) { .tipos-material { grid-template-columns: repeat(2, 1fr); } }
+.tipos-material li { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; padding: 12px 8px; border-radius: 14px; background: var(--ab-metal); border: 1px solid var(--ab-borda); }
+.icone-tipo { width: 56px; height: 56px; }
+.icone-tipo .at-a { fill: #E3262E; stroke: #0B0B0D; }
+.icone-tipo .at-b { fill: #F4F4F5; stroke: #0B0B0D; }
+.icone-tipo .copo-tipo { fill: none; stroke: var(--ab-texto); stroke-width: 2; stroke-linejoin: round; }
+.icone-tipo .liq-a { fill: var(--ab-particula); opacity: 0.6; }
+.icone-tipo .liq-oleo { fill: #E9B824; opacity: 0.7; }
+.saiba-mais { margin: var(--ab-e2) 0 var(--ab-e3); border: 1px solid var(--ab-borda); border-radius: 12px; padding: 0 var(--ab-e3); background: var(--ab-superficie); }
+.saiba-mais summary { cursor: pointer; padding: 12px 0; font-weight: 600; color: var(--ab-vermelho); }
+.saiba-mais[open] { padding-bottom: var(--ab-e3); }
+.barra-rodada { width: 100%; height: 8px; accent-color: var(--ab-vermelho-forte); margin: var(--ab-e2) 0 var(--ab-e3); }
+.material-da-vez { display: flex; align-items: center; gap: var(--ab-e3); margin-bottom: var(--ab-e3); }
+.icone-material { font-size: 3rem; line-height: 1; }
+.material-da-vez strong { font-family: "Exo 2", sans-serif; font-style: italic; font-size: 1.5rem; }
+.opcoes-tipo { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--ab-e2); margin-bottom: var(--ab-e3); padding-right: 70px; }
+@media (max-width: 760px) { .opcoes-tipo { grid-template-columns: repeat(2, 1fr); padding-right: 0; } }
+.botao-tipo {
+  display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px 6px; border-radius: 14px; min-height: 110px;
+  background: var(--ab-superficie); color: var(--ab-texto); border: 2px solid var(--ab-borda); font: inherit; font-size: 0.88rem; font-weight: 600; cursor: pointer;
+}
+.botao-tipo:hover { border-color: var(--ab-vermelho); }
+.botao-tipo[aria-disabled="true"] { cursor: default; opacity: 0.6; }
+.botao-tipo.certa { opacity: 1; border-color: #3FB37A; }
+.botao-tipo.errada { opacity: 1; border-color: var(--ab-vermelho); }
+:root[data-paleta="antimateria"] .botao-tipo.certa { border-color: #1D7A4C; }
+.cartao-material { min-height: 360px; }
+.frase-curva { font-weight: 600; font-size: 1.05rem; }
+.termometro-gato { display: flex; align-items: center; gap: var(--ab-e3); }
+.gato-termometro { width: 76px; flex: 0 0 auto; }
+.cartao.montador.com-gato, .cartao.seguranca.com-gato { padding-right: 110px; }
+@media (max-width: 760px) { .cartao.montador.com-gato, .cartao.seguranca.com-gato { padding-right: var(--ab-e4); } }
+.gatos-ligacao { margin-bottom: var(--ab-e2); }

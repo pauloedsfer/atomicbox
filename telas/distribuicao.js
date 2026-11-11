@@ -5,6 +5,7 @@
    de valência e o subnível mais energético. A ponte explica por que os níveis existem: o
    elétron preso no átomo é como uma partícula na caixa. */
 import { criar, criarSvg } from "./comum.js";
+import { gatoEscondido, surpresaDoGato, desenhoDoGato, gatosDaLigacao } from "./gatos.js";
 import { ELEMENTOS } from "../comum/elementos.js";
 import { ORDEM, CAPACIDADE, LINHAS_DO_DIAGRAMA, analisarDistribuicao, sobre } from "../motor/distribuicao.js";
 
@@ -77,7 +78,12 @@ function montar(raiz, app) {
   raiz.append(
     criar("h1", { textContent: "Distribuição eletrônica" }),
     criar("p", { className: "intro", textContent: "Os elétrons não ficam de qualquer jeito: cada camada se divide em subníveis (s, p, d e f), e eles entram do de menor energia para o de maior. Linus Pauling resumiu essa ordem num diagrama: é só seguir as diagonais." }),
-    criar("div", { className: "cartao" }, [
+    criar("div", { className: "cartao com-gato" }, [
+      gatoEscondido({ pose: "eletrons", falas: [
+        "Linus Pauling ganhou dois prêmios Nobel sozinho: o de Química, em 1954, e o da Paz, em 1962.",
+        "Os elétrons não giram como planetas: eles ficam em regiões de energia certa, como eu na minha caixa.",
+        "O oganessônio, elemento 118, tem 7 camadas de elétrons. É o último da tabela, por enquanto.",
+      ] }),
       criar("div", { className: "escolha-elemento" }, [
         criar("label", { htmlFor: "elemento-dist", textContent: "Elemento (átomo neutro)" }),
         criar("div", { className: "linha-elemento" }, [menos, seletor, mais]),

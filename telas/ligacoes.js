@@ -3,6 +3,7 @@
    explicação, com os elétrons de valência desenhados (Lewis). Termina na ponte para o Super
    Molbox: o sal montado aqui vira o assunto do mol. */
 import { criar, criarSvg } from "./comum.js";
+import { gatoEscondido, surpresaDoGato, desenhoDoGato, gatosDaLigacao } from "./gatos.js";
 import { ELEMENTOS_DO_MONTADOR, METAIS, ligar, pontosDeLewis } from "../motor/ligacoes.js";
 import { elementoPorZ } from "../motor/atomo.js";
 
@@ -98,6 +99,7 @@ function montar(raiz, app) {
     }
     const filhos = [
       atomos,
+      gatosDaLigacao(r.tipo),
       criar("p", { className: "selo-estado sem-margem", textContent: NOME_TIPO[r.tipo] }),
       criar("p", { className: "formula-grande", textContent: r.formula }),
       ...(r.nome ? [criar("p", { className: "nome-composto", textContent: r.nome })] : []),

@@ -10,6 +10,7 @@
    (prefers-reduced-motion), começa pausada: aí cada mudança de temperatura mostra direto o
    resultado final, sem animar. Levar a água pelos três estados abre a paleta Antimatéria. */
 import { criar, criarSvg } from "./comum.js";
+import { gatoEscondido, surpresaDoGato, desenhoDoGato, gatosDaLigacao } from "./gatos.js";
 import {
   CAIXA, RAIO, TEMPERATURA_MINIMA, TEMPERATURA_MAXIMA, MUDANCAS, NOMES_DOS_ESTADOS,
   estadoDaAgua, mudancasEntre, descricao, criarParticulas, passo, formatar,
@@ -52,8 +53,7 @@ function montar(raiz, app) {
     copoComGelo(),
     criar("div", {}, [
       criar("h2", { textContent: "O que você vê", style: "margin-top:0" }),
-      criar("p", { textContent: "Num copo com gelo, a mesma substância aparece de dois jeitos: o gelo é duro e tem forma própria; a água líquida escorre e toma a forma do copo. E o vapor que sai da chaleira também é água." }),
-      criar("p", { className: "sem-margem", textContent: "Se é tudo água, o que muda de um para o outro? Para responder, vamos dar um zoom enorme, até enxergar as partículas que formam a água." }),
+      criar("p", { className: "sem-margem", textContent: "Gelo, água e vapor: é tudo água. Então o que muda? Vamos dar um zoom até as partículas." }),
     ]),
   ]);
 
@@ -65,6 +65,8 @@ function montar(raiz, app) {
   }, circulos);
 
   const termometro = criar("p", { className: "termometro" });
+  const gatoTermometro = criar("div", { className: "gato-termometro" });
+  let poseAtual = "";
   const seloEstado = criar("span", { className: "selo-estado" });
   const campo = criar("input", { type: "range", id: "temperatura", min: TEMPERATURA_MINIMA, max: TEMPERATURA_MAXIMA, step: 1, value: temperatura });
   campo.setAttribute("aria-describedby", "descricao-sim");
@@ -85,7 +87,7 @@ function montar(raiz, app) {
     criar("div", { className: "simulador" }, [
       caixa,
       criar("div", {}, [
-        termometro,
+        criar("div", { className: "termometro-gato" }, [gatoTermometro, termometro]),
         seloEstado,
         criar("div", { className: "controle-temperatura" }, [
           criar("label", { htmlFor: "temperatura", textContent: "Temperatura da água" }),
@@ -139,6 +141,9 @@ function montar(raiz, app) {
     termometro.textContent = formatar(temperatura);
     seloEstado.textContent = NOMES_DOS_ESTADOS[estado];
     campo.setAttribute("aria-valuetext", `${formatar(temperatura)}, ${NOMES_DOS_ESTADOS[estado]}`);
+    // O Bohr sente a temperatura: cachecol no gelo, suando no vapor.
+    const pose = estado === "solido" ? "frio" : estado === "gasoso" ? "calor" : "sentado";
+    if (pose !== poseAtual) { poseAtual = pose; gatoTermometro.replaceChildren(desenhoDoGato(pose)); }
   }
 
   function desenharPausa() {

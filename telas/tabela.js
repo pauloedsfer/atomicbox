@@ -3,6 +3,7 @@
    período = número de camadas; família = elétrons na valência. Os da mesma família ficam
    destacados. As tendências (raio e eletronegatividade) vêm num quadro com setas. */
 import { criar, criarSvg } from "./comum.js";
+import { gatoEscondido, surpresaDoGato, desenhoDoGato, gatosDaLigacao } from "./gatos.js";
 import { ELEMENTOS, NOME_FAMILIA } from "../comum/elementos.js";
 import { CLASSIFICACOES, fichaDoElemento, porQueEstaAli, classificacao } from "../motor/tabela.js";
 
@@ -54,7 +55,12 @@ function montar(raiz, app) {
   grade.setAttribute("role", "group");
   grade.setAttribute("aria-label", "Tabela periódica: escolha um elemento");
   const rolagem = criar("div", { className: "rolagem-tabela" }, [grade]);
-  const ficha = criar("div", { className: "cartao ficha-elemento" });
+  const ficha = criar("div", { className: "ficha-elemento" });
+  const cartaoFicha = criar("div", { className: "cartao com-gato" }, [ficha, gatoEscondido({ pose: "tabela", falas: [
+    "Mendeleev deixou buracos na tabela para elementos que ninguém conhecia, e acertou como eles seriam.",
+    "O hélio foi descoberto primeiro no Sol, em 1868, antes de ser achado na Terra.",
+    "O elemento 118, oganessônio, homenageia Yuri Oganessian, que ainda era vivo quando ganhou o nome.",
+  ] })]);
   ficha.setAttribute("aria-live", "polite");
 
   const celulas = new Map();
@@ -86,7 +92,7 @@ function montar(raiz, app) {
     legenda,
     rolagem,
     criar("p", { className: "ajuda", textContent: "No celular, arraste a tabela para os lados." }),
-    ficha,
+    cartaoFicha,
     criar("div", { className: "cartao" }, [
       criar("h2", { textContent: "Tendências", style: "margin-top:0" }),
       criar("div", { className: "tendencias-grade" }, [
