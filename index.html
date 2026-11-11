@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Super Atomic Box — da matéria ao átomo</title>
+<meta name="description" content="A Super Caixa Atômica: da matéria que se vê ao átomo. Estados da matéria, modelos atômicos, distribuição eletrônica, tabela periódica e ligações, funcionando sem internet.">
+<meta name="theme-color" content="#0B0B0D">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icones/favicon.svg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Super Atomic Box">
+<link rel="stylesheet" href="estilo/tokens.css">
+<link rel="stylesheet" href="estilo/fontes.css">
+<link rel="stylesheet" href="estilo/app.css">
+</head>
+<body>
+
+<a class="pular" href="#conteudo">Ir para o conteúdo</a>
+
+<aside class="sidebar" id="sidebar" aria-label="Navegação principal">
+  <div class="sidebar-topo">
+    <div class="marca">
+      <img src="marca/atomicbox-simbolo.svg" alt="" width="44" height="44">
+      <span class="marca-nome"><span class="marca-super">Super</span> Atomic Box</span>
+    </div>
+    <button type="button" class="fechar" id="fecharMenu" aria-label="Fechar menu">&#10005;</button>
+  </div>
+  <p class="sidebar-lema">Da matéria que se vê ao átomo</p>
+  <nav class="menu" id="menu">
+    <p class="grupo">Comece por aqui</p>
+    <button type="button" class="item" data-tela="tela-inicio"><span class="glifo" aria-hidden="true">&#9883;</span><span class="rotulo">Início</span></button>
+    <button type="button" class="item" data-tela="tela-sobre"><span class="glifo" aria-hidden="true">&#9432;</span><span class="rotulo">Sobre</span></button>
+    <p class="grupo">Matéria</p>
+    <button type="button" class="item" data-tela="tela-materia"><span class="glifo" aria-hidden="true">&#9832;</span><span class="rotulo">Estados da matéria</span></button>
+    <span class="item em-breve"><span class="glifo" aria-hidden="true">&#9879;</span><span class="rotulo">Substâncias e misturas <small>Em breve</small></span></span>
+    <p class="grupo">Átomo</p>
+    <span class="item em-breve"><span class="glifo" aria-hidden="true">&#9673;</span><span class="rotulo">Modelos atômicos <small>Em breve</small></span></span>
+    <span class="item em-breve"><span class="glifo" aria-hidden="true">p⁺</span><span class="rotulo">Partículas do átomo <small>Em breve</small></span></span>
+    <span class="item em-breve"><span class="glifo" aria-hidden="true">e⁻</span><span class="rotulo">Distribuição eletrônica <small>Em breve</small></span></span>
+    <p class="grupo">Elementos e ligações</p>
+    <span class="item em-breve"><span class="glifo" aria-hidden="true">&#9638;</span><span class="rotulo">Tabela periódica <small>Em breve</small></span></span>
+    <span class="item em-breve"><span class="glifo" aria-hidden="true">&#8644;</span><span class="rotulo">Ligações químicas <small>Em breve</small></span></span>
+    <p class="grupo">Meus aplicativos</p>
+    <span class="item item-app atual"><span class="glifo" aria-hidden="true">&#9883;</span><span class="rotulo">Super Atomic Box <small>Você está aqui</small></span></span>
+    <a class="item item-app" href="https://supermolbox.vercel.app/"><span class="glifo" aria-hidden="true">M</span><span class="rotulo">Super Molbox <small>Do átomo ao mol</small></span></a>
+    <a class="item item-app" href="https://superorganico.vercel.app/"><span class="glifo" aria-hidden="true">&#11041;</span><span class="rotulo">Super Organic Box <small>Do carbono à molécula</small></span></a>
+  </nav>
+  <div class="sidebar-rodape">
+    <p class="autoria">Criado pelo <strong>Prof. Paulo Fernandes</strong></p>
+    <p class="versao">Super Atomic Box v0.1 &middot; funciona sem internet</p>
+  </div>
+</aside>
+
+<div class="cortina" id="cortina" hidden></div>
+
+<header class="barra">
+  <button type="button" class="menu-btn" id="menuBtn" aria-label="Abrir menu" aria-expanded="false" aria-controls="sidebar"><span></span></button>
+  <span class="titulo-pagina" id="tituloPagina">Início</span>
+</header>
+
+<main id="conteudo" tabindex="-1">
+  <section id="tela-inicio" hidden></section>
+  <section id="tela-materia" hidden></section>
+  <section id="tela-sobre" hidden></section>
+</main>
+
+<div class="aviso-presente" id="avisoPresente" role="status" aria-live="polite"></div>
+
+<script type="module" src="app.js"></script>
+<script>
+  // Modo offline: registrar o service worker nunca pode quebrar o app.
+  try {
+    if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function () {});
+  } catch (e) { /* sem service worker: seguir online */ }
+</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+/* Preferências do aluno (paleta e estados vistos no simulador), guardadas só no aparelho. */
+import { CHAVE_PREFERENCIAS, PALETA_PADRAO, lerPreferencias, paletaAberta, verEstado } from "../dados/presentes.js";
+
+function armazenamentoLocal() {
+  try { return window.localStorage; } catch (e) { return null; }
+}
+
+let memoria = null;   // vale quando o armazenamento falta (modo privativo)
+function preferencias() {
+  let bruto = memoria;
+  try {
+    const a = armazenamentoLocal();
+    const t = a && a.getItem(CHAVE_PREFERENCIAS);
+    if (t !== null && t !== undefined) bruto = t;
+  } catch (e) { /* segue com a memória */ }
+  return lerPreferencias(bruto);
+}
+
+function guardarPreferencias(novas) {
+  memoria = JSON.stringify(novas);
+  try { const a = armazenamentoLocal(); if (a) a.setItem(CHAVE_PREFERENCIAS, memoria); } catch (e) { /* segue em memória */ }
+  return novas;
+}
+
+/* Põe a paleta na página. Paleta guardada que não está aberta volta à padrão. */
+function aplicarPaleta(id) {
+  const prefs = preferencias();
+  const valida = paletaAberta(id, prefs) ? id : PALETA_PADRAO;
+  const raiz = document.documentElement;
+  if (valida === PALETA_PADRAO) delete raiz.dataset.paleta;
+  else raiz.dataset.paleta = valida;
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute("content", valida === "antimateria" ? "#FFFFFF" : "#0B0B0D");
+  return valida;
+}
+
+function escolherPaleta(id) {
+  const prefs = preferencias();
+  if (!paletaAberta(id, prefs)) return false;
+  guardarPreferencias({ ...prefs, paleta: id });
+  aplicarPaleta(id);
+  document.dispatchEvent(new CustomEvent("paleta-mudou"));
+  return true;
+}
+
+/* O simulador avisa cada estado que o aluno viu; se uma paleta abrir, aparece o aviso. */
+function registrarEstadoVisto(estado) {
+  const r = verEstado(preferencias(), estado);
+  if (r.prefs.estadosVistos.length !== preferencias().estadosVistos.length) guardarPreferencias(r.prefs);
+  for (const p of r.abriram) avisar(`Presente novo: a paleta ${p.nome}! Escolha no Início para virar tudo ao contrário.`);
+  if (r.abriram.length) document.dispatchEvent(new CustomEvent("paleta-mudou"));
+  return r.abriram;
+}
+
+function avisar(texto) {
+  const el = document.getElementById("avisoPresente");
+  if (!el) return;
+  el.textContent = "";
+  setTimeout(() => { el.textContent = texto; }, 50);
+  clearTimeout(avisar.relogio);
+  avisar.relogio = setTimeout(() => { el.textContent = ""; }, 7000);
+}
+
+function aplicarPaletaGuardada() { return aplicarPaleta(preferencias().paleta); }
+
+export { preferencias, guardarPreferencias, aplicarPaleta, aplicarPaletaGuardada, escolherPaleta, registrarEstadoVisto, avisar, CHAVE_PREFERENCIAS };

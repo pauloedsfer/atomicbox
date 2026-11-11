@@ -1,0 +1,58 @@
+/* Super Atomic Box — as cores das paletas.
+
+   Matéria (padrão): preto metálico, letra branca, detalhes vermelhos. O metálico fica nos
+   cartões e nas bordas, nunca atrás de texto longo.
+   Antimatéria (presente de boas-vindas): o negativo, branco com letra preta, o mesmo vermelho
+   escurecido para manter o contraste.
+   Contraste do texto (AA): branco sobre #0B0B0D ≈ 19:1; vermelho #FF5A61 sobre #0B0B0D ≈ 6:1;
+   preto #111214 sobre #FAFAFB ≈ 18:1; vermelho #B3141C sobre branco ≈ 6,7:1. */
+
+:root {
+  --ab-fundo: #0B0B0D;
+  --ab-superficie: #17181C;
+  --ab-superficie-2: #202227;
+  --ab-metal: linear-gradient(150deg, #2C2E34 0%, #17181B 45%, #24262B 70%, #141518 100%);
+  --ab-brilho: linear-gradient(135deg, rgba(255, 255, 255, 0.10), transparent 35%, rgba(255, 255, 255, 0.04) 60%, transparent 80%);
+  --ab-borda: #3A3D45;
+  --ab-borda-metal: linear-gradient(135deg, #9DA2AA, #3E4148 50%, #868B93);
+  --ab-texto: #F4F4F5;
+  --ab-texto-suave: #B9BDC6;
+  --ab-vermelho: #FF5A61;          /* texto e detalhes sobre o preto */
+  --ab-vermelho-forte: #D7262E;    /* fundo de botão, com letra branca */
+  --ab-sobre-vermelho: #FFFFFF;
+  --ab-sidebar: #050506;
+  --ab-sidebar-texto: #E9EAEC;
+  --ab-barra: #0B0B0D;
+  --ab-foco: #FF5A61;
+  --ab-particula: #8EC8FF;         /* as partículas de água */
+  --ab-particula-borda: #3D7FC4;
+  --ab-caixa-sim: #0F1013;
+  --ab-sombra: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 10px 30px rgba(0, 0, 0, 0.45);
+  --ab-raio: 16px;
+  --ab-e1: 4px; --ab-e2: 8px; --ab-e3: 16px; --ab-e4: 24px; --ab-e5: 40px;
+  color-scheme: dark;
+}
+
+:root[data-paleta="antimateria"] {
+  --ab-fundo: #FAFAFB;
+  --ab-superficie: #FFFFFF;
+  --ab-superficie-2: #F1F2F4;
+  --ab-metal: linear-gradient(150deg, #FFFFFF 0%, #ECEDF0 45%, #F8F8FA 70%, #E4E6EA 100%);
+  --ab-brilho: linear-gradient(135deg, rgba(255, 255, 255, 0.9), transparent 35%, rgba(255, 255, 255, 0.5) 60%, transparent 80%);
+  --ab-borda: #C9CCD2;
+  --ab-borda-metal: linear-gradient(135deg, #D9DCE1, #9EA3AB 50%, #D0D3D8);
+  --ab-texto: #111214;
+  --ab-texto-suave: #474B54;
+  --ab-vermelho: #B3141C;
+  --ab-vermelho-forte: #B3141C;
+  --ab-sobre-vermelho: #FFFFFF;
+  --ab-sidebar: #F2F3F5;
+  --ab-sidebar-texto: #111214;
+  --ab-barra: #FFFFFF;
+  --ab-foco: #B3141C;
+  --ab-particula: #3D7FC4;
+  --ab-particula-borda: #1F4F86;
+  --ab-caixa-sim: #FFFFFF;
+  --ab-sombra: 0 1px 2px rgba(0, 0, 0, 0.06), 0 10px 30px rgba(0, 0, 0, 0.08);
+  color-scheme: light;
+}

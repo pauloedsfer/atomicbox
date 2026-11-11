@@ -1,0 +1,6 @@
+{
+  "name": "super-atomic-box",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "node testes/rodar.js" }
+}

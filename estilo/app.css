@@ -1,0 +1,175 @@
+/* Super Atomic Box — estilos da casca e das telas. As cores vêm de tokens.css (--ab-*). */
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--ab-fundo);
+  color: var(--ab-texto);
+  font: 400 1rem/1.6 Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+h1, h2, h3 { font-family: "Exo 2", Inter, Arial, sans-serif; font-style: italic; font-weight: 600; line-height: 1.2; margin: 0 0 0.5em; }
+h1 { font-size: clamp(1.7rem, 4vw, 2.3rem); }
+h2 { font-size: 1.35rem; margin-top: var(--ab-e5); }
+h3 { font-size: 1.1rem; }
+p { margin: 0 0 1em; }
+a { color: var(--ab-vermelho); }
+:focus-visible { outline: 3px solid var(--ab-foco); outline-offset: 2px; }
+[hidden] { display: none !important; }
+
+.pular { position: absolute; left: -999px; top: 8px; z-index: 50; background: var(--ab-superficie); color: var(--ab-texto); padding: 8px 12px; border-radius: 8px; }
+.pular:focus { left: 8px; }
+
+/* ---------------- menu lateral ---------------- */
+.sidebar {
+  position: fixed; inset: 0 auto 0 0; width: 272px; z-index: 30;
+  background: var(--ab-sidebar); color: var(--ab-sidebar-texto);
+  border-right: 1px solid var(--ab-borda);
+  display: flex; flex-direction: column; overflow-y: auto;
+}
+.sidebar-topo { display: flex; align-items: center; justify-content: space-between; padding: var(--ab-e3) var(--ab-e3) 0; }
+.marca { display: flex; align-items: center; gap: 10px; }
+.marca-nome { font-family: "Exo 2", Inter, sans-serif; font-style: italic; font-weight: 600; font-size: 1.15rem; line-height: 1.1; }
+.marca-super { display: block; color: var(--ab-vermelho); font-size: 0.85em; }
+.sidebar-lema { margin: var(--ab-e2) var(--ab-e3) var(--ab-e3); font-size: 0.85rem; opacity: 0.8; }
+.fechar { display: none; background: none; border: 1px solid var(--ab-borda); color: inherit; border-radius: 10px; width: 40px; height: 40px; font-size: 1rem; cursor: pointer; }
+.menu { display: flex; flex-direction: column; padding: 0 var(--ab-e2) var(--ab-e3); }
+.menu .grupo { margin: var(--ab-e3) var(--ab-e2) var(--ab-e1); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.65; }
+.menu .item {
+  display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 12px; border-radius: 10px;
+  background: none; border: 0; color: inherit; font: inherit; font-size: 0.97rem; text-align: left; text-decoration: none; cursor: pointer;
+}
+.menu .item:hover { background: rgba(127, 127, 127, 0.14); }
+.menu .item[aria-current="page"] { background: rgba(127, 127, 127, 0.18); box-shadow: inset 3px 0 0 var(--ab-vermelho); }
+.menu .glifo { width: 24px; text-align: center; font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 0.9rem; flex: none; }
+.menu .rotulo small { display: block; font-size: 0.75rem; opacity: 0.7; }
+.menu .em-breve { cursor: default; opacity: 0.55; }
+.menu .em-breve:hover { background: none; }
+.menu .atual { cursor: default; }
+.sidebar-rodape { margin-top: auto; padding: var(--ab-e3); font-size: 0.8rem; opacity: 0.75; border-top: 1px solid var(--ab-borda); }
+.sidebar-rodape p { margin: 0 0 4px; }
+
+.cortina { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.55); z-index: 25; }
+
+/* ---------------- barra do topo ---------------- */
+.barra {
+  position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: var(--ab-e3);
+  min-height: 56px; padding: 0 var(--ab-e3) 0 calc(272px + var(--ab-e4));
+  background: var(--ab-barra); border-bottom: 1px solid var(--ab-borda);
+}
+.titulo-pagina { font-family: "Exo 2", Inter, sans-serif; font-style: italic; font-weight: 600; font-size: 1.1rem; }
+.menu-btn { display: none; width: 44px; height: 44px; background: none; border: 1px solid var(--ab-borda); border-radius: 10px; cursor: pointer; position: relative; color: var(--ab-texto); }
+.menu-btn span, .menu-btn span::before, .menu-btn span::after { position: absolute; left: 11px; width: 20px; height: 2px; background: currentColor; content: ""; }
+.menu-btn span { top: 21px; }
+.menu-btn span::before { top: -6px; left: 0; }
+.menu-btn span::after { top: 6px; left: 0; }
+
+main { padding: var(--ab-e4) var(--ab-e4) var(--ab-e5) calc(272px + var(--ab-e4)); outline: none; }
+main > section { max-width: 920px; }
+
+@media (max-width: 899px) {
+  .sidebar { transform: translateX(-100%); transition: transform 0.2s ease; width: min(300px, 86vw); }
+  .sidebar.aberta { transform: none; }
+  .fechar, .menu-btn { display: inline-block; }
+  .barra { padding-left: var(--ab-e3); }
+  main { padding: var(--ab-e3) var(--ab-e3) var(--ab-e5); }
+}
+@media (prefers-reduced-motion: reduce) { .sidebar { transition: none; } }
+
+/* ---------------- peças comuns ---------------- */
+.intro { color: var(--ab-texto-suave); font-size: 1.05rem; max-width: 680px; }
+.ajuda { color: var(--ab-texto-suave); font-size: 0.92rem; }
+.sem-margem { margin: 0; }
+.cartao {
+  position: relative; background: var(--ab-metal); border-radius: var(--ab-raio); padding: var(--ab-e4);
+  box-shadow: var(--ab-sombra); border: 1px solid var(--ab-borda); margin: var(--ab-e3) 0;
+}
+.cartao::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: var(--ab-brilho); pointer-events: none; }
+.cartao > * { position: relative; }
+.botao {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 18px;
+  border-radius: 999px; border: 1px solid transparent; background: var(--ab-vermelho-forte); color: var(--ab-sobre-vermelho);
+  font: inherit; font-weight: 500; cursor: pointer; text-decoration: none;
+}
+.botao:hover { filter: brightness(1.08); }
+.botao.secundario { background: transparent; color: var(--ab-texto); border-color: var(--ab-borda); }
+.botao.secundario:hover { border-color: var(--ab-vermelho); }
+.botao[aria-pressed="true"] { border-color: var(--ab-vermelho); box-shadow: inset 0 0 0 1px var(--ab-vermelho); }
+.acoes { display: flex; flex-wrap: wrap; gap: var(--ab-e2); }
+
+/* ---------------- início ---------------- */
+.boas-vindas { display: grid; grid-template-columns: auto 1fr; gap: var(--ab-e4); align-items: center; }
+.boas-vindas img { width: 120px; height: 120px; filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.45)); }
+.balao {
+  position: relative; background: var(--ab-superficie-2); border: 1px solid var(--ab-borda); border-radius: 18px; padding: var(--ab-e3) var(--ab-e4);
+}
+.balao::before { content: ""; position: absolute; left: -9px; top: 28px; width: 16px; height: 16px; background: inherit; border-left: 1px solid var(--ab-borda); border-bottom: 1px solid var(--ab-borda); transform: rotate(45deg); }
+.balao p:last-child { margin: 0; }
+@media (max-width: 560px) {
+  .boas-vindas { grid-template-columns: 1fr; }
+  .boas-vindas img { width: 96px; height: 96px; }
+  .balao::before { left: 40px; top: -9px; transform: rotate(135deg); }
+}
+.escada { list-style: none; padding: 0; margin: var(--ab-e3) 0 0; counter-reset: degrau; display: grid; gap: var(--ab-e2); }
+.escada li {
+  counter-increment: degrau; display: grid; grid-template-columns: 40px 1fr auto; gap: var(--ab-e3); align-items: center;
+  padding: 12px var(--ab-e3); border-radius: 12px; background: var(--ab-superficie); border: 1px solid var(--ab-borda);
+}
+.escada li::before {
+  content: counter(degrau); display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%;
+  border: 2px solid var(--ab-vermelho); color: var(--ab-vermelho); font-weight: 600;
+}
+.escada strong { display: block; }
+.escada span { color: var(--ab-texto-suave); font-size: 0.9rem; }
+.escada .selo { font-size: 0.8rem; color: var(--ab-texto-suave); white-space: nowrap; }
+.escada .botao { min-height: 40px; padding: 8px 14px; }
+@media (max-width: 560px) { .escada li { grid-template-columns: 36px 1fr; } .escada li > :last-child { grid-column: 2; justify-self: start; } }
+
+.paletas { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: var(--ab-e3); margin-top: var(--ab-e3); }
+.paleta {
+  display: grid; grid-template-columns: 56px 1fr; gap: var(--ab-e3); align-items: center; text-align: left;
+  padding: var(--ab-e3); border-radius: 14px; border: 1px solid var(--ab-borda); background: var(--ab-superficie); color: var(--ab-texto); font: inherit; cursor: pointer;
+}
+.paleta[aria-pressed="true"] { border-color: var(--ab-vermelho); box-shadow: inset 0 0 0 1px var(--ab-vermelho); }
+.paleta[aria-disabled="true"] { cursor: default; opacity: 0.75; }
+.paleta-amostra { width: 56px; height: 56px; border-radius: 12px; border: 1px solid var(--ab-borda); display: grid; place-items: center; font-family: "Exo 2", sans-serif; font-style: italic; font-weight: 600; }
+.amostra-materia { background: linear-gradient(150deg, #2C2E34, #0B0B0D); color: #FFFFFF; box-shadow: inset 0 -6px 0 #D7262E; }
+.amostra-antimateria { background: linear-gradient(150deg, #FFFFFF, #E4E6EA); color: #111214; box-shadow: inset 0 -6px 0 #B3141C; }
+.paleta strong { display: block; }
+.paleta small { color: var(--ab-texto-suave); }
+
+/* ---------------- estados da matéria ---------------- */
+.copo-grade { display: grid; grid-template-columns: 180px 1fr; gap: var(--ab-e4); align-items: center; }
+.copo-grade svg { width: 180px; height: auto; }
+@media (max-width: 560px) { .copo-grade { grid-template-columns: 1fr; } .copo-grade svg { width: 140px; } }
+
+.simulador { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: var(--ab-e4); align-items: start; }
+@media (max-width: 760px) { .simulador { grid-template-columns: 1fr; } }
+.caixa-sim { width: 100%; height: auto; display: block; border-radius: 12px; background: var(--ab-caixa-sim); border: 2px solid var(--ab-borda); }
+.particula { fill: var(--ab-particula); stroke: var(--ab-particula-borda); stroke-width: 1.5; }
+.termometro { font-family: "Exo 2", sans-serif; font-style: italic; font-weight: 600; font-size: 2.4rem; line-height: 1; margin: 0; }
+.selo-estado {
+  display: inline-block; margin: var(--ab-e2) 0 var(--ab-e3); padding: 4px 12px; border-radius: 999px;
+  border: 1px solid var(--ab-vermelho); color: var(--ab-vermelho); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.85rem;
+}
+.controle-temperatura label { display: block; font-weight: 500; margin-bottom: var(--ab-e1); }
+.controle-temperatura input[type="range"] { width: 100%; accent-color: var(--ab-vermelho-forte); min-height: 32px; }
+.escala { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--ab-texto-suave); }
+.descricao-sim { margin-top: var(--ab-e3); }
+.aconteceu { min-height: 1.6em; font-weight: 600; color: var(--ab-vermelho); }
+
+.mudancas { list-style: none; padding: 0; margin: var(--ab-e3) 0 0; display: grid; gap: var(--ab-e2); grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
+.mudancas li { padding: var(--ab-e3); border-radius: 12px; background: var(--ab-superficie); border: 1px solid var(--ab-borda); }
+.mudancas li.agora { border-color: var(--ab-vermelho); box-shadow: inset 0 0 0 1px var(--ab-vermelho); }
+.mudancas strong { display: block; }
+.mudancas .seta { color: var(--ab-vermelho); font-size: 0.9rem; }
+.mudancas p { margin: 4px 0 0; color: var(--ab-texto-suave); font-size: 0.92rem; }
+
+.ponte { border-left: 4px solid var(--ab-vermelho); }
+
+/* ---------------- aviso de presente ---------------- */
+.aviso-presente:empty { display: none; }
+.aviso-presente {
+  position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 40; max-width: min(92vw, 520px);
+  padding: 14px 20px; border-radius: 14px; background: var(--ab-vermelho-forte); color: #FFFFFF; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4); font-weight: 500;
+}
