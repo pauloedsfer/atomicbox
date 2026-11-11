@@ -316,15 +316,56 @@ main > section { max-width: 920px; }
 .peca[aria-pressed="true"] { border-color: var(--ab-vermelho); box-shadow: inset 0 0 0 1px var(--ab-vermelho); }
 .desenho-vidraria { width: 64px; height: 77px; color: var(--ab-texto); }
 .desenho-vidraria .traco { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
-.desenho-vidraria .liquido { fill: var(--ab-particula); opacity: 0.55; stroke: none; }
-.desenho-vidraria .oleo { fill: #E9B824; opacity: 0.6; stroke: none; }
-.desenho-vidraria .papel { fill: #F4F4F5; opacity: 0.35; stroke: none; }
-.desenho-vidraria .chama { fill: #FF8A3D; opacity: 0.85; }
+.desenho-vidraria .vidro { fill: rgba(170, 210, 255, 0.10); stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; }
+.desenho-vidraria .brilho { fill: none; stroke: #FFFFFF; stroke-width: 2.4; stroke-linecap: round; opacity: 0.55; }
+.desenho-vidraria .liquido { fill: var(--ab-particula); opacity: 0.6; stroke: none; }
+.desenho-vidraria .oleo { fill: #E9B824; opacity: 0.7; stroke: none; }
+.desenho-vidraria .marca { fill: none; stroke: #E3262E; stroke-width: 2.4; stroke-linecap: round; }
+.desenho-vidraria .sombra { fill: #000000; opacity: 0.28; }
+.desenho-vidraria .bolha { fill: #FFFFFF; opacity: 0.75; }
+.desenho-vidraria .rolha { fill: #B98A52; stroke: #6B4423; stroke-width: 1; }
+.desenho-vidraria .torneira { fill: #3D7FC4; stroke: #17406E; stroke-width: 1; }
+.desenho-vidraria .gota-vid { fill: var(--ab-particula); stroke: #17406E; stroke-width: 0.6; }
+.desenho-vidraria .base { fill: rgba(170, 210, 255, 0.22); stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; }
+.desenho-vidraria .papel { fill: #F4F1EA; opacity: 0.85; stroke: #B9B2A3; stroke-width: 0.8; }
+.desenho-vidraria .chama { fill: #FF8A3D; stroke: #C2410C; stroke-width: 0.8; }
 .desenho-vidraria .chama-dentro { fill: #5BA4F0; }
-.desenho-vidraria .ceramica { fill: #B9BDC6; opacity: 0.6; }
-.desenho-vidraria .secante { fill: #5BA4F0; opacity: 0.4; }
-.desenho-vidraria .madeira { fill: #C68A4E; stroke: #6B4423; stroke-width: 1; }
-.desenho-vidraria .seta-agua { fill: none; stroke: var(--ab-particula); stroke-width: 3; stroke-linecap: round; }
+.desenho-vidraria .latao { fill: #C9A227; stroke: #6B5310; stroke-width: 1.2; }
+.desenho-vidraria .metal { fill: #5B6068; stroke: #1E1F24; stroke-width: 1.2; stroke-linejoin: round; }
+.desenho-vidraria .metal-claro { fill: #8A8F98; stroke: #1E1F24; stroke-width: 1.4; }
+.desenho-vidraria .ferro { fill: none; stroke: #7A7F88; stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; }
+.desenho-vidraria .aro { fill: none; stroke: #7A7F88; stroke-width: 3.4; }
+.desenho-vidraria .furo { fill: #1E1F24; }
+.desenho-vidraria .mangueira { fill: none; stroke: #C2414A; stroke-width: 4; stroke-linecap: round; }
+.desenho-vidraria .ceramica { fill: #E8E2D6; stroke: #A79F8F; stroke-width: 1; }
+.desenho-vidraria .porcelana { fill: #F4F1EA; stroke: #8C8577; stroke-width: 1.4; stroke-linejoin: round; }
+.desenho-vidraria .porcelana-dentro { fill: #D9D3C6; stroke: #8C8577; stroke-width: 1.2; }
+.desenho-vidraria .porcelana-borda { fill: none; stroke: #F4F1EA; stroke-width: 4; stroke-linecap: round; }
+.desenho-vidraria .pistilo { fill: none; stroke: #F4F1EA; stroke-width: 8; stroke-linecap: round; }
+.desenho-vidraria .po { fill: #F4F1EA; stroke: #A79F8F; stroke-width: 0.8; }
+.desenho-vidraria .vapor-vid { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; opacity: 0.5; }
+.desenho-vidraria .bastao-vidro { fill: none; stroke: #BFE0FF; stroke-width: 5; stroke-linecap: round; opacity: 0.8; }
+.desenho-vidraria .plastico { fill: rgba(255, 255, 255, 0.18); stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; }
+.desenho-vidraria .canudo { fill: none; stroke: #3D7FC4; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.desenho-vidraria .secante { fill: #5BA4F0; opacity: 0.55; }
+.desenho-vidraria .madeira { fill: #C68A4E; stroke: #6B4423; stroke-width: 1.2; stroke-linejoin: round; }
+.desenho-vidraria .seta-agua { fill: none; stroke: var(--ab-particula); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+:root[data-paleta="antimateria"] .desenho-vidraria .vidro { fill: rgba(61, 127, 196, 0.10); }
+:root[data-paleta="antimateria"] .desenho-vidraria .brilho { stroke: #FFFFFF; opacity: 0.9; }
+:root[data-paleta="antimateria"] .desenho-vidraria .porcelana-borda, :root[data-paleta="antimateria"] .desenho-vidraria .pistilo { stroke: #C9C2B3; }
+:root[data-paleta="antimateria"] .desenho-vidraria .bastao-vidro { stroke: #7FB2E6; }
+/* Na ficha e no desafio (desenho grande), três detalhes se mexem. */
+.desenho-vidraria .chama, .desenho-vidraria .gota-vid, .desenho-vidraria .bolha { transform-box: fill-box; transform-origin: 50% 100%; }
+@media (prefers-reduced-motion: no-preference) {
+  .ficha-grade .chama, .desafio-grade .chama { animation: vid-chama 0.5s ease-in-out infinite alternate; }
+  .ficha-grade .gota-vid, .desafio-grade .gota-vid { animation: vid-gota 1.6s ease-in infinite; }
+  .ficha-grade .bolha, .desafio-grade .bolha { animation: vid-bolha 1.8s ease-in infinite; }
+  .ficha-grade .bolha.b2, .desafio-grade .bolha.b2 { animation-delay: -0.6s; }
+  .ficha-grade .bolha.b3, .desafio-grade .bolha.b3 { animation-delay: -1.2s; }
+}
+@keyframes vid-chama { from { transform: scale(1, 1); } to { transform: scale(0.92, 1.08); } }
+@keyframes vid-gota { 0%, 55% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(9px); opacity: 0; } }
+@keyframes vid-bolha { 0% { transform: translateY(4px); opacity: 0; } 30% { opacity: 0.8; } 100% { transform: translateY(-14px); opacity: 0; } }
 .ficha-grade { display: grid; grid-template-columns: 120px 1fr; gap: var(--ab-e4); align-items: start; }
 .ficha-grade .desenho-vidraria { width: 120px; height: 144px; }
 @media (max-width: 560px) { .ficha-grade { grid-template-columns: 1fr; } .ficha-grade .desenho-vidraria { width: 96px; height: 115px; } }
