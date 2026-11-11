@@ -173,3 +173,90 @@ main > section { max-width: 920px; }
   position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 40; max-width: min(92vw, 520px);
   padding: 14px 20px; border-radius: 14px; background: var(--ab-vermelho-forte); color: #FFFFFF; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4); font-weight: 500;
 }
+
+/* ---------------- modelos atômicos ---------------- */
+.linha-tempo { display: flex; gap: var(--ab-e2); overflow-x: auto; padding: var(--ab-e1) 2px var(--ab-e2); margin-top: var(--ab-e3); }
+.marco {
+  flex: 1 0 128px; display: flex; flex-direction: column; gap: 2px; text-align: left; padding: 10px 12px; border-radius: 12px;
+  background: var(--ab-superficie); border: 1px solid var(--ab-borda); color: var(--ab-texto); font: inherit; cursor: pointer; position: relative;
+}
+.marco::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: -1px; height: 3px; border-radius: 3px; background: transparent; }
+.marco[aria-selected="true"] { border-color: var(--ab-vermelho); }
+.marco[aria-selected="true"]::after { background: var(--ab-vermelho); }
+.marco-ano { font-size: 0.78rem; color: var(--ab-vermelho); font-weight: 600; }
+.marco-nome { font-size: 0.92rem; }
+.modelo-grade { display: grid; grid-template-columns: 150px 1fr; gap: var(--ab-e4); align-items: start; }
+.desenho-modelo { width: 150px; height: 150px; color: var(--ab-texto); }
+@media (max-width: 560px) { .modelo-grade { grid-template-columns: 1fr; } .desenho-modelo { width: 120px; height: 120px; } }
+.explica-falta { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ab-e3); margin-top: var(--ab-e3); }
+.explica-falta > div { padding: var(--ab-e3); border-radius: 12px; background: var(--ab-superficie); border: 1px solid var(--ab-borda); }
+.explica-falta > div:last-child { border-left: 4px solid var(--ab-vermelho); }
+.explica-falta strong { display: block; margin-bottom: 4px; }
+@media (max-width: 640px) { .explica-falta { grid-template-columns: 1fr; } }
+
+.folha-grade { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: var(--ab-e4); margin-top: var(--ab-e3); align-items: start; }
+@media (max-width: 760px) { .folha-grade { grid-template-columns: 1fr; } }
+.cena-folha { width: 100%; height: auto; background: var(--ab-caixa-sim); border: 2px solid var(--ab-borda); border-radius: 12px; }
+.fonte-alfa { fill: var(--ab-borda); }
+.folha-ouro { fill: #D4A93A; opacity: 0.85; }
+.nucleo-ouro { fill: #7A5A10; }
+.alfa { fill: none; stroke-width: 1.2; opacity: 0.75; }
+.alfa-direto { stroke: var(--ab-particula); opacity: 0.35; }
+.alfa-desviou { stroke: #F4B23E; }
+.alfa-voltou { stroke: var(--ab-vermelho); stroke-width: 2; opacity: 1; }
+.placar-folha { list-style: none; padding: 0; margin: 0 0 var(--ab-e3); display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--ab-e2); }
+.placar-folha li { padding: 10px; border-radius: 12px; background: var(--ab-superficie); border: 1px solid var(--ab-borda); text-align: center; }
+.placar-folha strong { display: block; font-size: 1.5rem; font-family: "Exo 2", sans-serif; font-style: italic; }
+.placar-folha span { font-size: 0.8rem; color: var(--ab-texto-suave); }
+
+/* ---------------- montador de átomo ---------------- */
+.montador-grade { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: var(--ab-e4); align-items: start; }
+@media (max-width: 760px) { .montador-grade { grid-template-columns: 1fr; } }
+.desenho-bohr { width: 100%; max-width: 300px; height: auto; display: block; margin: 0 auto; background: var(--ab-caixa-sim); border-radius: 50%; border: 2px solid var(--ab-borda); }
+.camada-bohr { fill: none; stroke: var(--ab-texto-suave); stroke-width: 1; stroke-dasharray: 3 4; opacity: 0.7; }
+.proton, .bolinha.proton { fill: #E3262E; background: #E3262E; stroke: #7A0D12; stroke-width: 1; }
+.neutron, .bolinha.neutron { fill: #9AA0A8; background: #9AA0A8; stroke: #4A4E55; stroke-width: 1; }
+.eletron, .bolinha.eletron { fill: #5BA4F0; background: #5BA4F0; stroke: #1F5A99; stroke-width: 1; }
+.cartao-elemento { display: flex; align-items: center; gap: var(--ab-e3); margin-top: var(--ab-e3); justify-content: center; }
+.notacao { display: grid; grid-template-columns: auto auto auto; grid-template-rows: auto auto; align-items: center; font-family: "Exo 2", sans-serif; font-style: italic; line-height: 1; }
+.notacao-a { grid-column: 1; grid-row: 1; font-size: 1rem; text-align: right; }
+.notacao-z { grid-column: 1; grid-row: 2; font-size: 1rem; text-align: right; }
+.notacao-simbolo { grid-column: 2; grid-row: 1 / 3; font-size: 3rem; font-weight: 600; padding: 0 4px; }
+.notacao-carga { grid-column: 3; grid-row: 1; font-size: 1.3rem; color: var(--ab-vermelho); }
+.nome-elemento { display: block; font-family: "Exo 2", sans-serif; font-style: italic; font-weight: 600; font-size: 1.3rem; }
+.linha-contador { display: grid; grid-template-columns: 18px 1fr 44px 44px 44px; align-items: center; gap: var(--ab-e2); padding: 10px 0; border-bottom: 1px solid var(--ab-borda); }
+.bolinha { width: 16px; height: 16px; border-radius: 50%; display: block; border: 1px solid rgba(0, 0, 0, 0.3); }
+.contador-nome small { display: block; }
+.contador-valor { text-align: center; font-family: "Exo 2", sans-serif; font-style: italic; font-weight: 600; font-size: 1.4rem; }
+.botao-redondo { width: 44px; min-height: 44px; padding: 0; font-size: 1.3rem; }
+.botao:disabled { opacity: 0.4; cursor: not-allowed; filter: none; }
+.aviso-instavel { color: var(--ab-vermelho); font-weight: 500; }
+.missoes { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--ab-e2); }
+.missoes li { display: grid; grid-template-columns: 28px 1fr; gap: var(--ab-e2); padding: 12px var(--ab-e3); border-radius: 12px; background: var(--ab-superficie); border: 1px solid var(--ab-borda); }
+.missoes li.feita { border-color: var(--ab-vermelho); }
+.marca-missao { color: var(--ab-vermelho); font-weight: 700; }
+.lista-guardar { margin: 0; padding-left: 1.2em; }
+.lista-guardar li { margin-bottom: 6px; }
+
+/* ---------------- distribuição eletrônica ---------------- */
+.escolha-elemento label { display: block; font-weight: 500; margin-bottom: var(--ab-e1); }
+.linha-elemento { display: flex; gap: var(--ab-e2); align-items: center; }
+.linha-elemento select {
+  flex: 1; min-height: 44px; padding: 8px 12px; border-radius: 10px; font: inherit;
+  background: var(--ab-superficie); color: var(--ab-texto); border: 1px solid var(--ab-borda);
+}
+.pauling-grade { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--ab-e4); margin-top: var(--ab-e3); align-items: start; }
+@media (max-width: 760px) { .pauling-grade { grid-template-columns: 1fr; } }
+.diagrama-pauling { width: 100%; max-width: 380px; height: auto; display: block; }
+.diagrama-pauling .rotulo-camada { fill: var(--ab-texto-suave); font-size: 13px; font-weight: 600; }
+.diagrama-pauling .diagonal { stroke: var(--ab-vermelho); stroke-width: 1.6; opacity: 0.55; }
+.diagrama-pauling .seta-ponta { fill: var(--ab-vermelho); opacity: 0.8; }
+.diagrama-pauling .celula rect { fill: var(--ab-superficie); stroke: var(--ab-borda); stroke-width: 1.2; }
+.diagrama-pauling .celula text { fill: var(--ab-texto-suave); font-size: 14px; font-family: Inter, sans-serif; }
+.diagrama-pauling .celula.parcial rect, .diagrama-pauling .celula.cheia rect { fill: var(--ab-superficie-2); stroke: var(--ab-particula); }
+.diagrama-pauling .celula.parcial text, .diagrama-pauling .celula.cheia text { fill: var(--ab-texto); font-weight: 600; }
+.diagrama-pauling .celula.atual rect { stroke: var(--ab-vermelho); stroke-width: 2.5; }
+.distribuicao-texto { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 1.05rem; line-height: 1.8; word-spacing: 0.2em; margin: var(--ab-e2) 0; }
+.dados-dist { display: grid; grid-template-columns: auto 1fr; gap: 6px var(--ab-e3); margin: 0; }
+.dados-dist dt { color: var(--ab-texto-suave); font-size: 0.9rem; }
+.dados-dist dd { margin: 0; font-weight: 600; }

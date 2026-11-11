@@ -12,7 +12,7 @@ teste("o service worker lista exatamente os arquivos que o app usa, e todos exis
   for (const f of listados) verdadeiro(existsSync(new URL(f, raiz)), `não existe: ${f}`);
   // Todo módulo JS e CSS do app, toda fonte e toda imagem da marca estão no cache.
   const usados = new Set(["index.html", "manifest.webmanifest", "app.js", "rotas.js"]);
-  for (const pasta of ["estilo", "motor", "dados", "telas", "marca", "fontes"]) {
+  for (const pasta of ["estilo", "motor", "dados", "telas", "marca", "fontes", "comum"]) {
     for (const f of readdirSync(new URL(pasta + "/", raiz))) usados.add(`${pasta}/${f}`);
   }
   for (const u of usados) verdadeiro(listados.includes(u), `falta no sw.js: ${u}`);

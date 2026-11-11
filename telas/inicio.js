@@ -6,9 +6,9 @@ import { preferencias, escolherPaleta } from "./aluno.js";
 const ESCADA = [
   { nome: "Estados da matéria", texto: "O que muda no gelo quando ele derrete?", tela: "tela-materia" },
   { nome: "Substâncias e misturas", texto: "Água pura e água com sal são a mesma coisa?" },
-  { nome: "Modelos atômicos", texto: "Como enxergar o que ninguém vê?" },
-  { nome: "Partículas do átomo", texto: "Por que o carbono é carbono?" },
-  { nome: "Distribuição eletrônica", texto: "Por que os elétrons ficam em camadas?" },
+  { nome: "Modelos atômicos", texto: "Como enxergar o que ninguém vê?", tela: "tela-modelos" },
+  { nome: "Partículas do átomo", texto: "Por que o carbono é carbono?", tela: "tela-atomo" },
+  { nome: "Distribuição eletrônica", texto: "Por que os elétrons ficam em camadas?", tela: "tela-distribuicao" },
   { nome: "Tabela periódica", texto: "Por que a tabela tem esse formato?" },
   { nome: "Ligações químicas", texto: "Por que o sal derrete a 801 °C e o gelo a 0 °C?" },
 ];
@@ -30,7 +30,7 @@ function montar(raiz, app) {
       ]),
     ]),
     criar("h2", { textContent: "A escada desta caixa" }),
-    criar("p", { className: "ajuda", textContent: "Os degraus seguem a ordem da história: cada um responde a pergunta que o anterior deixou. Os próximos estão sendo montados." }),
+    criar("p", { className: "ajuda", textContent: "Os degraus seguem a ordem da história: cada um responde a pergunta que o anterior deixou. Os que faltam estão sendo montados." }),
     criar("ol", { className: "escada" }, ESCADA.map((d) => {
       const fim = d.tela
         ? criar("button", { type: "button", className: "botao", textContent: "Abrir", onclick: () => app.mostrarTela(d.tela) })

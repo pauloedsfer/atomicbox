@@ -4,10 +4,13 @@ import { TELAS, HASH_DE, TELA_PADRAO, telaDoHash } from "./rotas.js";
 import * as inicio from "./telas/inicio.js";
 import * as materia from "./telas/materia.js";
 import * as sobre from "./telas/sobre.js";
+import * as modelos from "./telas/modelos.js";
+import * as atomo from "./telas/atomo.js";
+import * as distribuicao from "./telas/distribuicao.js";
 import { aplicarPaletaGuardada, CHAVE_PREFERENCIAS } from "./telas/aluno.js";
 
-const TITULOS = { "tela-inicio": "Início", "tela-materia": "Estados da matéria", "tela-sobre": "Sobre" };
-const MODULOS = { "tela-inicio": inicio, "tela-materia": materia, "tela-sobre": sobre };
+const TITULOS = { "tela-inicio": "Início", "tela-materia": "Estados da matéria", "tela-modelos": "Modelos atômicos", "tela-atomo": "Partículas do átomo", "tela-distribuicao": "Distribuição eletrônica", "tela-sobre": "Sobre" };
+const MODULOS = { "tela-inicio": inicio, "tela-materia": materia, "tela-modelos": modelos, "tela-atomo": atomo, "tela-distribuicao": distribuicao, "tela-sobre": sobre };
 const CHAVE_TELA = "atomicbox.tela.v1";
 
 aplicarPaletaGuardada();   // antes de desenhar a primeira tela, para não piscar a paleta padrão
