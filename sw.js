@@ -5,7 +5,7 @@
    - Recursos pesados e estáveis (fontes, ícones, marca): cache primeiro.
 */
 
-const VERSAO = "atomicbox-v0.9.0";
+const VERSAO = "atomicbox-v0.9.1";
 
 const ARQUIVOS = [
   "./", "./index.html", "./manifest.webmanifest",

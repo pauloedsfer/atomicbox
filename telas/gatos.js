@@ -3,7 +3,7 @@
    O Bohr é o gato preto da Atomic Box: cabeça grande, olhos amarelos, bigodes, coleira vermelha
    com um pingente dourado. Cada pose tem a sua postura e os seus objetos, e as partes que se
    mexem levam uma classe (rabo, olhos, bolinha, órbita...) que o CSS anima: o gato pisca, balança
-   o rabo, bate na bolinha. Quem pede menos movimento (prefers-reduced-motion) vê tudo parado.
+   o rabo, bate na bolinha. Com as animações desligadas (ver telas/aluno.js), fica tudo parado.
 
    Três jeitos de o gato aparecer nas telas:
    - gatoEscondido(): só as orelhas e os olhos na beira de um cartão; um toque e ele sobe com uma
@@ -279,7 +279,7 @@ function gatoEscondido({ pose = "sentado", falas = [], onde = "direita" }) {
   const voltar = criar("button", { type: "button", className: "gato-voltar", textContent: "▼" });
   voltar.setAttribute("aria-label", "Esconder o gato de novo");
   const balao = criar("div", { className: "balao-gato", hidden: true }, [frase, voltar]);
-  const botao = criar("button", { type: "button", className: `gato-escondido ${onde}` }, [desenhoDoGato(pose)]);
+  const botao = criar("button", { type: "button", className: `gato-escondido ${onde} pose-${pose}` }, [desenhoDoGato(pose)]);
   botao.setAttribute("aria-label", "Gato escondido: toque para uma curiosidade");
   botao.setAttribute("aria-expanded", "false");
   const caixa = criar("div", { className: `esconderijo ${onde}` }, [balao, botao]);

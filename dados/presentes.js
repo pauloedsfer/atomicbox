@@ -19,7 +19,7 @@ const ESTADOS = ["solido", "liquido", "gasoso"];
    professor; `linkTurma`: o link da planilha da turma; `nome`: o nome do certificado. Tudo fica
    só no aparelho (o nome nunca vai no texto para o professor). */
 function lerPreferencias(bruto) {
-  const padrao = { paleta: PALETA_PADRAO, estadosVistos: [], avatar: null, apelido: "", codigo: "", linkTurma: "", nome: "" };
+  const padrao = { paleta: PALETA_PADRAO, estadosVistos: [], avatar: null, apelido: "", codigo: "", linkTurma: "", nome: "", movimento: "auto" };
   try {
     const d = JSON.parse(bruto);
     if (!d || typeof d !== "object" || Array.isArray(d)) return padrao;
@@ -30,6 +30,7 @@ function lerPreferencias(bruto) {
       paleta, estadosVistos: vistos,
       avatar: d.avatar && typeof d.avatar === "object" && !Array.isArray(d.avatar) ? d.avatar : null,
       apelido: texto(d.apelido, 18), codigo: texto(d.codigo, 20), linkTurma: texto(d.linkTurma, 300), nome: texto(d.nome, 60),
+      movimento: ["sim", "nao"].includes(d.movimento) ? d.movimento : "auto",
     };
   } catch (e) {
     return padrao;

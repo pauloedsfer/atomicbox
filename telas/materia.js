@@ -15,7 +15,7 @@ import {
   CAIXA, RAIO, TEMPERATURA_MINIMA, TEMPERATURA_MAXIMA, MUDANCAS, NOMES_DOS_ESTADOS,
   estadoDaAgua, mudancasEntre, descricao, criarParticulas, passo, formatar,
 } from "../motor/particulas.js";
-import { registrarEstadoVisto } from "./aluno.js";
+import { registrarEstadoVisto, movimentoLigado } from "./aluno.js";
 
 const PASSOS_SEM_ANIMACAO = 260;   // com a animação pausada, quantos passos levam ao retrato final
 const ATALHOS = [
@@ -40,7 +40,7 @@ function copoComGelo() {
 }
 
 function montar(raiz, app) {
-  const pedeMenosMovimento = typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const pedeMenosMovimento = !movimentoLigado();
   let temperatura = 25;
   let pausado = pedeMenosMovimento;
   let visivel = false;

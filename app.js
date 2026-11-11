@@ -17,12 +17,13 @@ import * as meuAvatar from "./telas/meu_avatar.js";
 import { lerAvatar } from "./dados/avatar.js";
 import { indiceDoTitulo } from "./dados/titulos.js";
 import { svgDoAvatar } from "./telas/avatar.js";
-import { aplicarPaletaGuardada, CHAVE_PREFERENCIAS, progressoDoAluno, preferencias, paletasAbertas, cronometro } from "./telas/aluno.js";
+import { aplicarMovimento, aplicarPaletaGuardada, CHAVE_PREFERENCIAS, progressoDoAluno, preferencias, paletasAbertas, cronometro } from "./telas/aluno.js";
 
 const TITULOS = { "tela-inicio": "Início", "tela-materia": "Estados da matéria", "tela-substancias": "Substâncias e misturas", "tela-tabela": "Tabela periódica", "tela-ligacoes": "Ligações químicas", "tela-modelos": "Modelos atômicos", "tela-atomo": "Partículas do átomo", "tela-distribuicao": "Distribuição eletrônica", "tela-vidrarias": "Vidrarias e equipamentos", "tela-treino": "Treino", "tela-progresso": "Progresso", "tela-avatar": "Meu avatar", "tela-sobre": "Sobre" };
 const MODULOS = { "tela-inicio": inicio, "tela-materia": materia, "tela-substancias": substancias, "tela-tabela": tabela, "tela-ligacoes": ligacoes, "tela-modelos": modelos, "tela-atomo": atomo, "tela-distribuicao": distribuicao, "tela-vidrarias": vidrarias, "tela-treino": treino, "tela-progresso": progresso, "tela-avatar": meuAvatar, "tela-sobre": sobre };
 const CHAVE_TELA = "atomicbox.tela.v1";
 
+aplicarMovimento();
 aplicarPaletaGuardada();   // antes de desenhar a primeira tela, para não piscar a paleta padrão
 const montadas = new Set();
 const $ = (s) => document.querySelector(s);
@@ -110,7 +111,7 @@ window.addEventListener("hashchange", () => {
   if (tela) mostrarTela(tela, true);
 });
 window.addEventListener("storage", (e) => {
-  if (e.key === CHAVE_PREFERENCIAS) { aplicarPaletaGuardada(); atualizarAvatarBarra(); document.dispatchEvent(new CustomEvent("paleta-mudou")); }
+  if (e.key === CHAVE_PREFERENCIAS) { aplicarMovimento(); aplicarPaletaGuardada(); atualizarAvatarBarra(); document.dispatchEvent(new CustomEvent("paleta-mudou")); }
 });
 document.querySelector(".pular").addEventListener("click", (e) => { e.preventDefault(); $("#conteudo").focus(); });
 $("#avatarBarra").addEventListener("click", () => irPara("tela-avatar"));

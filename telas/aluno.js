@@ -92,4 +92,22 @@ function avisar(texto) {
 
 function aplicarPaletaGuardada() { return aplicarPaleta(preferencias().paleta); }
 
-export { CHAVE_PROGRESSO, progressoDoAluno, cronometro, paletasAbertas, NOMES_DE_PALETA, preferencias, guardarPreferencias, aplicarPaleta, aplicarPaletaGuardada, escolherPaleta, registrarEstadoVisto, avisar, CHAVE_PREFERENCIAS };
+/* As animações (gatos, modelos, vidrarias). No automático, seguem o aparelho: ficam paradas quando
+   o sistema pede menos movimento (no Windows, "Efeitos de animação" desligado; no celular,
+   "Remover animações"). O aluno pode ligar ou desligar no Início, e a escolha dele vale mais. */
+function sistemaPedeMenosMovimento() {
+  return typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+function movimentoLigado() {
+  const m = preferencias().movimento;
+  return m === "sim" || (m !== "nao" && !sistemaPedeMenosMovimento());
+}
+function aplicarMovimento() {
+  document.documentElement.classList.toggle("com-movimento", movimentoLigado());
+}
+function escolherMovimento(ligado) {
+  guardarPreferencias({ movimento: ligado ? "sim" : "nao" });
+  aplicarMovimento();
+}
+
+export { CHAVE_PROGRESSO, progressoDoAluno, cronometro, paletasAbertas, NOMES_DE_PALETA, preferencias, guardarPreferencias, aplicarPaleta, aplicarPaletaGuardada, aplicarMovimento, movimentoLigado, sistemaPedeMenosMovimento, escolherMovimento, escolherPaleta, registrarEstadoVisto, avisar, CHAVE_PREFERENCIAS };

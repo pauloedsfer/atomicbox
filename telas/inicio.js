@@ -2,7 +2,7 @@
 import { criar } from "./comum.js";
 import { desenhoDoGato } from "./gatos.js";
 import { PALETAS, paletaAberta } from "../dados/presentes.js";
-import { preferencias, escolherPaleta } from "./aluno.js";
+import { preferencias, escolherPaleta, movimentoLigado, sistemaPedeMenosMovimento, escolherMovimento } from "./aluno.js";
 
 const ESCADA = [
   { nome: "Estados da matéria", texto: "O que muda no gelo quando ele derrete?", tela: "tela-materia" },
@@ -18,6 +18,9 @@ let atualizarPaletas = null;
 
 function montar(raiz, app) {
   const paletas = criar("div", { className: "paletas" });
+  const textoMovimento = criar("p", { className: "ajuda" });
+  textoMovimento.setAttribute("role", "status");
+  const botaoMovimento = criar("button", { type: "button", className: "botao secundario" });
   paletas.setAttribute("role", "group");
   paletas.setAttribute("aria-labelledby", "titulo-paletas");
 
@@ -52,7 +55,22 @@ function montar(raiz, app) {
     criar("h2", { id: "titulo-paletas", textContent: "Paletas" }),
     criar("p", { className: "ajuda", textContent: "Cores para a caixa inteira. As novas abrem com o seu estudo." }),
     paletas,
+    criar("h2", { textContent: "Animações" }),
+    criar("div", { className: "movimento-linha" }, [textoMovimento, botaoMovimento]),
   );
+
+  function desenharMovimento() {
+    const ligado = movimentoLigado();
+    botaoMovimento.textContent = ligado ? "Desligar as animações" : "Ligar as animações";
+    botaoMovimento.setAttribute("aria-pressed", String(ligado));
+    textoMovimento.textContent = ligado
+      ? "Ligadas: os gatos piscam, os elétrons giram e a chama do Bunsen dança."
+      : (preferencias().movimento === "auto" && sistemaPedeMenosMovimento()
+        ? "Desligadas, porque este aparelho está configurado para mostrar menos animações. Quer ver os gatos se mexendo mesmo assim? É só ligar aqui."
+        : "Desligadas: fica tudo parado.");
+  }
+  botaoMovimento.addEventListener("click", () => { escolherMovimento(!movimentoLigado()); desenharMovimento(); });
+  desenharMovimento();
 
   function desenharPaletas() {
     const prefs = preferencias();

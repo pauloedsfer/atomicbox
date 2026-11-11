@@ -356,13 +356,12 @@ main > section { max-width: 920px; }
 :root[data-paleta="antimateria"] .desenho-vidraria .bastao-vidro { stroke: #7FB2E6; }
 /* Na ficha e no desafio (desenho grande), três detalhes se mexem. */
 .desenho-vidraria .chama, .desenho-vidraria .gota-vid, .desenho-vidraria .bolha { transform-box: fill-box; transform-origin: 50% 100%; }
-@media (prefers-reduced-motion: no-preference) {
-  .ficha-grade .chama, .desafio-grade .chama { animation: vid-chama 0.5s ease-in-out infinite alternate; }
-  .ficha-grade .gota-vid, .desafio-grade .gota-vid { animation: vid-gota 1.6s ease-in infinite; }
-  .ficha-grade .bolha, .desafio-grade .bolha { animation: vid-bolha 1.8s ease-in infinite; }
-  .ficha-grade .bolha.b2, .desafio-grade .bolha.b2 { animation-delay: -0.6s; }
-  .ficha-grade .bolha.b3, .desafio-grade .bolha.b3 { animation-delay: -1.2s; }
-}
+/* Só para quem está com as animações ligadas (classe posta por telas/aluno.js). */
+:root.com-movimento .ficha-grade .chama, :root.com-movimento .desafio-grade .chama { animation: vid-chama 0.5s ease-in-out infinite alternate; }
+:root.com-movimento .ficha-grade .gota-vid, :root.com-movimento .desafio-grade .gota-vid { animation: vid-gota 1.6s ease-in infinite; }
+:root.com-movimento .ficha-grade .bolha, :root.com-movimento .desafio-grade .bolha { animation: vid-bolha 1.8s ease-in infinite; }
+:root.com-movimento .ficha-grade .bolha.b2, :root.com-movimento .desafio-grade .bolha.b2 { animation-delay: -0.6s; }
+:root.com-movimento .ficha-grade .bolha.b3, :root.com-movimento .desafio-grade .bolha.b3 { animation-delay: -1.2s; }
 @keyframes vid-chama { from { transform: scale(1, 1); } to { transform: scale(0.92, 1.08); } }
 @keyframes vid-gota { 0%, 55% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(9px); opacity: 0; } }
 @keyframes vid-bolha { 0% { transform: translateY(4px); opacity: 0; } 30% { opacity: 0.8; } 100% { transform: translateY(-14px); opacity: 0; } }
@@ -561,7 +560,13 @@ label { font-weight: 500; }
 .surpresa-gato p { margin: 0 0 40px; padding: 10px 14px; border-radius: 14px; background: var(--ab-superficie-2); border: 1px solid var(--ab-vermelho); color: var(--ab-texto); box-shadow: var(--ab-sombra); font-weight: 500; }
 .surpresa-gato.visivel { transform: none; }
 @media (min-width: 900px) { .surpresa-gato { left: calc(272px + 16px); } }
-@media (prefers-reduced-motion: reduce) { .gato-escondido, .surpresa-gato { transition: none; } }
+:root:not(.com-movimento) .gato-escondido, :root:not(.com-movimento) .surpresa-gato { transition: none; }
+/* O gato dormindo é baixinho: fica mais para fora, senão some inteiro atrás da borda. */
+.gato-escondido.pose-dormindo { transform: translateY(5%); }
+.gato-escondido.pose-dormindo:hover { transform: translateY(0); }
+.gato-escondido.pose-dormindo.aparecendo { transform: translateY(-4%); }
+.movimento-linha { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ab-e3); margin-top: var(--ab-e3); }
+.movimento-linha p { margin: 0; flex: 1 1 240px; }
 
 /* ---------------- substâncias: tipos e um material por vez ---------------- */
 .tipos-material { list-style: none; padding: 0; margin: var(--ab-e3) 0; display: grid; gap: var(--ab-e2); grid-template-columns: repeat(4, 1fr); }
@@ -603,35 +608,34 @@ label { font-weight: 500; }
 .gato-rabo, .gato-olhos, .gato-bola, .gato-zzz, .gato-gota, .gato-floco, .gato-vapor, .gato-par, .gato-mar, .gato-eletron-ionico { transform-box: fill-box; }
 .gato-rabo { transform-origin: 0% 100%; }
 .gato-olhos { transform-origin: 50% 50%; }
-@media (prefers-reduced-motion: no-preference) {
-  .gato-rabo { animation: gato-rabo 3.2s ease-in-out infinite; }
-  .gato-olhos { animation: gato-piscar 5.5s infinite; }
-  .gato-bola { animation: gato-quicar 0.9s cubic-bezier(.5, 0, .5, 1) infinite alternate; }
-  .gato-bola.b2 { animation-duration: 1.3s; animation-delay: -0.4s; }
-  .gato-orbita-x { animation: gato-orbita-x 1.5s ease-in-out infinite alternate; }
-  .gato-orbita-y { animation: gato-orbita-y 1.5s ease-in-out infinite alternate; animation-delay: -0.75s; }
-  .gato-orbita-x.e1 { animation-delay: -1s; } .gato-orbita-y.e1 { animation-delay: -1.75s; }
-  .gato-orbita-x.e2 { animation-delay: -2s; } .gato-orbita-y.e2 { animation-delay: -2.75s; }
-  .gato-zzz { animation: gato-zzz 3s ease-in-out infinite; }
-  .gato-zzz.z2 { animation-delay: 0.5s; }
-  .gato-zzz.z3 { animation-delay: 1s; }
-  .gato-treme { animation: gato-tremer 0.16s linear infinite alternate; }
-  .gato-floco { animation: gato-nevar 3.4s linear infinite; }
-  .gato-floco.f2 { animation-delay: -1.2s; }
-  .gato-floco.f3 { animation-delay: -2.2s; }
-  .gato-gota { animation: gato-pingar 1.8s ease-in infinite; }
-  .gato-gota.g2 { animation-delay: -0.9s; }
-  .gato-vapor { animation: gato-subir 2.4s ease-out infinite; }
-  .gato-vapor.v2 { animation-delay: -0.8s; }
-  .gato-vapor.v3 { animation-delay: -1.6s; }
-  .gato-eletron-ionico { animation: gato-passar 2.6s ease-in-out infinite; }
-  .gato-par.p1 { animation: gato-pulsar 1.6s ease-in-out infinite; }
-  .gato-par.p2 { animation: gato-pulsar 1.6s ease-in-out infinite reverse; }
-  .gato-mar { animation: gato-vagar 3s ease-in-out infinite alternate; }
-  .gato-mar.m2 { animation-duration: 2.2s; animation-direction: alternate-reverse; }
-  .gato-mar.m3 { animation-duration: 3.8s; animation-delay: -1s; }
-  .gato-rabo-dormindo { animation: none; }
-}
+/* Só para quem está com as animações ligadas (classe posta por telas/aluno.js). */
+:root.com-movimento .gato-rabo { animation: gato-rabo 3.2s ease-in-out infinite; }
+:root.com-movimento .gato-olhos { animation: gato-piscar 5.5s infinite; }
+:root.com-movimento .gato-bola { animation: gato-quicar 0.9s cubic-bezier(.5, 0, .5, 1) infinite alternate; }
+:root.com-movimento .gato-bola.b2 { animation-duration: 1.3s; animation-delay: -0.4s; }
+:root.com-movimento .gato-orbita-x { animation: gato-orbita-x 1.5s ease-in-out infinite alternate; }
+:root.com-movimento .gato-orbita-y { animation: gato-orbita-y 1.5s ease-in-out infinite alternate; animation-delay: -0.75s; }
+:root.com-movimento .gato-orbita-x.e1 { animation-delay: -1s; }:root.com-movimento .gato-orbita-y.e1 { animation-delay: -1.75s; }
+:root.com-movimento .gato-orbita-x.e2 { animation-delay: -2s; }:root.com-movimento .gato-orbita-y.e2 { animation-delay: -2.75s; }
+:root.com-movimento .gato-zzz { animation: gato-zzz 3s ease-in-out infinite; }
+:root.com-movimento .gato-zzz.z2 { animation-delay: 0.5s; }
+:root.com-movimento .gato-zzz.z3 { animation-delay: 1s; }
+:root.com-movimento .gato-treme { animation: gato-tremer 0.16s linear infinite alternate; }
+:root.com-movimento .gato-floco { animation: gato-nevar 3.4s linear infinite; }
+:root.com-movimento .gato-floco.f2 { animation-delay: -1.2s; }
+:root.com-movimento .gato-floco.f3 { animation-delay: -2.2s; }
+:root.com-movimento .gato-gota { animation: gato-pingar 1.8s ease-in infinite; }
+:root.com-movimento .gato-gota.g2 { animation-delay: -0.9s; }
+:root.com-movimento .gato-vapor { animation: gato-subir 2.4s ease-out infinite; }
+:root.com-movimento .gato-vapor.v2 { animation-delay: -0.8s; }
+:root.com-movimento .gato-vapor.v3 { animation-delay: -1.6s; }
+:root.com-movimento .gato-eletron-ionico { animation: gato-passar 2.6s ease-in-out infinite; }
+:root.com-movimento .gato-par.p1 { animation: gato-pulsar 1.6s ease-in-out infinite; }
+:root.com-movimento .gato-par.p2 { animation: gato-pulsar 1.6s ease-in-out infinite reverse; }
+:root.com-movimento .gato-mar { animation: gato-vagar 3s ease-in-out infinite alternate; }
+:root.com-movimento .gato-mar.m2 { animation-duration: 2.2s; animation-direction: alternate-reverse; }
+:root.com-movimento .gato-mar.m3 { animation-duration: 3.8s; animation-delay: -1s; }
+:root.com-movimento .gato-rabo-dormindo { animation: none; }
 @keyframes gato-rabo { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(7deg); } }
 @keyframes gato-piscar { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.08); } }
 @keyframes gato-quicar { from { transform: translateY(0); } to { transform: translateY(-16px); } }
@@ -655,22 +659,21 @@ label { font-weight: 500; }
 .mod-gira { transform-origin: 50px 50px; }
 /* Parado: os elétrons de Rutherford ficam espalhados nas órbitas. */
 .mod-ex.o0 { transform: translateX(42px); } .mod-ex.o1 { transform: translateX(-30px); } .mod-ey.o1 { transform: translateY(10px); } .mod-ex.o2 { transform: translateX(-20px); } .mod-ey.o2 { transform: translateY(-12px); }
-@media (prefers-reduced-motion: no-preference) {
-  .mod-pulsa { animation: mod-pulsar 1.6s ease-in-out infinite; }
-  .mod-flutua { animation: mod-flutuar 2.6s ease-in-out infinite alternate; }
-  .mod-sombra { animation: mod-sombra 2.6s ease-in-out infinite alternate; }
-  .mod-treme { animation: mod-tremer 1.4s ease-in-out infinite alternate; }
-  .mod-treme.t1 { animation-duration: 1.1s; animation-direction: alternate-reverse; }
-  .mod-treme.t2 { animation-duration: 1.8s; animation-delay: -0.6s; }
-  .mod-ex { animation: mod-ex 1.3s ease-in-out infinite alternate; }
-  .mod-ey { animation: mod-ey 1.3s ease-in-out infinite alternate; animation-delay: -0.65s; }
-  .mod-ex.o1 { animation-duration: 1.7s; } .mod-ey.o1 { animation-duration: 1.7s; animation-delay: -0.85s; }
-  .mod-ex.o2 { animation-duration: 1.05s; } .mod-ey.o2 { animation-duration: 1.05s; animation-delay: -0.525s; }
-  .mod-gira.g1 { animation: mod-girar 3s linear infinite; }
-  .mod-gira.g2 { animation: mod-girar 6s linear infinite; }
-  .mod-gira.g3 { animation: mod-girar 9s linear infinite; }
-  .mod-foton { animation: mod-foton 2.4s ease-out infinite; }
-}
+/* Só para quem está com as animações ligadas (classe posta por telas/aluno.js). */
+:root.com-movimento .mod-pulsa { animation: mod-pulsar 1.6s ease-in-out infinite; }
+:root.com-movimento .mod-flutua { animation: mod-flutuar 2.6s ease-in-out infinite alternate; }
+:root.com-movimento .mod-sombra { animation: mod-sombra 2.6s ease-in-out infinite alternate; }
+:root.com-movimento .mod-treme { animation: mod-tremer 1.4s ease-in-out infinite alternate; }
+:root.com-movimento .mod-treme.t1 { animation-duration: 1.1s; animation-direction: alternate-reverse; }
+:root.com-movimento .mod-treme.t2 { animation-duration: 1.8s; animation-delay: -0.6s; }
+:root.com-movimento .mod-ex { animation: mod-ex 1.3s ease-in-out infinite alternate; }
+:root.com-movimento .mod-ey { animation: mod-ey 1.3s ease-in-out infinite alternate; animation-delay: -0.65s; }
+:root.com-movimento .mod-ex.o1 { animation-duration: 1.7s; }:root.com-movimento .mod-ey.o1 { animation-duration: 1.7s; animation-delay: -0.85s; }
+:root.com-movimento .mod-ex.o2 { animation-duration: 1.05s; }:root.com-movimento .mod-ey.o2 { animation-duration: 1.05s; animation-delay: -0.525s; }
+:root.com-movimento .mod-gira.g1 { animation: mod-girar 3s linear infinite; }
+:root.com-movimento .mod-gira.g2 { animation: mod-girar 6s linear infinite; }
+:root.com-movimento .mod-gira.g3 { animation: mod-girar 9s linear infinite; }
+:root.com-movimento .mod-foton { animation: mod-foton 2.4s ease-out infinite; }
 @keyframes mod-pulsar { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.35); } }
 @keyframes mod-flutuar { from { transform: translateY(0); } to { transform: translateY(-5px); } }
 @keyframes mod-sombra { from { transform: scaleX(1); opacity: 0.35; } to { transform: scaleX(0.86); opacity: 0.22; } }
