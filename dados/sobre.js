@@ -53,7 +53,7 @@ const PORQUE_EXISTE = [
     titulo: "Por que é gratuito e funciona sem internet",
     texto: "Porque a rede da escola cai, o laboratório costuma ser um ponto cego de sinal e " +
       "nem todo aluno tem dados móveis sobrando. Nada aqui exige cadastro, e o progresso " +
-      "fica guardado no próprio aparelho: não há servidor nem coleta de dados.",
+      "fica guardado no próprio aparelho: não há conta nem coleta de dados pessoais.",
   },
 ];
 
@@ -86,9 +86,8 @@ const COLABORACAO = [
 ];
 
 const FICHA_TECNICA = [
-  "Aplicativo web instalável, sem cadastro e sem servidor. Todo o progresso fica guardado apenas " +
-  "neste aparelho, e nada é enviado sem você pedir: o envio ao professor só acontece quando você " +
-  "toca no botão. Depois da primeira visita, funciona sem internet.",
+  "Aplicativo web instalável, sem cadastro. Todo o progresso fica guardado apenas neste aparelho. O site só conta as visitas, de forma anônima: sem cookies e sem identificar ninguém. O progresso sai daqui apenas quando você toca em Enviar ao professor. " +
+  "Depois da primeira visita, funciona sem internet.",
   "Os nomes, os símbolos e as massas dos elementos seguem a IUPAC. As regras de segurança da " +
   "bancada são gerais e não substituem as normas do seu laboratório nem a orientação do professor.",
 ];
