@@ -212,7 +212,7 @@ main > section { max-width: 920px; }
 /* ---------------- montador de átomo ---------------- */
 .montador-grade { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: var(--ab-e4); align-items: start; }
 @media (max-width: 760px) { .montador-grade { grid-template-columns: 1fr; } }
-.desenho-bohr { width: 100%; max-width: 300px; height: auto; display: block; margin: 0 auto; background: var(--ab-caixa-sim); border-radius: 50%; border: 2px solid var(--ab-borda); }
+.desenho-bohr { width: 100%; max-width: 340px; height: auto; display: block; margin: 0 auto; background: var(--ab-caixa-sim); border-radius: 50%; border: 2px solid var(--ab-borda); }
 .camada-bohr { fill: none; stroke: var(--ab-texto-suave); stroke-width: 1; stroke-dasharray: 3 4; opacity: 0.7; }
 .proton, .bolinha.proton { fill: #E3262E; background: #E3262E; stroke: #7A0D12; stroke-width: 1; }
 .neutron, .bolinha.neutron { fill: #9AA0A8; background: #9AA0A8; stroke: #4A4E55; stroke-width: 1; }
@@ -753,3 +753,21 @@ label { font-weight: 500; }
 .colaborador { padding: var(--ab-e3) var(--ab-e4); margin-top: var(--ab-e3); border-left: 3px solid var(--ab-vermelho); background: var(--ab-superficie-2); border-radius: 0 12px 12px 0; }
 .colaborador p { margin: 0; }
 .colaborador .quem { font-weight: 600; margin-bottom: 4px !important; }
+
+/* ---------------- montador: camadas girando e núcleo instável ---------------- */
+.camada-gira { transform-origin: 150px 150px; }
+.nucleo-bohr { transform-box: fill-box; transform-origin: 50% 50%; }
+:root.com-movimento .camada-gira { animation: montador-girar linear infinite; }
+:root.com-movimento .camada-gira:nth-of-type(even) { animation-direction: normal; }
+:root.com-movimento .nucleo-instavel { animation: montador-tremer 0.14s linear infinite alternate; }
+:root.com-movimento .nucleo-radioativo { animation: montador-tremer 0.2s linear infinite alternate, montador-brilho 1.6s ease-in-out infinite; }
+.nucleo-radioativo { filter: drop-shadow(0 0 4px rgba(242, 194, 48, 0.7)); }
+@keyframes montador-girar { to { transform: rotate(360deg); } }
+@keyframes montador-tremer {
+  0% { transform: translate(calc(var(--tremor, 1px) * -1), 0); }
+  50% { transform: translate(0, var(--tremor, 1px)); }
+  100% { transform: translate(var(--tremor, 1px), calc(var(--tremor, 1px) * -0.6)); }
+}
+@keyframes montador-brilho { 0%, 100% { filter: drop-shadow(0 0 2px rgba(242, 194, 48, 0.5)); } 50% { filter: drop-shadow(0 0 9px rgba(242, 194, 48, 0.95)); } }
+.rotulo-ir { display: block; font-weight: 600; margin-bottom: 6px; }
+.ir-elemento { width: 100%; min-height: 44px; margin-bottom: var(--ab-e3); padding: 8px 12px; border-radius: 12px; border: 1px solid var(--ab-borda); background: var(--ab-superficie-2); color: var(--ab-texto); font: inherit; }

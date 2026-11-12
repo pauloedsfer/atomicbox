@@ -1,6 +1,6 @@
 import { teste, igual, verdadeiro } from "./afirmar.js";
 import { disparar, dispararVarias, CENA } from "../motor/rutherford.js";
-import { analisarAtomo, camadasDeBohr, MISSOES } from "../motor/atomo.js";
+import { analisarAtomo, camadasDeBohr, camadasDoAtomo, limites, estabilidade, elementoPorZ, MISSOES } from "../motor/atomo.js";
 import { analisarDistribuicao, distribuir, ORDEM } from "../motor/distribuicao.js";
 
 function semente(s) { return () => { s = (s * 16807) % 2147483647; return s / 2147483647; }; }
@@ -35,7 +35,7 @@ teste("montador: o número de prótons decide o elemento; carga, massa e isótop
   const o = analisarAtomo({ protons: 8, neutrons: 8, eletrons: 10 });
   igual([o.simbolo, o.tipo], ["O²⁻", "anion"]);
   igual(analisarAtomo({ protons: 0, neutrons: 2, eletrons: 0 }).elemento, null);
-  igual(analisarAtomo({ protons: 99, neutrons: -3, eletrons: 1.5 }).p, 20, "fora da faixa é limitado");
+  igual(analisarAtomo({ protons: 999, neutrons: -3, eletrons: 1.5 }).p, 118, "fora da faixa é limitado");
   verdadeiro(analisarAtomo({ protons: 2, neutrons: 12, eletrons: 2 }).instavel, "hélio com 12 nêutrons é instável");
 });
 
@@ -63,4 +63,43 @@ teste("distribuição: ferro, cálcio, bromo e o último elemento pelo diagrama 
   igual(ORDEM.length, 19);
   verdadeiro(analisarDistribuicao(24).excecao && !analisarDistribuicao(26).excecao, "o cromo é exceção, o ferro não");
   igual(analisarDistribuicao(0), null);
+});
+
+teste("montador: os 118 elementos, com limites de nêutrons e elétrons para cada um", () => {
+  for (let z = 1; z <= 118; z++) {
+    const l = limites(z);
+    const comum = analisarAtomo({ protons: z, neutrons: elementoPorZ(z).isotopo - z, eletrons: z });
+    igual(comum.a, elementoPorZ(z).isotopo, `Z = ${z}`);
+    igual(comum.camadas.reduce((t, c) => t + c.eletrons, 0), z, `elétrons do átomo neutro, Z = ${z}`);
+    verdadeiro(l.nMin <= l.nComum && l.nComum <= l.nMax && l.eMin === Math.max(0, z - 4) && l.eMax === z + 3, `limites, Z = ${z}`);
+    const fora = analisarAtomo({ protons: z, neutrons: l.nMax + 50, eletrons: z + 40 });
+    igual([fora.n, fora.e], [l.nMax, l.eMax], `limitado, Z = ${z}`);
+  }
+  igual(camadasDoAtomo(118, 118).map((c) => `${c.camada}${c.eletrons}`).join(" "), "K2 L8 M18 N32 O32 P18 Q8");
+});
+
+teste("montador: íons tiram e põem elétrons na camada de fora", () => {
+  igual(camadasDoAtomo(11, 10).map((c) => c.eletrons), [2, 8]);
+  igual(camadasDoAtomo(26, 24).map((c) => c.eletrons), [2, 8, 14], "Fe²⁺ perde os dois da camada N");
+  igual(camadasDoAtomo(17, 18).map((c) => c.eletrons), [2, 8, 8]);
+  igual(camadasDoAtomo(1, 0).length, 0);
+});
+
+teste("montador: núcleo estável, instável ou radioativo", () => {
+  igual(estabilidade(6, 6).estado, "estavel");
+  igual(estabilidade(6, 7).estado, "estavel");
+  igual(estabilidade(6, 8).estado, "instavel", "carbono-14");
+  igual(estabilidade(6, 5).estado, "instavel", "carbono-11");
+  igual(estabilidade(1, 2).estado, "instavel", "trítio");
+  igual(estabilidade(19, 21).estado, "instavel", "potássio-40");
+  igual(estabilidade(26, 30).estado, "estavel", "ferro-56");
+  igual(estabilidade(43, 55).estado, "radioativo", "tecnécio");
+  igual(estabilidade(92, 146).estado, "radioativo", "urânio");
+  igual(estabilidade(118, 176).estado, "radioativo");
+  verdadeiro(estabilidade(6, 10).desvio > estabilidade(6, 8).desvio);
+});
+
+teste("montador: nos elementos sem isótopo estável, a referência é o que dura mais", () => {
+  verdadeiro(analisarAtomo({ protons: 118, neutrons: 176, eletrons: 118 }).isotopo.includes("o isótopo que dura mais"));
+  verdadeiro(analisarAtomo({ protons: 6, neutrons: 6, eletrons: 6 }).isotopo.includes("mais comum na natureza"));
 });
