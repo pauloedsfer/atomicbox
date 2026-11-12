@@ -78,7 +78,7 @@ function montar(raiz, app) {
         criar("div", {}, [
           criar("p", { textContent: "Você montou o NaCl: o cloreto de sódio, o sal de cozinha. Agora uma pergunta que muda tudo: quantas partículas de NaCl cabem numa colher de sal? São tantas que os químicos inventaram um pacote só para contá-las: o mol." }),
           criar("p", { textContent: "Essa é a caixa do Avogato: o Super Molbox, com o mol, a nomenclatura inorgânica e as reações. Bom trabalho na Atomic Box!" }),
-          criar("a", { className: "botao", href: "https://supermolbox.vercel.app/", textContent: "Abrir o Super Molbox →" }),
+          criar("a", { className: "botao", href: "https://caixaquimica.com.br/molbox/", textContent: "Abrir o Super Molbox →" }),
         ]),
       ]),
     ]),

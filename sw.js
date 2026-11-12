@@ -5,10 +5,10 @@
    - Recursos pesados e estáveis (fontes, ícones, marca): cache primeiro.
 */
 
-const VERSAO = "atomicbox-v0.11.1";
+const VERSAO = "atomicbox-v0.12.0";
 
 const ARQUIVOS = [
-  "./", "./index.html", "./manifest.webmanifest",
+  "./", "./index.html", "./mudanca.js", "./manifest.webmanifest",
   "./app.js", "./rotas.js",
   "./estilo/tokens.css", "./estilo/fontes.css", "./estilo/app.css",
   "./motor/particulas.js", "./motor/rutherford.js", "./motor/atomo.js", "./motor/distribuicao.js", "./comum/elementos.js", "./comum/progresso.js", "./comum/tempo.js", "./dados/avatar.js", "./dados/titulos.js", "./dados/envio.js", "./dados/compartilhar.js", "./motor/pdf.js", "./motor/formula_texto.js", "./motor/treino.js", "./dados/degraus.js", "./dados/modelos.js", "./dados/vidrarias.js", "./motor/vidrarias.js", "./dados/substancias.js", "./motor/substancias.js", "./motor/tabela.js", "./motor/ligacoes.js", "./dados/presentes.js",

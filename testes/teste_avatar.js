@@ -35,7 +35,7 @@ teste("preferências guardam avatar, apelido, código e link sem perder a paleta
 });
 
 teste("compartilhar: convite e texto ao professor com o nome e o link do Atomic Box", () => {
-  verdadeiro(textoDivulgacao("atomic", "avatar").includes("https://atomicbox.vercel.app/"));
+  verdadeiro(textoDivulgacao("atomic", "avatar").includes("https://caixaquimica.com.br/atomicbox/"));
   const t = textoProfessor("atomic", { codigo: "TURMA1", linha: "ABOX1;cod=TURMA1;xp=10" });
   verdadeiro(t.includes("Super Atomic Box") && t.endsWith("ABOX1;cod=TURMA1;xp=10"), t);
 });
