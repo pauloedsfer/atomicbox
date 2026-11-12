@@ -92,15 +92,15 @@ function avisar(texto) {
 
 function aplicarPaletaGuardada() { return aplicarPaleta(preferencias().paleta); }
 
-/* As animações (gatos, modelos, vidrarias). No automático, seguem o aparelho: ficam paradas quando
-   o sistema pede menos movimento (no Windows, "Efeitos de animação" desligado; no celular,
-   "Remover animações"). O aluno pode ligar ou desligar no Início, e a escolha dele vale mais. */
+/* As animações (gatos, modelos, vidrarias) vêm ligadas para todo mundo, mesmo em aparelhos
+   configurados para mostrar menos animações (pedido do autor: os alunos não as viam no
+   computador). Quem prefere tudo parado desliga no Início, e a escolha fica guardada. */
 function sistemaPedeMenosMovimento() {
   return typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 function movimentoLigado() {
   const m = preferencias().movimento;
-  return m === "sim" || (m !== "nao" && !sistemaPedeMenosMovimento());
+  return m !== "nao";
 }
 function aplicarMovimento() {
   document.documentElement.classList.toggle("com-movimento", movimentoLigado());

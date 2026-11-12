@@ -2,7 +2,7 @@
 import { criar } from "./comum.js";
 import { desenhoDoGato } from "./gatos.js";
 import { PALETAS, paletaAberta } from "../dados/presentes.js";
-import { preferencias, escolherPaleta, movimentoLigado, sistemaPedeMenosMovimento, escolherMovimento } from "./aluno.js";
+import { preferencias, escolherPaleta, movimentoLigado, escolherMovimento } from "./aluno.js";
 
 const ESCADA = [
   { nome: "Estados da matéria", texto: "O que muda no gelo quando ele derrete?", tela: "tela-materia" },
@@ -65,9 +65,7 @@ function montar(raiz, app) {
     botaoMovimento.setAttribute("aria-pressed", String(ligado));
     textoMovimento.textContent = ligado
       ? "Ligadas: os gatos piscam, os elétrons giram e a chama do Bunsen dança."
-      : (preferencias().movimento === "auto" && sistemaPedeMenosMovimento()
-        ? "Desligadas, porque este aparelho está configurado para mostrar menos animações. Quer ver os gatos se mexendo mesmo assim? É só ligar aqui."
-        : "Desligadas: fica tudo parado.");
+      : "Desligadas: fica tudo parado.";
   }
   botaoMovimento.addEventListener("click", () => { escolherMovimento(!movimentoLigado()); desenharMovimento(); });
   desenharMovimento();
