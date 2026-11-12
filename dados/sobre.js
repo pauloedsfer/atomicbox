@@ -63,7 +63,7 @@ const POR_QUE_CAIXA = [
   "vê no átomo. E no gato de Schrödinger, enquanto ninguém abre a caixa, não dá para saber o que " +
   "tem lá dentro. Com o estudo é igual: a resposta só aparece quando você abre a caixa.",
   "Nesta caixa mora o Bohr, o gato preto. No Super Molbox mora o Avogato, o laranja, e no Super " +
-  "Organic Box, o Kekulé, o branco. O Schrödinger, o arlequim da Caixa Química, tem um pouco de " +
+  "Organic Box, o Kekulé, o branco. O Dinger (apelido de Schrödinger), o arlequim da Caixa Química, tem um pouco de " +
   "cada um e cuida das três.",
 ];
 
