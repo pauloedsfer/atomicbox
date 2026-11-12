@@ -24,7 +24,7 @@ import { salvar } from "./salvar.js";
 
 let atualizarTela = null;
 
-const CABECA = "14 2 112 112";   // o recorte das miniaturas: só a cabeça
+const CABECA = "14 10 112 112";   // o recorte das miniaturas: só a cabeça
 const ABAS = [
   ["pele", "🎨", "Pele"], ["rosto", "🙂", "Rosto"], ["olhos", "👀", "Olhos"], ["cabelo", "💇", "Cabelo"],
   ["barba", "🧔", "Barba"], ["oculos", "👓", "Óculos"], ["cabeca", "🧢", "Chapéus"], ["detalhe", "✨", "Detalhes"],
@@ -272,7 +272,7 @@ function montar(raiz) {
       ];
       case "cabelo": return [
         ...(av.cabelo === "raspado" ? [] : [cores("Cor do cabelo", "corCabelo", CORES_CABELO, av.corCabelo)]),
-        grade("Corte", umDe(av, "cabelo", CABELOS), "8 0 124 124"),
+        grade("Corte", umDe(av, "cabelo", CABELOS), "8 6 124 124"),
       ];
       case "barba": return [
         cores("Cor (a mesma do cabelo)", "corCabelo", CORES_CABELO, av.corCabelo),
