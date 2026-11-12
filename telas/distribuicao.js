@@ -105,7 +105,7 @@ function montar(raiz, app) {
     criar("div", { className: "cartao ponte" }, [
       criar("h2", { textContent: "A pergunta que fica", style: "margin-top:0" }),
       criar("p", { textContent: "Repare: o sódio tem 1 elétron na camada de valência, e o potássio também. O cloro tem 7, e o bromo também. Será coincidência que eles se pareçam tanto nas reações? A resposta está na tabela periódica, o próximo degrau." }),
-      criar("button", { type: "button", className: "botao", textContent: "Próximo degrau: Tabela periódica →", onclick: () => app.mostrarTela("tela-tabela") }),
+      criar("button", { type: "button", className: "botao", textContent: "Próximo degrau: Números quânticos →", onclick: () => app.mostrarTela("tela-quanticos") }),
     ]),
   );
 

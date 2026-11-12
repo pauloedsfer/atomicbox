@@ -10,6 +10,7 @@ const ESCADA = [
   { nome: "Modelos atômicos", texto: "Como enxergar o que ninguém vê?", tela: "tela-modelos" },
   { nome: "Partículas do átomo", texto: "Por que o carbono é carbono?", tela: "tela-atomo" },
   { nome: "Distribuição eletrônica", texto: "Por que os elétrons ficam em camadas?", tela: "tela-distribuicao" },
+  { nome: "Números quânticos", texto: "Qual é o endereço de cada elétron?", tela: "tela-quanticos" },
   { nome: "Tabela periódica", texto: "Por que a tabela tem esse formato?", tela: "tela-tabela" },
   { nome: "Ligações químicas", texto: "Por que o sal derrete a 801 °C e o gelo a 0 °C?", tela: "tela-ligacoes" },
 ];
